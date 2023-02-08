@@ -32,7 +32,7 @@ async def test_get_account_tag(httpx_mock: HTTPXMock, api_client: HuntflowAPI):
         json=ACCOUNT_TAG_RESPONSE
     )
 
-    response = await api_client.get_account_tag(ACCOUNT_ID, TAG_ID)
+    response = await api_client.account_tags.get(ACCOUNT_ID, TAG_ID)
     assert response == AccountTagResponse(**ACCOUNT_TAG_RESPONSE)
 
 
@@ -44,7 +44,7 @@ async def test_create_account_tag(httpx_mock: HTTPXMock, api_client: HuntflowAPI
 
     api_request = CreateAccountTagRequest(**CREATE_ACCOUNT_TAG_REQUEST)
 
-    response = await api_client.create_account_tag(ACCOUNT_ID, api_request)
+    response = await api_client.account_tags.create(ACCOUNT_ID, api_request)
     assert response == AccountTagResponse(**ACCOUNT_TAG_RESPONSE)
 
 
@@ -56,7 +56,7 @@ async def test_update_account_tag(httpx_mock: HTTPXMock, api_client: HuntflowAPI
 
     api_request = CreateAccountTagRequest(**CREATE_ACCOUNT_TAG_REQUEST)
 
-    response = await api_client.update_account_tag(ACCOUNT_ID, TAG_ID, api_request)
+    response = await api_client.account_tags.update(ACCOUNT_ID, TAG_ID, api_request)
     assert response == AccountTagResponse(**ACCOUNT_TAG_RESPONSE)
 
 
@@ -66,5 +66,5 @@ async def test_delete_applicant(httpx_mock: HTTPXMock, api_client: HuntflowAPI):
         status_code=204
     )
 
-    response = await api_client.delete_account_tag(ACCOUNT_ID, TAG_ID)
+    response = await api_client.account_tags.delete(ACCOUNT_ID, TAG_ID)
     assert response is None
