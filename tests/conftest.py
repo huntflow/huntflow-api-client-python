@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from huntflow_api_client_python.api import HuntflowApi
+from huntflow_api_client_python import HuntflowAPI
 
 
 API_URL = "http://mocked.url"
@@ -23,7 +23,7 @@ def read_file(file_path: str, mode: str = "r"):
 
 @pytest.fixture
 def api_client():
-    api_client = HuntflowApi(
+    api_client = HuntflowAPI(
         base_url=API_URL,
         token=API_TOKEN,
     )

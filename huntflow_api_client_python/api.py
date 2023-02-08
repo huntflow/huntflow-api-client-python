@@ -2,20 +2,11 @@ import typing as t
 
 import httpx
 
-from huntflow_api_client_python.serializers.response.info import OrganizationInfoResponse
-from huntflow_api_client_python.serializers.response.applicants import (
-    ApplicantCreateResponse,
-    ApplicantUpdateResponse,
-    ApplicantVacancySplitResponse
-)
-from huntflow_api_client_python.serializers.request.applicants import (
-    ApplicantCreateRequest,
-    ApplicantUpdateRequest,
-    ApplicantVacancySplitRequest
-)
+from huntflow_api_client_python.models.response.tags import AccountTagResponse
+from huntflow_api_client_python.models.request.tags import CreateAccountTagRequest
 
 
-class HuntflowApi:
+class HuntflowAPI:
     def __init__(
         self,
         base_url: str,
@@ -36,53 +27,35 @@ class HuntflowApi:
         http_client.event_hooks["request"] = self.request_event_hooks
         return http_client
 
-    async def get_organization(self, account_id: int) -> OrganizationInfoResponse:
+    async def get_account_tag(self, account_id: int, tag_id: int) -> AccountTagResponse:
         async with self.client as client:
-            response = await client.get(f"/v2/accounts/{account_id}")
+            response = await client.get(f"/v2/accounts/{account_id}/tags/{tag_id}")
         result = response.json()
-        return OrganizationInfoResponse(**result)
+        return AccountTagResponse(**result)
 
-    async def create_applicant(
+    async def create_account_tag(
         self,
         account_id: int,
-        data: ApplicantCreateRequest
-    ) -> ApplicantCreateResponse:
+        data: CreateAccountTagRequest
+    ) -> AccountTagResponse:
         data = data.json()
         async with self.client as client:
-            response = await client.post(f"/v2/accounts/{account_id}/applicants", data=data)
+            response = await client.post(f"/v2/accounts/{account_id}/tags", data=data)
         result = response.json()
-        return ApplicantCreateResponse(**result)
+        return AccountTagResponse(**result)
 
-    async def update_applicant(
+    async def update_account_tag(
         self,
         account_id: int,
-        applicant_id: int,
-        data: ApplicantUpdateRequest
-    ) -> ApplicantUpdateResponse:
+        tag_id: int,
+        data: CreateAccountTagRequest
+    ) -> AccountTagResponse:
         data = data.json()
         async with self.client as client:
-            response = await client.patch(
-                f"/v2/accounts/{account_id}/applicants/{applicant_id}",
-                data=data
-            )
+            response = await client.put(f"/v2/accounts/{account_id}/tags/{tag_id}", data=data)
         result = response.json()
-        return ApplicantUpdateResponse(**result)
+        return AccountTagResponse(**result)
 
-    async def delete_applicant(self, account_id: int, applicant_id: int):
+    async def delete_account_tag(self, account_id: int, tag_id: int):
         async with self.client as client:
-            await client.delete(f"/v2/accounts/{account_id}/applicants/{applicant_id}")
-
-    async def split_applicant_to_vacancy(
-        self,
-        account_id: int,
-        vacancy_id: int,
-        data: ApplicantVacancySplitRequest
-    ) -> ApplicantVacancySplitResponse:
-        data = data.json()
-        async with self.client as client:
-            response = await client.put(
-                f"/v2/accounts/{account_id}/applicants/vacancy/{vacancy_id}/split",
-                data=data
-            )
-        result = response.json()
-        return ApplicantVacancySplitResponse(**result)
+            await client.delete(f"/v2/accounts/{account_id}/tags/{tag_id}")
