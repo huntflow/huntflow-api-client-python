@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Public client for Huntflow API written in Python 3.7."
 authors = ["Kirill Kuzin <offkirillkuzin@gmail.com>"]
 readme = "README.md"
-packages = [{include = "huntflow_api_client_python"}]
+packages = [{include = "huntflow_api_client"}]
 
 [tool.poetry.dependencies]
 python = "^3.7"
