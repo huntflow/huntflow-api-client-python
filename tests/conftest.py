@@ -1,6 +1,6 @@
 import pytest
 
-from huntflow_api_client_python import HuntflowAPI
+from huntflow_api_client import HuntflowAPI
 
 
 API_URL = "http://mocked.url"

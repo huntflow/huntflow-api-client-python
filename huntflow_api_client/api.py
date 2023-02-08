@@ -2,8 +2,8 @@ import typing as t
 
 import httpx
 
-from huntflow_api_client_python.models.response.tags import AccountTagResponse
-from huntflow_api_client_python.models.request.tags import CreateAccountTagRequest
+from huntflow_api_client.models.response.tags import AccountTagResponse
+from huntflow_api_client.models.request.tags import CreateAccountTagRequest
 
 
 class HuntflowAPI:

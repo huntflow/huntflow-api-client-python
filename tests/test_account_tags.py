@@ -3,10 +3,10 @@ import pytest
 from pytest_httpx import HTTPXMock
 
 from tests.conftest import API_URL
-from huntflow_api_client_python import HuntflowAPI
+from huntflow_api_client import HuntflowAPI
 
-from huntflow_api_client_python.models.response.tags import AccountTagResponse
-from huntflow_api_client_python.models.request.tags import CreateAccountTagRequest
+from huntflow_api_client.models.response.tags import AccountTagResponse
+from huntflow_api_client.models.request.tags import CreateAccountTagRequest
 
 
 pytestmark = pytest.mark.asyncio

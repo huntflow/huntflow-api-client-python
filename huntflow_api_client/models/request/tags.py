@@ -1,6 +1,6 @@
 from pydantic import Field
 
-from huntflow_api_client_python.models.common import JsonRequestModel
+from huntflow_api_client.models.common import JsonRequestModel
 
 
 class CreateAccountTagRequest(JsonRequestModel):
