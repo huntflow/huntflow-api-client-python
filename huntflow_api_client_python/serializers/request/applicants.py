@@ -26,7 +26,6 @@ class ApplicantResumeCreate(BaseModel):
 
 
 class ApplicantSocial(BaseModel):
-    # social_type: t.Literal["TELEGRAM"] = Field(..., description="Type", example="TELEGRAM")
     social_type: str = Field(..., description="Type", example="TELEGRAM")
     value: str = Field(..., description="Value", example="TelegramUsername")
 
