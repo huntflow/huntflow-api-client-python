@@ -2,7 +2,7 @@ import pytest
 
 from pytest_httpx import HTTPXMock
 
-from tests.conftest import read_json, API_URL
+from tests.conftest import API_URL
 from huntflow_api_client_python import HuntflowAPI
 
 from huntflow_api_client_python.models.response.tags import AccountTagResponse
@@ -15,44 +15,49 @@ pytestmark = pytest.mark.asyncio
 ACCOUNT_ID = 1
 TAG_ID = 2
 
+ACCOUNT_TAG_RESPONSE = {
+    "color": "00ad3b",
+    "id": 34,
+    "name": "Blacklist"
+}
+CREATE_ACCOUNT_TAG_REQUEST = {
+    "color": "000000",
+    "name": "Whitelist"
+}
+
 
 async def test_get_account_tag(httpx_mock: HTTPXMock, api_client: HuntflowAPI):
-    api_response = read_json("api_responses/get_account_tag.json")
     httpx_mock.add_response(
         url=f"{API_URL}/v2/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
-        json=api_response
+        json=ACCOUNT_TAG_RESPONSE
     )
 
     response = await api_client.get_account_tag(ACCOUNT_ID, TAG_ID)
-    assert response == AccountTagResponse(**api_response)
+    assert response == AccountTagResponse(**ACCOUNT_TAG_RESPONSE)
 
 
 async def test_create_account_tag(httpx_mock: HTTPXMock, api_client: HuntflowAPI):
-    api_response = read_json("api_responses/get_account_tag.json")
     httpx_mock.add_response(
         url=f"{API_URL}/v2/accounts/{ACCOUNT_ID}/tags",
-        json=api_response
+        json=ACCOUNT_TAG_RESPONSE
     )
 
-    api_request = read_json("api_requests/create_account_tag.json")
-    api_request = CreateAccountTagRequest(**api_request)
+    api_request = CreateAccountTagRequest(**CREATE_ACCOUNT_TAG_REQUEST)
 
     response = await api_client.create_account_tag(ACCOUNT_ID, api_request)
-    assert response == AccountTagResponse(**api_response)
+    assert response == AccountTagResponse(**ACCOUNT_TAG_RESPONSE)
 
 
 async def test_update_account_tag(httpx_mock: HTTPXMock, api_client: HuntflowAPI):
-    api_response = read_json("api_responses/get_account_tag.json")
     httpx_mock.add_response(
         url=f"{API_URL}/v2/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
-        json=api_response
+        json=ACCOUNT_TAG_RESPONSE
     )
 
-    api_request = read_json("api_requests/create_account_tag.json")
-    api_request = CreateAccountTagRequest(**api_request)
+    api_request = CreateAccountTagRequest(**CREATE_ACCOUNT_TAG_REQUEST)
 
     response = await api_client.update_account_tag(ACCOUNT_ID, TAG_ID, api_request)
-    assert response == AccountTagResponse(**api_response)
+    assert response == AccountTagResponse(**ACCOUNT_TAG_RESPONSE)
 
 
 async def test_delete_applicant(httpx_mock: HTTPXMock, api_client: HuntflowAPI):

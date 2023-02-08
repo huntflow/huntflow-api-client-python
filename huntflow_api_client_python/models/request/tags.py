@@ -1,6 +1,8 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from huntflow_api_client_python.models.common import JsonRequestModel
 
 
-class CreateAccountTagRequest(BaseModel):
+class CreateAccountTagRequest(JsonRequestModel):
     name: str = Field(..., description="Tag name", example="Blacklist")
     color: str = Field(..., description="Tag color (HEX format)", example="000000")

@@ -20,7 +20,7 @@ class HuntflowAPI:
         self.request_event_hooks = request_event_hooks or []
 
     @property
-    def client(self):
+    def client(self) -> httpx.AsyncClient:
         headers = {"Authorization": f"Bearer {self.token}"}
         http_client = httpx.AsyncClient(base_url=self.base_url, headers=headers)
         http_client.event_hooks["response"] = self.response_event_hooks
@@ -38,9 +38,11 @@ class HuntflowAPI:
         account_id: int,
         data: CreateAccountTagRequest
     ) -> AccountTagResponse:
-        data = data.json()
         async with self.client as client:
-            response = await client.post(f"/v2/accounts/{account_id}/tags", data=data)
+            response = await client.post(
+                f"/v2/accounts/{account_id}/tags",
+                json=data.jsonable_dict()
+            )
         result = response.json()
         return AccountTagResponse(**result)
 
@@ -50,12 +52,14 @@ class HuntflowAPI:
         tag_id: int,
         data: CreateAccountTagRequest
     ) -> AccountTagResponse:
-        data = data.json()
         async with self.client as client:
-            response = await client.put(f"/v2/accounts/{account_id}/tags/{tag_id}", data=data)
+            response = await client.put(
+                f"/v2/accounts/{account_id}/tags/{tag_id}",
+                json=data.jsonable_dict()
+            )
         result = response.json()
         return AccountTagResponse(**result)
 
-    async def delete_account_tag(self, account_id: int, tag_id: int):
+    async def delete_account_tag(self, account_id: int, tag_id: int) -> None:
         async with self.client as client:
             await client.delete(f"/v2/accounts/{account_id}/tags/{tag_id}")
