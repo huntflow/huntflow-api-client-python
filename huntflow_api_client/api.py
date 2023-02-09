@@ -2,8 +2,6 @@ import typing as t
 
 import httpx
 
-from huntflow_api_client.entities.tags import AccountTag
-
 
 class HuntflowAPI:
     def __init__(
@@ -16,7 +14,6 @@ class HuntflowAPI:
         self.base_url = base_url
         self.token = token
         self.http_client = self.init_http_client(request_event_hooks, response_event_hooks)
-        self.account_tags = AccountTag(self.http_client)
 
     def init_http_client(
         self,
