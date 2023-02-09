@@ -1,13 +1,11 @@
 import abc
 
-import httpx
-
 from huntflow_api_client import HuntflowAPI
 
 
 class BaseEntity:
     def __init__(self, api: HuntflowAPI):
-        self._client: httpx.AsyncClient = api.http_client
+        self._api = api
 
 
 class GetEntityMixin(abc.ABC):

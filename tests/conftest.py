@@ -9,8 +9,5 @@ API_TOKEN = "mocked token"
 
 @pytest.fixture
 def api_client():
-    api_client = HuntflowAPI(
-        base_url=API_URL,
-        token=API_TOKEN,
-    )
+    api_client = HuntflowAPI(base_url=API_URL, access_token=API_TOKEN)
     return api_client
