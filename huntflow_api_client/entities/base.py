@@ -41,7 +41,6 @@ class DeleteEntityMixin(abc.ABC):
 
 
 class CRUDEntityMixin(
-    abc.ABC,
     GetEntityMixin,
     CreateEntityMixin,
     UpdateEntityMixin,
