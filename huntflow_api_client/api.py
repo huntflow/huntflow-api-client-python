@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Callable, List, Optional
+from typing import Any, Callable, List, Optional
 
 import httpx
 
@@ -70,7 +70,10 @@ class HuntflowAPI:
         return response
 
     async def run_token_refresh(
-        self, refresh_token: str = None, pre_cb: Callable = None, post_cb: Callable = None,
+        self,
+        refresh_token: str = None,
+        pre_cb: Callable[[ApiTokens], Any] = None,
+        post_cb: Callable[[ApiTokens, ApiTokens], Any] = None,
     ) -> ApiTokens:
         refresh_token = refresh_token or self.refresh_token
         if not refresh_token:
@@ -78,7 +81,7 @@ class HuntflowAPI:
 
         old_tokens = ApiTokens(access_token=self.access_token, refresh_token=refresh_token)
         if pre_cb:
-            await pre_cb(tokens_for_refresh=old_tokens)
+            await pre_cb(old_tokens)
 
         async with self.http_client as client:
             response = await client.post(
@@ -90,6 +93,6 @@ class HuntflowAPI:
         self.refresh_token = new_tokens.refresh_token
 
         if post_cb:
-            await post_cb(old_tokens=old_tokens, new_tokens=new_tokens)
+            await post_cb(old_tokens, new_tokens)
 
         return new_tokens
