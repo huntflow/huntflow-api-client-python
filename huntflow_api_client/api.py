@@ -1,13 +1,14 @@
+from dataclasses import dataclass
 from typing import Callable, List, Optional
 
 import httpx
-from pydantic import BaseModel
 
 from huntflow_api_client.event_hooks.response import raise_token_expired_hook
 from huntflow_api_client.utils.autorefresh import autorefresh_tokens
 
 
-class ApiTokens(BaseModel):
+@dataclass(frozen=True)
+class ApiTokens:
     access_token: str
     refresh_token: str
 
