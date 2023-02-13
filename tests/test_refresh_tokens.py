@@ -116,11 +116,21 @@ async def test_auto_refresh_tokens(httpx_mock: HTTPXMock):
         json=account_tag_response,
     )
 
+    callback_kwargs = []
+
+    async def pre_cb(old_tokens):
+        callback_kwargs.append(old_tokens)
+
+    async def post_cb(old_tokens, new_tokens):
+        callback_kwargs.append((old_tokens, new_tokens))
+
     api_client = HuntflowAPI(
         base_url=api_url,
         access_token=access_token,
         refresh_token=refresh_token,
         auto_refresh_tokens=True,
+        pre_refresh_cb=pre_cb,
+        post_refresh_cb=post_cb,
     )
 
     assert api_client.access_token == access_token
@@ -133,3 +143,6 @@ async def test_auto_refresh_tokens(httpx_mock: HTTPXMock):
     assert response == AccountTagResponse(**account_tag_response)
     assert api_client.access_token == refresh_token_response["access_token"]
     assert api_client.refresh_token == refresh_token_response["refresh_token"]
+    old_tokens = ApiTokens(access_token=access_token, refresh_token=refresh_token)
+    new_tokens = ApiTokens(**refresh_token_response)
+    assert callback_kwargs == [old_tokens, (old_tokens, new_tokens)]

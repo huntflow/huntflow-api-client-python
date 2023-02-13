@@ -20,6 +20,8 @@ class HuntflowAPI:
         access_token: str,
         refresh_token: Optional[str] = None,
         auto_refresh_tokens: bool = False,
+        pre_refresh_cb: Callable[[ApiTokens], Any] = None,
+        post_refresh_cb: Callable[[ApiTokens, ApiTokens], Any] = None,
         request_event_hooks: List[Callable] = None,
         response_event_hooks: List[Callable] = None,
     ):
@@ -29,6 +31,8 @@ class HuntflowAPI:
 
         self._request_event_hooks = request_event_hooks or []
         self._response_event_hooks = response_event_hooks or []
+        self._pre_cb = pre_refresh_cb
+        self._post_cb = post_refresh_cb
 
         if auto_refresh_tokens:
             if not refresh_token:
@@ -80,6 +84,8 @@ class HuntflowAPI:
             raise ValueError("Refresh token is required.")
 
         old_tokens = ApiTokens(access_token=self.access_token, refresh_token=refresh_token)
+
+        pre_cb = pre_cb or self._pre_cb
         if pre_cb:
             await pre_cb(old_tokens)
 
@@ -92,6 +98,7 @@ class HuntflowAPI:
         self.access_token = new_tokens.access_token
         self.refresh_token = new_tokens.refresh_token
 
+        post_cb = post_cb or self._post_cb
         if post_cb:
             await post_cb(old_tokens, new_tokens)
 
