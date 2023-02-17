@@ -1,61 +1,20 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Any, Dict, Callable, List, Optional
+from typing import Any, Dict, Callable, List, Optional, Type
 
 import httpx
 
 from huntflow_api_client.event_hooks.response import raise_token_expired_hook
 from huntflow_api_client.errors import TokenExpiredError
-
-
-@dataclass(frozen=True)
-class ApiTokens:
-    access_token: str
-    refresh_token: str
-
-
-@dataclass
-class HuntflowApiToken:
-    access_token: str
-    refresh_token: str
-    will_expire_at: Optional[datetime]
+from huntflow_api_client.token_proxy import (
+    AbstractTokenProxy,
+    HuntflowApiToken,
+    HuntflowTokenProxyBase,
+)
 
 
 class TokenIsRefreshing(Exception):
     pass
-
-
-class HuntflowTokenProxyBase:
-    def __init__(self, token: HuntflowApiToken) -> None:
-        self.token = token
-
-    async def get_auth_header(self) -> Dict[str, str]:
-        """Add blocking waiting for free lock here if you need to
-        synchronize token updates
-        """
-        return {"Authorization": f"Bearer {self.token.access_token}"}
-
-    async def get_refresh_token_data(self) -> Dict:
-        return {"refresh_token": self.token.refresh_token}
-
-    async def update_by_refresh_result(self, refresh_result: Dict) -> None:
-        """Save updated token to a persistent storage here if you need it"""
-        token = self.token
-        now = datetime.now()
-        token.access_token = refresh_result["access_token"]
-        token.refresh_token = refresh_result["refresh_token"] or token.refresh_token
-        token.will_expire_at = now + timedelta(seconds=refresh_result["expires_in"])
-
-    async def lock_for_update(self):
-        """If you have to synchronize token refreshing across several
-        instances, then implement here non-blocking lock acquiring.
-        If the lock is already acquired, then raise TokenIsRefreshing error.
-        """
-        pass
-
-    async def release_lock(self):
-        """Release lock if you have acquired it in lock_for_update method"""
-        pass
 
 
 class HuntflowAPI:
@@ -64,24 +23,37 @@ class HuntflowAPI:
         base_url: str,
         # Specify one of this: token or token_proxy
         token: Optional[HuntflowApiToken],
-        token_proxy: Optional[HuntflowTokenProxyBase],
+        token_proxy: Optional[AbstractTokenProxy],
         auto_refresh_tokens: bool = False,
         request_event_hooks: List[Callable] = None,
         response_event_hooks: List[Callable] = None,
+        refresh_token_lock: Optional[Callable] = None,
+        release_refresh_lock: Optional[Callable] = None,
+        already_locked_exception_cls: Optional[Type[Exception]] = None,
     ):
-        assert token or token_proxy
-        if not token:
-            assert token_proxy
-            token = token_proxy.token
+        if token_proxy is None:
+            if token is None:
+                raise ValueError("Parameters token and token_proxy can't be None at the same time")
+            token_proxy = HuntflowTokenProxyBase(token)
+        self.token_proxy = token_proxy
         self.base_url = base_url
-        self.token_proxy = token_proxy or HuntflowTokenProxyBase(token)
 
         self._request_event_hooks = request_event_hooks or []
         self._response_event_hooks = response_event_hooks or []
+        is_invalid_arguments_for_refresh_lock = (
+            (release_refresh_lock is None or already_locked_exception_cls is None)
+            and refresh_token_lock is not None
+        )
+        if is_invalid_arguments_for_refresh_lock:
+            raise Exception(
+                "If refresh_token_lock is specified, then you have to provide "
+                "release_refresh_lock and already_locked_exception_cls also"
+            )
+        self._refresh_token_lock = refresh_token_lock
+        self._release_refresh_lock = release_refresh_lock
+        self._already_locked_exception_cls = already_locked_exception_cls
 
         if auto_refresh_tokens:
-            if not token.refresh_token:
-                raise ValueError("Refresh token is required.")
             self._response_event_hooks.append(raise_token_expired_hook)
             self._request = self.request
             self.request = self._autorefresh_token
@@ -120,10 +92,22 @@ class HuntflowAPI:
             )
         return response
 
-    async def run_token_refresh(self) -> None:
+    async def _lock_for_update(self) -> bool:
+        if self._refresh_token_lock is None:
+            return True
         try:
-            await self.token_proxy.lock_for_update()
-        except TokenIsRefreshing:
+            await self._refresh_token_lock()
+        except self._already_locked_exception_cls:
+            return False
+        return True
+
+    async def _release_lock_for_update(self):
+        if self._release_lock_for_update is None:
+            return
+        await self._release_lock_for_update()
+
+    async def run_token_refresh(self) -> None:
+        if not await self._lock_for_update():
             return
 
         try:
@@ -134,7 +118,7 @@ class HuntflowAPI:
                 )
             await self.token_proxy.update_by_refresh_result(response.json())
         finally:
-            await self.token_proxy.release_lock()
+            await self._release_lock_for_update()
 
     async def _autorefresh_token(self, *args, **kwargs):
         try:
