@@ -102,9 +102,9 @@ class HuntflowAPI:
         return True
 
     async def _release_lock_for_update(self):
-        if self._release_lock_for_update is None:
+        if self._release_refresh_lock is None:
             return
-        await self._release_lock_for_update()
+        await self._release_refresh_lock()
 
     async def run_token_refresh(self) -> None:
         if not await self._lock_for_update():
