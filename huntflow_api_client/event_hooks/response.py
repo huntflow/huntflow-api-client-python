@@ -1,6 +1,6 @@
 import httpx
 
-from huntflow_api_client.errors import TokenExpiredError
+from huntflow_api_client.errors import TokenExpiredError, InvalidAccessTokenError
 
 
 async def raise_token_expired_hook(response: httpx.Response):
@@ -15,3 +15,5 @@ async def raise_token_expired_hook(response: httpx.Response):
 
         if msg == "token_expired":
             raise TokenExpiredError()
+        if msg == "Invalid access token":
+            raise InvalidAccessTokenError()

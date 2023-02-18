@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, fields
+from datetime import datetime, timedelta
 from typing import Dict, Callable, Optional, Type
 
 
@@ -7,12 +8,17 @@ from typing import Dict, Callable, Optional, Type
 class HuntflowApiTokens:
     access_token: str
     refresh_token: Optional[str] = None
-    expires_in: Optional[int] = None
-    refresh_token_expires_in: Optional[int] = None
+    will_expires_at: Optional[datetime] = None
 
     @classmethod
     def from_dict(cls, dict_: dict):
         attrs = {field.name for field in fields(cls)}
+        return cls(**{k: v for k, v in dict_.items() if k in attrs})
+
+    @classmethod
+    def from_api_response(cls, dict_: dict):
+        attrs = {field.name for field in fields(cls)}
+        dict_["will_expires_at"] = datetime.now() + timedelta(seconds=dict_["expires_in"])
         return cls(**{k: v for k, v in dict_.items() if k in attrs})
 
 

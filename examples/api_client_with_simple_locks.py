@@ -3,6 +3,7 @@ import json
 from abc import ABC, abstractmethod
 from argparse import ArgumentParser
 from dataclasses import asdict
+from datetime import datetime
 from typing import Dict, Generic, TypeVar, List
 
 from huntflow_api_client import HuntflowAPI
@@ -22,6 +23,12 @@ class AbstractTokenStorage(ABC, Generic[_TokenDTO]):
         pass
 
 
+def json_serial(obj):
+    if isinstance(obj, datetime):
+        return obj.isoformat()
+    raise TypeError("Type %s not serializable" % type(obj))
+
+
 class FileBasedTokenStorage(AbstractTokenStorage[HuntflowApiTokens]):
     """Sample implementation of token storage interface.
     Token will be stored in a local file in json-serialized form.
@@ -30,13 +37,18 @@ class FileBasedTokenStorage(AbstractTokenStorage[HuntflowApiTokens]):
         self._filename = filename
 
     async def get(self) -> HuntflowApiTokens:
+        # TODO: Need to use aiofiles
         with open(self._filename) as fin:
             data = json.load(fin)
+        will_expires_at = data.get("will_expires_at")
+        if will_expires_at:
+            data["will_expires_at"] = datetime.fromisoformat(will_expires_at)
         return HuntflowApiTokens.from_dict(data)
 
     async def update(self, token: HuntflowApiTokens):
+        # TODO: Need to use aiofiles
         with open(self._filename, "w") as fout:
-            json.dump(asdict(token), fout, indent=4)
+            json.dump(asdict(token), fout, default=json_serial, indent=4)
 
 
 class AlreadyLockedException(Exception):
@@ -76,7 +88,7 @@ class AsyncioLockTokenHandler(AbstractTokenHandler):
             pass
 
     async def update_by_refresh_result(self, refresh_result: Dict) -> None:
-        self._tokens = HuntflowApiTokens.from_dict(refresh_result)
+        self._tokens = HuntflowApiTokens.from_api_response(refresh_result)
         await self.token_storage.update(self._tokens)
 
     @classmethod

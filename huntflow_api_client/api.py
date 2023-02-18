@@ -2,7 +2,7 @@ from typing import Callable, List, Optional
 
 import httpx
 
-from huntflow_api_client.errors import TokenExpiredError
+from huntflow_api_client.errors import TokenExpiredError, InvalidAccessTokenError
 from huntflow_api_client.event_hooks.response import raise_token_expired_hook
 from huntflow_api_client.tokens import (
     AbstractTokenHandler,
@@ -93,14 +93,11 @@ class HuntflowAPI:
 
     async def _autorefresh_token(self, *args, **kwargs):
         try:
-            if self._tokens_handler.lock:
-                async with self._tokens_handler.lock:
-                    response = await self._request(*args, **kwargs)
-                    return response
-            else:
-                response = await self._request(*args, **kwargs)
-                return response
+            response = await self._request(*args, **kwargs)
+            return response
         except TokenExpiredError:
             await self.run_token_refresh()
             response = await self._request(*args, **kwargs)
             return response
+        except InvalidAccessTokenError:
+            return await self._request(*args, **kwargs)
