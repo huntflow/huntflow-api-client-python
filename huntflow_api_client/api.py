@@ -1,20 +1,12 @@
-from dataclasses import dataclass
-from datetime import datetime, timedelta
-from typing import Any, Dict, Callable, List, Optional, Type
+import time
+from typing import Any, Dict, Callable, List, Optional
 
 import httpx
 
-from huntflow_api_client.event_hooks.response import raise_token_expired_hook
-from huntflow_api_client.errors import TokenExpiredError
-from huntflow_api_client.token_proxy import (
-    AbstractTokenProxy,
-    HuntflowApiToken,
-    HuntflowTokenProxyBase,
-)
-
-
-class TokenIsRefreshing(Exception):
-    pass
+from huntflow_api_client.errors import TokenExpiredError, InvalidAccessTokenError
+from huntflow_api_client.api_token.base_token_proxy import AbstractTokenProxy
+from huntflow_api_client.api_token.huntflow_token_proxy import DummyHuntflowTokenProxy
+from huntflow_api_client.api_token.huntflow_token import HuntflowApiToken
 
 
 class HuntflowAPI:
@@ -25,38 +17,20 @@ class HuntflowAPI:
         token: Optional[HuntflowApiToken],
         token_proxy: Optional[AbstractTokenProxy],
         auto_refresh_tokens: bool = False,
-        request_event_hooks: List[Callable] = None,
-        response_event_hooks: List[Callable] = None,
-        refresh_token_lock: Optional[Callable] = None,
-        release_refresh_lock: Optional[Callable] = None,
-        already_locked_exception_cls: Optional[Type[Exception]] = None,
+        request_event_hooks: Optional[List[Callable]] = None,
+        response_event_hooks: Optional[List[Callable]] = None,
     ):
         if token_proxy is None:
             if token is None:
                 raise ValueError("Parameters token and token_proxy can't be None at the same time")
-            token_proxy = HuntflowTokenProxyBase(token)
-        self.token_proxy = token_proxy
+            token_proxy = DummyHuntflowTokenProxy(token)
+        self._token_proxy: AbstractTokenProxy = token_proxy
         self.base_url = base_url
 
         self._request_event_hooks = request_event_hooks or []
         self._response_event_hooks = response_event_hooks or []
-        is_invalid_arguments_for_refresh_lock = (
-            (release_refresh_lock is None or already_locked_exception_cls is None)
-            and refresh_token_lock is not None
-        )
-        if is_invalid_arguments_for_refresh_lock:
-            raise Exception(
-                "If refresh_token_lock is specified, then you have to provide "
-                "release_refresh_lock and already_locked_exception_cls also"
-            )
-        self._refresh_token_lock = refresh_token_lock
-        self._release_refresh_lock = release_refresh_lock
-        self._already_locked_exception_cls = already_locked_exception_cls
 
-        if auto_refresh_tokens:
-            self._response_event_hooks.append(raise_token_expired_hook)
-            self._request = self.request
-            self.request = self._autorefresh_token
+        self._autorefresh_tokens = auto_refresh_tokens
 
     @property
     def http_client(self) -> httpx.AsyncClient:
@@ -77,8 +51,42 @@ class HuntflowAPI:
         headers=None,
         timeout=None,
     ) -> httpx.Response:
+        if self._autorefresh_tokens:
+            return await self._autorefresh_token_request(
+                method,
+                path,
+                data=data,
+                files=files,
+                json=json,
+                params=params,
+                headers=headers,
+                timeout=timeout,
+            )
+        return await self._request(
+            method,
+            path,
+            data=data,
+            files=files,
+            json=json,
+            params=params,
+            headers=headers,
+            timeout=timeout,
+        )
+
+    async def _request(
+        self,
+        method: str,
+        path: str,
+        *,
+        data=None,
+        files=None,
+        json=None,
+        params=None,
+        headers=None,
+        timeout=None,
+    ) -> httpx.Response:
         headers = headers or {}
-        headers.update(await self.token_proxy.get_auth_header())
+        headers.update(await self._token_proxy.get_auth_header())
         async with self.http_client as client:
             response = await client.request(
                 method,
@@ -90,41 +98,56 @@ class HuntflowAPI:
                 headers=headers,
                 timeout=timeout,
             )
+            await self._raise_token_expired(response)
         return response
 
-    async def _lock_for_update(self) -> bool:
-        if self._refresh_token_lock is None:
-            return True
-        try:
-            await self._refresh_token_lock()
-        except self._already_locked_exception_cls:
-            return False
-        return True
-
-    async def _release_lock_for_update(self):
-        if self._release_refresh_lock is None:
+    async def _raise_token_expired(self, response: httpx.Response) -> None:
+        if response.status_code != 401:
             return
-        await self._release_refresh_lock()
-
-    async def run_token_refresh(self) -> None:
-        if not await self._lock_for_update():
-            return
-
+        if not hasattr(response, "_content"):
+            await response.aread()
+        data = response.json()
         try:
-            refresh_data = await self.token_proxy.get_refresh_token_data()
+            msg = data["errors"][0]["detail"]
+        except KeyError:
+            msg = None
+        if msg == "token_expired":
+            raise TokenExpiredError()
+        if msg == "Invalid access token":
+            raise InvalidAccessTokenError()
+
+    async def _run_token_refresh(self) -> None:
+        # Why do we have to check if token was changed?
+        # Consider the situation:
+        # * we send 4 requests at the same time
+        # * 3 of the 4 are returned with 401 token_expired errors
+        # * 1 of the 4 is still waiting for response (any reasons, may be rate limit at API server side)
+        # * one of failed 3 requests have refreshed the token, the rest of the 3 will use the refreshed
+        #   token for retries
+        # * the waiting request have got 401 token_expired response. But the token has been just refreshed,
+        #   so there is no need to refresh it again.
+        #   To track this case we have to check if the token has been updated (since last get_auth_header call).
+        #   If token has been updated, then we just need to retry original request with a refreshed auth data.
+        if await self._token_proxy.is_updated():
+            return
+        if not await self._token_proxy.lock_for_update():
+            return
+        try:
+            refresh_data = await self._token_proxy.get_refresh_data()
             async with self.http_client as client:
                 response = await client.post(
-                    "/v2/token/refresh", json=refresh_data,
+                    "/token/refresh", json=refresh_data,
                 )
-            await self.token_proxy.update_by_refresh_result(response.json())
+                response.raise_for_status()
+            await self._token_proxy.update(response.json())
         finally:
-            await self._release_lock_for_update()
+            await self._token_proxy.release_lock()
 
-    async def _autorefresh_token(self, *args, **kwargs):
+    async def _autorefresh_token_request(self, *args, **kwargs):
         try:
             response = await self._request(*args, **kwargs)
             return response
-        except TokenExpiredError:
-            await self.run_token_refresh()
+        except (TokenExpiredError, InvalidAccessTokenError):
+            await self._run_token_refresh()
             response = await self._request(*args, **kwargs)
             return response
