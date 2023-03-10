@@ -70,12 +70,9 @@ class AsyncioLockLocker(AbstractLocker):
         If there is the lock already, then return False.
         If the lock is not acquired, then acquire the lock and return True
         """
-        print("Trying to get lock")
         if self._lock.locked():
-            print("Already locked")
             return False
         await self._lock.acquire()
-        print("Lock acquired")
         return True
 
     async def wait_for_lock(self):
@@ -106,11 +103,9 @@ class HuntflowTokenProxy(AbstractTokenProxy):
         self._last_read_timestamp: Optional[float] = None
 
     async def get_auth_header(self) -> Dict[str, str]:
-        print("Getting token")
         await self._wait_for_free_lock()
         self._token = await self._storage.get()
         self._last_read_timestamp = time.time()
-        print("Got token: %s", self._token.access_token)
         return get_auth_headers(self._token)
 
     async def _wait_for_free_lock(self):
