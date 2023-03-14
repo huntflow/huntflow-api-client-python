@@ -1,10 +1,44 @@
-import asyncio
+from abc import ABC, abstractmethod
 import time
 from typing import Dict, Optional
 
-from .base_token_proxy import AbstractTokenProxy, AbstractLocker
-from .huntflow_token import HuntflowApiToken
-from .huntflow_token_storage import AbstractHuntflowTokenStorage
+from .locker import AbstractLocker
+from .token import HuntflowApiToken
+from .storage import AbstractHuntflowTokenStorage
+
+
+class AbstractTokenProxy(ABC):
+    @abstractmethod
+    async def get_auth_header(self) -> Dict[str, str]:
+        """Returns auth headers for requests"""
+        pass
+
+    @abstractmethod
+    async def get_refresh_data(self) -> Dict[str, str]:
+        """Returns data to use in refresh token request"""
+        pass
+
+    @abstractmethod
+    async def update(self, refresh_result: Dict) -> None:
+        """Save updated token to a persistent storage here if you need it"""
+        pass
+
+    async def lock_for_update(self) -> bool:
+        """Non-blocking method to acquire lock before token refresh.
+        Returns True if lock has been acquired successfully,
+        False if the lock is already acquired.
+        """
+        return True
+
+    async def release_lock(self):
+        """Release previously acquired lock"""
+        pass
+
+    async def is_updated(self) -> bool:
+        """Returns True if the token has been changed since last `get_auth_header` call.
+        Returns False otherwise.
+        """
+        return False
 
 
 def convert_refresh_result_to_hf_token(
@@ -53,41 +87,6 @@ class DummyHuntflowTokenProxy(AbstractTokenProxy):
         self._token = convert_refresh_result_to_hf_token(refresh_result, self._token)
 
 
-class AsyncioLockLocker(AbstractLocker):
-    """Simple implementation of locker interface.
-    It may be used if you need to synchronize token refresh across several
-    coroutines in a single thread.
-    Warning: Do not use it if you need to synchronize token updates via several threads
-    of processes.
-    In case of several processes you have to implement some distributed locking mechanism.
-    Which one to use depends of your infrastructure (redis, etcd, whatever).
-    """
-    def __init__(self) -> None:
-        self._lock: asyncio.Lock = asyncio.Lock()
-
-    async def try_lock(self) -> bool:
-        """Non-blocking lock aqcuire.
-        If there is the lock already, then return False.
-        If the lock is not acquired, then acquire the lock and return True
-        """
-        if self._lock.locked():
-            return False
-        await self._lock.acquire()
-        return True
-
-    async def wait_for_lock(self):
-        """Blocking lock check. If there is no locks, then return.
-        If the lock is set, then wait for it's release.
-        """
-        async with self._lock:
-            pass
-
-    async def release(self):
-        if not self._lock.locked():
-            return
-        self._lock.release()
-
-
 class HuntflowTokenProxy(AbstractTokenProxy):
     """Ready to use TokenProxy implementation.
     It can read and update token via some implementation of
@@ -129,7 +128,7 @@ class HuntflowTokenProxy(AbstractTokenProxy):
         """
         if self._locker is None:
             return True
-        return await self._locker.try_lock()
+        return await self._locker.acquire()
 
     async def release_lock(self):
         """Release previously acquired lock"""

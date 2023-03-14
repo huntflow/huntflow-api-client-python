@@ -3,7 +3,7 @@ import time
 from abc import ABC, abstractmethod
 from dataclasses import asdict
 
-from .huntflow_token import HuntflowApiToken
+from .token import HuntflowApiToken
 
 
 class AbstractHuntflowTokenStorage(ABC):

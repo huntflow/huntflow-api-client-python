@@ -2,11 +2,9 @@ import asyncio
 from argparse import ArgumentParser
 from typing import List
 
-from huntflow_api_client.api_token.huntflow_token_proxy import (
-    AsyncioLockLocker,
-    HuntflowTokenProxy,
-)
-from huntflow_api_client.api_token.huntflow_token_storage import HuntflowTokenFileStorage
+from huntflow_api_client.tokens.locker import AsyncioLockLocker
+from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
+from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
 from huntflow_api_client import HuntflowAPI
 
 
@@ -37,9 +35,16 @@ async def main(concurrent_client_count: int, token_filename: str, base_url: str)
 
 def parse_args():
     parser = ArgumentParser()
-    parser.add_argument("--count", type=int, default=3)
-    parser.add_argument("--url", type=str)
-    parser.add_argument("--token-file", type=str)
+    parser.add_argument("--count", type=int, default=3, help="Number of concurrent requests")
+    parser.add_argument("--url", type=str, help="https://<api domain>/v2")
+    parser.add_argument(
+        "--token-file",
+        type=str,
+        help=(
+            "Path to json file. File must include 'access_token' and 'refresh_token' keys."
+            " File will be rewritten when token is refreshed."
+        ),
+    )
     args = parser.parse_args()
     return args
     
