@@ -5,11 +5,11 @@ from typing import List
 from huntflow_api_client.tokens.locker import AsyncioLockLocker
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
-from huntflow_api_client import HuntflowAPI
+from huntflow_api_client import HuntflowAPI, VERSION_PREFIX
 
 
 async def get_and_print_org_info(api_client: HuntflowAPI):
-    response = await api_client.request("GET", "/accounts")
+    response = await api_client.request("GET", VERSION_PREFIX + "/accounts")
     print(response.json())
 
 
@@ -36,7 +36,7 @@ async def main(concurrent_client_count: int, token_filename: str, base_url: str)
 def parse_args():
     parser = ArgumentParser()
     parser.add_argument("--count", type=int, default=3, help="Number of concurrent requests")
-    parser.add_argument("--url", type=str, help="https://<api domain>/v2")
+    parser.add_argument("--url", type=str, help="https://<api domain>")
     parser.add_argument(
         "--token-file",
         type=str,

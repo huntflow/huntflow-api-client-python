@@ -5,25 +5,26 @@ import httpx
 
 from huntflow_api_client.errors import TokenExpiredError, InvalidAccessTokenError
 from huntflow_api_client.tokens.proxy import AbstractTokenProxy, DummyHuntflowTokenProxy
-from huntflow_api_client.tokens.token import HuntflowApiToken
+from huntflow_api_client.tokens.token import ApiToken
 
 
 logger = logging.getLogger(__name__)
 
 
+VERSION_PREFIX = "/v2"
+
+
 class HuntflowAPI:
     def __init__(
         self,
-        base_url: str,
+        base_url: str = "https://api.huntflow.dev",
         # Specify one of this: token or token_proxy
-        token: Optional[HuntflowApiToken],
-        token_proxy: Optional[AbstractTokenProxy],
+        token: Optional[ApiToken] = None,
+        token_proxy: Optional[AbstractTokenProxy] = None,
         auto_refresh_tokens: bool = False,
-        request_event_hooks: Optional[List[Callable]] = None,
-        response_event_hooks: Optional[List[Callable]] = None,
     ):
         """API client.
-        :param base_url: Base url for API, like 'https://<api domain>/v2'
+        :param base_url: Base url for API, like 'https://<api domain>'
         :param token: Optional token structure with access token.
             Use it if you don't care about token refreshing
         :param token_proxy: Alternative way (see `token` param) to provide token.
@@ -34,10 +35,6 @@ class HuntflowAPI:
             Also see usage example at `examples.api_client_with_simple_locks`.
         :param auto_refresh_tokens: If True then the client will handle token expiration.
             "Handle" means: catch token expiration errors and run token refresh request.
-        :param request_event_hooks: callable to run before actual requests.
-        :param response_event_hooks: callable to run after requests. Use it carefully
-            if you need auto-token refresh. If it hides (or modifies in some way) 401
-            errors, then, most likely, token refresh doesn't work.
         """
         if token_proxy is None:
             if token is None:
@@ -46,16 +43,11 @@ class HuntflowAPI:
         self._token_proxy: AbstractTokenProxy = token_proxy
         self.base_url = base_url
 
-        self._request_event_hooks = request_event_hooks or []
-        self._response_event_hooks = response_event_hooks or []
-
         self._autorefresh_tokens = auto_refresh_tokens
 
     @property
     def http_client(self) -> httpx.AsyncClient:
         http_client = httpx.AsyncClient(base_url=self.base_url)
-        http_client.event_hooks["request"] = self._request_event_hooks
-        http_client.event_hooks["response"] = self._response_event_hooks
         return http_client
 
     async def request(
@@ -158,7 +150,7 @@ class HuntflowAPI:
             refresh_data = await self._token_proxy.get_refresh_data()
             async with self.http_client as client:
                 response = await client.post(
-                    "/token/refresh", json=refresh_data,
+                    VERSION_PREFIX + "/token/refresh", json=refresh_data,
                 )
                 response.raise_for_status()
             await self._token_proxy.update(response.json())

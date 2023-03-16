@@ -3,7 +3,7 @@ import time
 from typing import Dict, Optional
 
 from .locker import AbstractLocker
-from .token import HuntflowApiToken
+from .token import ApiToken
 from .storage import AbstractHuntflowTokenStorage
 
 
@@ -43,14 +43,14 @@ class AbstractTokenProxy(ABC):
 
 def convert_refresh_result_to_hf_token(
     refresh_result: Dict,
-    token: HuntflowApiToken,
-) -> HuntflowApiToken:
+    token: ApiToken,
+) -> ApiToken:
     now = time.time()
     access_token = refresh_result["access_token"]
     refresh_token = refresh_result["refresh_token"] or token.refresh_token
     expiration_timestamp = now + refresh_result["expires_in"]
     last_refresh_timestamp = now
-    return HuntflowApiToken(
+    return ApiToken(
         access_token=access_token,
         refresh_token=refresh_token,
         expiration_timestamp=expiration_timestamp,
@@ -58,11 +58,11 @@ def convert_refresh_result_to_hf_token(
     )
 
 
-def get_auth_headers(token: HuntflowApiToken) -> Dict[str, str]:
+def get_auth_headers(token: ApiToken) -> Dict[str, str]:
     return {"Authorization": f"Bearer {token.access_token}"}
 
 
-def get_refresh_token_data(token: HuntflowApiToken) -> Dict[str, str]:
+def get_refresh_token_data(token: ApiToken) -> Dict[str, str]:
     assert token.refresh_token is not None
     return {"refresh_token": token.refresh_token}
 
@@ -74,7 +74,7 @@ class DummyHuntflowTokenProxy(AbstractTokenProxy):
     Use it if you don't need to save refreshed tokens
     or don't need to refresh tokens at all.
     """
-    def __init__(self, token: HuntflowApiToken):
+    def __init__(self, token: ApiToken):
         self._token = token
     
     async def get_auth_header(self) -> Dict[str, str]:
@@ -96,7 +96,7 @@ class HuntflowTokenProxy(AbstractTokenProxy):
     Also look at 'examples' directory for usage examples.
     """
     def __init__(self, storage: AbstractHuntflowTokenStorage, locker: Optional[AbstractLocker] = None):
-        self._token: Optional[HuntflowApiToken] = None
+        self._token: Optional[ApiToken] = None
         self._locker = locker
         self._storage = storage
         self._last_read_timestamp: Optional[float] = None
