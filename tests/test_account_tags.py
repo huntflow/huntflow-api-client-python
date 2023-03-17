@@ -1,16 +1,10 @@
-import pytest
-
 from pytest_httpx import HTTPXMock
 
 from tests.conftest import API_URL
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.tags import AccountTag
-
 from huntflow_api_client.models.response.tags import AccountTagResponse
 from huntflow_api_client.models.request.tags import CreateAccountTagRequest
-
-
-pytestmark = pytest.mark.asyncio
 
 
 ACCOUNT_ID = 1
@@ -29,7 +23,7 @@ CREATE_ACCOUNT_TAG_REQUEST = {
 
 async def test_get_account_tag(httpx_mock: HTTPXMock, api_client: HuntflowAPI):
     httpx_mock.add_response(
-        url=f"{API_URL}/v2/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
+        url=f"{API_URL}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
         json=ACCOUNT_TAG_RESPONSE
     )
     tags = AccountTag(api_client)
@@ -40,7 +34,7 @@ async def test_get_account_tag(httpx_mock: HTTPXMock, api_client: HuntflowAPI):
 
 async def test_create_account_tag(httpx_mock: HTTPXMock, api_client: HuntflowAPI):
     httpx_mock.add_response(
-        url=f"{API_URL}/v2/accounts/{ACCOUNT_ID}/tags",
+        url=f"{API_URL}/accounts/{ACCOUNT_ID}/tags",
         json=ACCOUNT_TAG_RESPONSE
     )
 
@@ -53,7 +47,7 @@ async def test_create_account_tag(httpx_mock: HTTPXMock, api_client: HuntflowAPI
 
 async def test_update_account_tag(httpx_mock: HTTPXMock, api_client: HuntflowAPI):
     httpx_mock.add_response(
-        url=f"{API_URL}/v2/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
+        url=f"{API_URL}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
         json=ACCOUNT_TAG_RESPONSE
     )
 
@@ -66,7 +60,7 @@ async def test_update_account_tag(httpx_mock: HTTPXMock, api_client: HuntflowAPI
 
 async def test_delete_applicant(httpx_mock: HTTPXMock, api_client: HuntflowAPI):
     httpx_mock.add_response(
-        url=f"{API_URL}/v2/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
+        url=f"{API_URL}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
         status_code=204
     )
     tags = AccountTag(api_client)

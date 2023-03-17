@@ -2,7 +2,7 @@
 name = "huntflow-api-client-python"
 version = "0.1.0"
 description = "Public client for Huntflow API written in Python 3.7."
-authors = ["Kirill Kuzin <offkirillkuzin@gmail.com>"]
+authors = ["Huntflow developers <developer@huntflow.ru>"]
 readme = "README.md"
 packages = [{include = "huntflow_api_client"}]
 
