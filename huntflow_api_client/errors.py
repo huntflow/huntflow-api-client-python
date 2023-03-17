@@ -4,3 +4,6 @@ class ApiError(Exception):
 
 class TokenExpiredError(ApiError):
     pass
+
+class InvalidAccessTokenError(ApiError):
+    pass
