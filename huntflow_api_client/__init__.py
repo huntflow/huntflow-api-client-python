@@ -1,1 +1,1 @@
-from huntflow_api_client.api import HuntflowAPI, VERSION_PREFIX
+from huntflow_api_client.api import HuntflowAPI

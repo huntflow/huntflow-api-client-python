@@ -11,20 +11,18 @@ from huntflow_api_client.tokens.token import ApiToken
 logger = logging.getLogger(__name__)
 
 
-VERSION_PREFIX = "/v2"
-
-
 class HuntflowAPI:
     def __init__(
         self,
-        base_url: str = "https://api.huntflow.dev",
+        base_url: str = "https://api.huntflow.dev/v2",
         # Specify one of this: token or token_proxy
         token: Optional[ApiToken] = None,
         token_proxy: Optional[AbstractTokenProxy] = None,
         auto_refresh_tokens: bool = False,
     ):
         """API client.
-        :param base_url: Base url for API, like 'https://<api domain>'
+        :param base_url: Base url for API (including schema and version prefix),
+            like 'https://<api domain>/v2'
         :param token: Optional token structure with access token.
             Use it if you don't care about token refreshing
         :param token_proxy: Alternative way (see `token` param) to provide token.
@@ -150,7 +148,7 @@ class HuntflowAPI:
             refresh_data = await self._token_proxy.get_refresh_data()
             async with self.http_client as client:
                 response = await client.post(
-                    VERSION_PREFIX + "/token/refresh", json=refresh_data,
+                    "/token/refresh", json=refresh_data,
                 )
                 response.raise_for_status()
             await self._token_proxy.update(response.json())
