@@ -5,7 +5,7 @@ from huntflow_api_client import HuntflowAPI
 
 class BaseEntity:
     def __init__(self, api: HuntflowAPI):
-        self._api = api
+        self._api: HuntflowAPI = api
 
 
 class GetEntityMixin(abc.ABC):
