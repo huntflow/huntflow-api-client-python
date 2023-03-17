@@ -5,14 +5,14 @@ from huntflow_api_client.models.response.tags import AccountTagResponse
 
 class AccountTag(BaseEntity, CRUDEntityMixin):
     async def get(self, account_id: int, account_tag_id: int) -> AccountTagResponse:
-        response = await self._api.request("GET", f"/v2/accounts/{account_id}/tags/{account_tag_id}")
+        response = await self._api.request("GET", f"/accounts/{account_id}/tags/{account_tag_id}")
         return AccountTagResponse(**response.json())
 
     async def create(
         self, account_id: int, account_tag: CreateAccountTagRequest,
     ) -> AccountTagResponse:
         response = await self._api.request(
-            "POST", f"/v2/accounts/{account_id}/tags", json=account_tag.jsonable_dict()
+            "POST", f"/accounts/{account_id}/tags", json=account_tag.jsonable_dict()
         )
         return AccountTagResponse(**response.json())
 
@@ -23,9 +23,9 @@ class AccountTag(BaseEntity, CRUDEntityMixin):
         data: CreateAccountTagRequest
     ) -> AccountTagResponse:
         response = await self._api.request(
-            "PUT", f"/v2/accounts/{account_id}/tags/{account_tag_id}", json=data.jsonable_dict(),
+            "PUT", f"/accounts/{account_id}/tags/{account_tag_id}", json=data.jsonable_dict(),
         )
         return AccountTagResponse(**response.json())
 
     async def delete(self, account_id: int, account_tag_id: int) -> None:
-        await self._api.request("DELETE", f"/v2/accounts/{account_id}/tags/{account_tag_id}")
+        await self._api.request("DELETE", f"/accounts/{account_id}/tags/{account_tag_id}")

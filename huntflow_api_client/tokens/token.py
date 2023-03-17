@@ -5,7 +5,7 @@ from typing import Any, Dict, Optional
 @dataclass
 class ApiToken:
     access_token: str
-    refresh_token: Optional[str]
+    refresh_token: Optional[str] = None
     expiration_timestamp: Optional[float] = None
     last_refresh_timestamp: Optional[float] = 0.0
 
