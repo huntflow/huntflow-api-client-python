@@ -16,7 +16,7 @@ class GetEntityMixin(abc.ABC):
 
 class ListEntityMixin(abc.ABC):
     @abc.abstractmethod
-    async def list(self, *args, **kwargs):
+    async def list(self, *args, **kwargs):  # noqa: A003
         pass
 
 

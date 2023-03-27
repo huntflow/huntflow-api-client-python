@@ -1,0 +1,4 @@
+[flake8]
+exclude = build,dist,.git,.tox,.env,.venv,.github,env,venv,__pycache__
+max-line-length = 100
+inline-quotes = double

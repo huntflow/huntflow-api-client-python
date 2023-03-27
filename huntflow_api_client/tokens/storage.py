@@ -1,5 +1,4 @@
 import json
-import time
 from abc import ABC, abstractmethod
 
 from .token import ApiToken
@@ -11,7 +10,7 @@ class AbstractHuntflowTokenStorage(ABC):
         pass
 
     @abstractmethod
-    async def update(self, token: ApiToken):
+    async def update(self, token: ApiToken) -> None:
         pass
 
 
@@ -24,6 +23,6 @@ class HuntflowTokenFileStorage(AbstractHuntflowTokenStorage):
             data = json.load(fin)
         return ApiToken.from_dict(data)
 
-    async def update(self, token: ApiToken):
+    async def update(self, token: ApiToken) -> None:
         with open(self._filename, "w") as fout:
             json.dump(token.dict(), fout, indent=4)
