@@ -5,24 +5,22 @@ on:
   - pull_request
 
 jobs:
-  build:
+  black:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [ 3.8 ]
     steps:
       - uses: actions/checkout@v2
-      - name: Set up python
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Run black
       - uses: psf/black@stable
         with:
           options: "--check --verbose"
           version: "==23.1.0"
 
-      - name: Run isort
+  isort:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - uses: isort/isort-action@master
         with:
           options: "--check"
