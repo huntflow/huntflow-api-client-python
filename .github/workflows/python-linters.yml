@@ -1,27 +1,51 @@
-name: Linters
+name: Python linters
 
 on:
   - push
   - pull_request
 
 jobs:
-  black:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: psf/black@stable
-        with:
-          options: "--check --verbose"
-          version: "==23.1.0"
+  test:
 
-  isort:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - uses: isort/isort-action@master
-        with:
-          options: "--check"
-          version: "==5.12.0"
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache Poetry install
+      uses: actions/cache@v2
+      with:
+        path: ~/.local
+        key: poetry-1.2.2-0
+
+    - uses: snok/install-poetry@v1
+      with:
+        version: 1.2.2
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Cache deps
+      id: cache-deps
+      uses: actions/cache@v2
+      with:
+        path: .venv
+        key: pydeps-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - run: poetry install --no-interaction --no-root
+      if: steps.cache-deps.outputs.cache-hit != 'true'
+
+    - run: poetry install --no-interaction
+
+    - name: Run black
+    - run: black . --check
+
+    - name: Run flake
+    - run: flake8
