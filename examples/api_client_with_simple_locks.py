@@ -1,6 +1,6 @@
 import asyncio
 from argparse import ArgumentParser
-from typing import List
+from typing import Any, List
 
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.tokens.locker import AsyncioLockLocker
@@ -8,12 +8,12 @@ from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
 
 
-async def get_and_print_org_info(api_client: HuntflowAPI):
+async def get_and_print_org_info(api_client: HuntflowAPI) -> None:
     response = await api_client.request("GET", "/accounts")
     print(response.json())
 
 
-async def main(concurrent_client_count: int, token_filename: str, base_url: str):
+async def main(concurrent_client_count: int, token_filename: str, base_url: str) -> None:
     token_storage = HuntflowTokenFileStorage(token_filename)
     locker = AsyncioLockLocker()
     api_clients: List[HuntflowAPI] = []
@@ -29,7 +29,7 @@ async def main(concurrent_client_count: int, token_filename: str, base_url: str)
     await asyncio.gather(*calls)
 
 
-def parse_args():
+def parse_args() -> Any:
     parser = ArgumentParser()
     parser.add_argument(
         "--count",

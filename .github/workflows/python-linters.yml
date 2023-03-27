@@ -55,4 +55,4 @@ jobs:
         run: poetry run mypy .
 
       - name: Run isort
-        run: poetry run isort . --check --verbose
+        run: poetry run isort . --check

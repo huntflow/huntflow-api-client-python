@@ -47,7 +47,7 @@ class HuntflowAPI:
         http_client = httpx.AsyncClient(base_url=self.base_url)
         return http_client
 
-    async def request(
+    async def request(  # type: ignore[no-untyped-def]
         self,
         method: str,
         path: str,
@@ -81,7 +81,7 @@ class HuntflowAPI:
             timeout=timeout,
         )
 
-    async def _request(
+    async def _request(  # type: ignore[no-untyped-def]
         self,
         method: str,
         path: str,
@@ -155,7 +155,7 @@ class HuntflowAPI:
         finally:
             await self._token_proxy.release_lock()
 
-    async def _autorefresh_token_request(self, *args, **kwargs):
+    async def _autorefresh_token_request(self, *args: str, **kwargs: str) -> httpx.Response:
         try:
             response = await self._request(*args, **kwargs)
             return response
