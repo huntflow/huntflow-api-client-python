@@ -1,8 +1,10 @@
 name: Python linters
 
 on:
-  - push
-  - pull_request
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
@@ -48,3 +50,6 @@ jobs:
 
       - name: Run flake
         run: poetry run flake8
+
+      - name: Run mypy
+        run: poetry run mypy .
