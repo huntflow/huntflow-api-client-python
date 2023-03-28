@@ -1,12 +1,11 @@
 import logging
-from typing import Callable, List, Optional
+from typing import Optional
 
 import httpx
 
-from huntflow_api_client.errors import TokenExpiredError, InvalidAccessTokenError
+from huntflow_api_client.errors import InvalidAccessTokenError, TokenExpiredError
 from huntflow_api_client.tokens.proxy import AbstractTokenProxy, DummyHuntflowTokenProxy
 from huntflow_api_client.tokens.token import ApiToken
-
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +47,7 @@ class HuntflowAPI:
         http_client = httpx.AsyncClient(base_url=self.base_url)
         return http_client
 
-    async def request(
+    async def request(  # type: ignore[no-untyped-def]
         self,
         method: str,
         path: str,
@@ -82,7 +81,7 @@ class HuntflowAPI:
             timeout=timeout,
         )
 
-    async def _request(
+    async def _request(  # type: ignore[no-untyped-def]
         self,
         method: str,
         path: str,
@@ -148,14 +147,15 @@ class HuntflowAPI:
             refresh_data = await self._token_proxy.get_refresh_data()
             async with self.http_client as client:
                 response = await client.post(
-                    "/token/refresh", json=refresh_data,
+                    "/token/refresh",
+                    json=refresh_data,
                 )
                 response.raise_for_status()
             await self._token_proxy.update(response.json())
         finally:
             await self._token_proxy.release_lock()
 
-    async def _autorefresh_token_request(self, *args, **kwargs):
+    async def _autorefresh_token_request(self, *args: str, **kwargs: str) -> httpx.Response:
         try:
             response = await self._request(*args, **kwargs)
             return response

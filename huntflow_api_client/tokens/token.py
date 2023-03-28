@@ -10,9 +10,9 @@ class ApiToken:
     last_refresh_timestamp: Optional[float] = 0.0
 
     @classmethod
-    def from_dict(cls, dict_: dict):
+    def from_dict(cls, dict_: Dict[str, Any]) -> "ApiToken":
         attrs = {field.name for field in fields(cls)}
         return cls(**{k: v for k, v in dict_.items() if k in attrs})
 
-    def dict(self) -> Dict[str, Any]:
+    def dict(self) -> Dict[str, Any]:  # noqa: A003
         return asdict(self)

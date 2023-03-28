@@ -10,31 +10,31 @@ class BaseEntity:
 
 class GetEntityMixin(abc.ABC):
     @abc.abstractmethod
-    async def get(self, *args, **kwargs):
+    async def get(self, *args, **kwargs):  # type: ignore
         pass
 
 
 class ListEntityMixin(abc.ABC):
     @abc.abstractmethod
-    async def list(self, *args, **kwargs):
+    async def list(self, *args, **kwargs):  # type: ignore  # noqa: A003
         pass
 
 
 class CreateEntityMixin(abc.ABC):
     @abc.abstractmethod
-    async def create(self, *args, **kwargs):
+    async def create(self, *args, **kwargs):  # type: ignore
         pass
 
 
 class UpdateEntityMixin(abc.ABC):
     @abc.abstractmethod
-    async def update(self, *args, **kwargs):
+    async def update(self, *args, **kwargs):  # type: ignore
         pass
 
 
 class DeleteEntityMixin(abc.ABC):
     @abc.abstractmethod
-    async def delete(self, *args, **kwargs):
+    async def delete(self, *args, **kwargs):  # type: ignore
         pass
 
 
