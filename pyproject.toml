@@ -41,6 +41,7 @@ default_section = "THIRDPARTY"
 
 [tool.mypy]
 plugins = ["pydantic.mypy"]
+exclude = ["examples"]
 follow_imports = "silent"
 warn_redundant_casts = true
 warn_unused_ignores = true
