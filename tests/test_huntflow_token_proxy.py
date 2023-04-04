@@ -20,8 +20,8 @@ async def test_update_token__ok(huntflow_token_proxy, token_data, refresh_token_
 
     await huntflow_token_proxy.get_auth_header()
 
-    next_day = datetime.now() + timedelta(days=10)
-    freezer.move_to(next_day.isoformat())
+    tomorrow = datetime.now() + timedelta(days=1)
+    freezer.move_to(tomorrow.isoformat())
     now = time.time()
 
     await huntflow_token_proxy.update(refresh_token_data)
