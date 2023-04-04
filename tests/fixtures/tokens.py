@@ -35,12 +35,12 @@ def token_data(access_token_expires_in):
 @pytest.fixture()
 def refresh_token_data(access_token_expires_in, refresh_token_expires_in):
     return {
-                "access_token": uuid.uuid4().hex,
-                "token_type": "token_type",
-                "expires_in": access_token_expires_in,
-                "refresh_token_expires_in": refresh_token_expires_in,
-                "refresh_token": uuid.uuid4().hex,
-            }
+        "access_token": uuid.uuid4().hex,
+        "token_type": "token_type",
+        "expires_in": access_token_expires_in,
+        "refresh_token_expires_in": refresh_token_expires_in,
+        "refresh_token": uuid.uuid4().hex,
+    }
 
 
 @pytest.fixture()

@@ -16,4 +16,5 @@ def huntflow_api_factory(huntflow_api_url, huntflow_token_proxy):
             token_proxy=huntflow_token_proxy,
             auto_refresh_tokens=auto_refresh_tokens,
         )
+
     return create

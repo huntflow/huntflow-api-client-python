@@ -8,8 +8,8 @@ from huntflow_api_client.errors import InvalidAccessTokenError, TokenExpiredErro
 
 @respx.mock
 async def test_valid_access_token__ok(
-        fake_huntflow,
-        huntflow_api_factory,
+    fake_huntflow,
+    huntflow_api_factory,
 ):
     huntflow_api = huntflow_api_factory()
 
@@ -31,10 +31,10 @@ async def test_valid_access_token__ok(
 )
 @respx.mock
 async def test_authorization_error__error(
-        fake_huntflow,
-        huntflow_api_factory,
-        unauthorized_token_type,
-        authorization_error,
+    fake_huntflow,
+    huntflow_api_factory,
+    unauthorized_token_type,
+    authorization_error,
 ):
     huntflow_api = huntflow_api_factory()
 
@@ -57,9 +57,9 @@ async def test_authorization_error__error(
 )
 @respx.mock
 async def test_auto_refresh_tokens__ok(
-        fake_huntflow,
-        huntflow_api_factory,
-        unauthorized_token_type,
+    fake_huntflow,
+    huntflow_api_factory,
+    unauthorized_token_type,
 ):
     huntflow_api = huntflow_api_factory(auto_refresh_tokens=True)
 
@@ -82,9 +82,9 @@ async def test_auto_refresh_tokens__ok(
 )
 @respx.mock
 async def test_auto_refresh_tokens_simultaneous_requests__ok(
-        fake_huntflow,
-        huntflow_api_factory,
-        unauthorized_token_type,
+    fake_huntflow,
+    huntflow_api_factory,
+    unauthorized_token_type,
 ):
     async def make_request():
         await huntflow_api.request("GET", "/ping")
