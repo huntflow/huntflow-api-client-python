@@ -24,8 +24,12 @@ class Huntflow:
         self.token_refresh_matcher = re.compile(f"{self.base_url}/token/refresh")
         self.ping_matcher = re.compile(f"{self.base_url}/ping")
 
-        self.token_refresh_route = respx.post(self.token_refresh_matcher).mock(side_effect=self.token_refresh)
-        self.ping_route = respx.get(self.ping_matcher).mock(side_effect=self.ping)
+        self.token_refresh_route = (
+            respx.post(self.token_refresh_matcher).mock(side_effect=self.token_refresh)
+        )
+        self.ping_route = (
+            respx.get(self.ping_matcher).mock(side_effect=self.ping)
+        )
 
         self.tokens: Dict[TokenTypes, list] = defaultdict(list)
 
@@ -44,8 +48,8 @@ class Huntflow:
                         "title": "Authorization Error",
                         "detail": "token_expired",
                     },
-                ]
-            }
+                ],
+            },
         )
 
     @classmethod
@@ -59,8 +63,8 @@ class Huntflow:
                         "title": "Authorization Error",
                         "detail": "Invalid access token",
                     },
-                ]
-            }
+                ],
+            },
         )
 
     def token_refresh(self, _: httpx.Request) -> httpx.Response:
@@ -74,7 +78,7 @@ class Huntflow:
                 "expires_in": ACCESS_TOKEN_EXPIRES_IN,
                 "refresh_token_expires_in": REFRESH_TOKEN_EXPIRES_IN,
                 "refresh_token": uuid.uuid4().hex,
-            }
+            },
         )
 
     def ping(self, request: httpx.Request) -> httpx.Response:

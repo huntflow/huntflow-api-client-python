@@ -53,7 +53,7 @@ async def test_authorization_error__error(
 
 @pytest.mark.parametrize(
     "unauthorized_token_type",
-    (TokenTypes.INVALID_TOKEN, TokenTypes.EXPIRED_TOKEN)
+    (TokenTypes.INVALID_TOKEN, TokenTypes.EXPIRED_TOKEN),
 )
 @respx.mock
 async def test_auto_refresh_tokens__ok(
@@ -78,7 +78,7 @@ async def test_auto_refresh_tokens__ok(
 
 @pytest.mark.parametrize(
     "unauthorized_token_type",
-    (TokenTypes.INVALID_TOKEN, TokenTypes.EXPIRED_TOKEN)
+    (TokenTypes.INVALID_TOKEN, TokenTypes.EXPIRED_TOKEN),
 )
 @respx.mock
 async def test_auto_refresh_tokens_simultaneous_requests__ok(
