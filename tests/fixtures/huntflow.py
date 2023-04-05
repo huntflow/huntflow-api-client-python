@@ -72,7 +72,7 @@ class Huntflow:
             status_code=200,
             json={
                 "access_token": access_token,
-                "token_type": "token_type",
+                "token_type": "test_token_type",
                 "expires_in": ACCESS_TOKEN_EXPIRES_IN,
                 "refresh_token_expires_in": REFRESH_TOKEN_EXPIRES_IN,
                 "refresh_token": uuid.uuid4().hex,
