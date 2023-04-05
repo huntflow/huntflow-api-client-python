@@ -8,7 +8,7 @@ import enum
 from typing import Dict
 from collections import defaultdict
 
-from ..conftest import ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN
+from .tokens import ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN
 
 
 class TokenTypes(enum.Enum):
@@ -91,10 +91,10 @@ class Huntflow:
         else:
             raise NotImplementedError
 
-    def add_token(self, token: str, token_type: TokenTypes = TokenTypes.VALID_TOKEN):
+    def add_token(self, token: str, token_type: TokenTypes = TokenTypes.VALID_TOKEN) -> None:
         self.tokens[token_type].append(token)
 
 
 @pytest.fixture()
-def fake_huntflow(huntflow_api_url) -> Huntflow:
+def fake_huntflow(huntflow_api_url: str) -> Huntflow:
     return Huntflow(base_url=huntflow_api_url)
