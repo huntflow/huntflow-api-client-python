@@ -22,12 +22,12 @@ class Huntflow:
         self.base_url = base_url
 
         self.token_refresh_matcher = re.compile(f"{self.base_url}/token/refresh")
-        self.ping_matcher = re.compile(f"{self.base_url}/ping")
+        self.me_matcher = re.compile(f"{self.base_url}/me")
 
         self.token_refresh_route = respx.post(self.token_refresh_matcher).mock(
             side_effect=self.token_refresh,
         )
-        self.ping_route = respx.get(self.ping_matcher).mock(side_effect=self.ping)
+        self.me_route = respx.get(self.me_matcher).mock(side_effect=self.me)
 
         self.tokens: Dict[TokenTypes, list] = defaultdict(list)
 
@@ -79,7 +79,7 @@ class Huntflow:
             },
         )
 
-    def ping(self, request: httpx.Request) -> httpx.Response:
+    def me(self, request: httpx.Request) -> httpx.Response:
         *_, access_token = request.headers["Authorization"].split()
 
         if access_token in self.tokens[TokenTypes.VALID_TOKEN]:

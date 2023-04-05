@@ -19,10 +19,10 @@ async def test_valid_access_token__ok(
     token = await huntflow_api._token_proxy._storage.get()  # type: ignore[attr-defined]
     fake_huntflow.add_token(token.access_token)
 
-    response = await huntflow_api.request("GET", "/ping")
+    response = await huntflow_api.request("GET", "/me")
 
     assert response.status_code == 200
-    assert fake_huntflow.ping_route.called
+    assert fake_huntflow.me_route.called
 
 
 @pytest.mark.parametrize(
@@ -45,10 +45,10 @@ async def test_authorization_error__error(
     fake_huntflow.add_token(token.access_token, unauthorized_token_type)
 
     with pytest.raises(authorization_error):
-        await huntflow_api.request("GET", "/ping")
+        await huntflow_api.request("GET", "/me")
 
-    assert fake_huntflow.ping_route.call_count == 1
-    assert fake_huntflow.ping_route.calls.last.response.status_code == 401
+    assert fake_huntflow.me_route.call_count == 1
+    assert fake_huntflow.me_route.calls.last.response.status_code == 401
 
     assert fake_huntflow.token_refresh_route.call_count == 0
 
@@ -68,11 +68,11 @@ async def test_auto_refresh_tokens__ok(
     token = await huntflow_api._token_proxy._storage.get()  # type: ignore[attr-defined]
     fake_huntflow.add_token(token.access_token, unauthorized_token_type)
 
-    await huntflow_api.request("GET", "/ping")
+    await huntflow_api.request("GET", "/me")
 
-    assert fake_huntflow.ping_route.call_count == 2
-    assert fake_huntflow.ping_route.calls[0].response.status_code == 401
-    assert fake_huntflow.ping_route.calls[1].response.status_code == 200
+    assert fake_huntflow.me_route.call_count == 2
+    assert fake_huntflow.me_route.calls[0].response.status_code == 401
+    assert fake_huntflow.me_route.calls[1].response.status_code == 200
 
     assert fake_huntflow.token_refresh_route.call_count == 1
 
@@ -92,11 +92,11 @@ async def test_auto_refresh_tokens_simultaneous_requests__ok(
     token = await huntflow_api._token_proxy._storage.get()  # type: ignore[attr-defined]
     fake_huntflow.add_token(token.access_token, unauthorized_token_type)
 
-    calls = [huntflow_api.request("GET", "/ping") for _ in range(4)]
+    calls = [huntflow_api.request("GET", "/me") for _ in range(4)]
 
     responses = await asyncio.gather(*calls)
 
-    assert fake_huntflow.ping_route.call_count > 1
+    assert fake_huntflow.me_route.call_count > 1
 
     assert all(response.status_code == 200 for response in responses)
     assert fake_huntflow.token_refresh_route.call_count == 1
