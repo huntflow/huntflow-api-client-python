@@ -812,21 +812,6 @@ files = [
 ]
 
 [[package]]
-name = "respx"
-version = "0.20.1"
-description = "A utility for mocking out the Python HTTPX and HTTP Core libraries."
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "respx-0.20.1-py2.py3-none-any.whl", hash = "sha256:372f06991c03d1f7f480a420a2199d01f1815b6ed5a802f4e4628043a93bd03e"},
-    {file = "respx-0.20.1.tar.gz", hash = "sha256:cc47a86d7010806ab65abdcf3b634c56337a737bb5c4d74c19a0dfca83b3bc73"},
-]
-
-[package.dependencies]
-httpx = ">=0.21.0"
-
-[[package]]
 name = "rfc3986"
 version = "1.5.0"
 description = "Validating URI References per RFC 3986"
@@ -921,4 +906,4 @@ test = ["covdefaults (>=2.2.2)", "coverage (>=7.1)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "fd8089c7e37ac3716b6cb5e732089ffab8246528b11a00874ee05b6681333d1f"
+content-hash = "ad722ec22c400735d1d663eeccf76512f536a2f031bdee284593900a3c128eb0"
