@@ -1,12 +1,12 @@
-import httpx
-import respx
-import pytest
+import enum
 import re
 import uuid
-import enum
-
-from typing import Dict
 from collections import defaultdict
+from typing import Dict
+
+import httpx
+import pytest
+import respx
 
 from .tokens import ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN
 

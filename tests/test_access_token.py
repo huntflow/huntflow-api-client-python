@@ -1,14 +1,12 @@
-import respx
-import pytest
 import asyncio
+from typing import Callable, Type, Union
 
-from typing import Callable, Union, Type
+import pytest
+import respx
 
-from tests.fixtures.huntflow import TokenTypes
-from tests.fixtures.huntflow import Huntflow
-
-from huntflow_api_client.errors import InvalidAccessTokenError, TokenExpiredError
 from huntflow_api_client import HuntflowAPI
+from huntflow_api_client.errors import InvalidAccessTokenError, TokenExpiredError
+from tests.fixtures.huntflow import Huntflow, TokenTypes
 
 
 @respx.mock

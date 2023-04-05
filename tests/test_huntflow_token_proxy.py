@@ -1,6 +1,6 @@
 import time
 from datetime import datetime, timedelta
-from typing import Dict, Any
+from typing import Any, Dict
 
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 

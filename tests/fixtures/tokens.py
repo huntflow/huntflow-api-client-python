@@ -1,12 +1,12 @@
 import json
-import uuid
 import pathlib
 import time
+import uuid
+from typing import Any, Dict, Generator
+
 import pytest
 
-from typing import Dict, Any, Generator
 from huntflow_api_client.tokens import ApiToken
-
 
 TOKEN_FILE_PATH = pathlib.Path(__file__).parent.resolve()
 ACCESS_TOKEN_EXPIRES_IN = 86400 * 7

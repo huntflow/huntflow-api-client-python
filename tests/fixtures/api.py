@@ -1,5 +1,6 @@
-import pytest
 from typing import Callable
+
+import pytest
 
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.tokens import ApiToken
