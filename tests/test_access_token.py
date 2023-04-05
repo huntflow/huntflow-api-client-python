@@ -84,7 +84,7 @@ async def test_auto_refresh_tokens_simultaneous_requests__ok(
     huntflow_api_factory,
     unauthorized_token_type,
 ):
-    async def make_request():
+    async def make_request() -> None:
         await huntflow_api.request("GET", "/ping")
 
     huntflow_api = huntflow_api_factory(auto_refresh_tokens=True)
