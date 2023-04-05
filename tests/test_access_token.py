@@ -87,19 +87,16 @@ async def test_auto_refresh_tokens_simultaneous_requests__ok(
     huntflow_api_factory: Callable[[bool], HuntflowAPI],
     unauthorized_token_type: TokenTypes,
 ) -> None:
-    async def make_request() -> None:
-        await huntflow_api.request("GET", "/ping")
-
     huntflow_api = huntflow_api_factory(True)
 
     token = await huntflow_api._token_proxy._storage.get()  # type: ignore[attr-defined]
     fake_huntflow.add_token(token.access_token, unauthorized_token_type)
 
-    calls = [make_request() for _ in range(2)]
+    calls = [huntflow_api.request("GET", "/ping") for _ in range(4)]
 
-    await asyncio.gather(*calls)
+    responses = await asyncio.gather(*calls)
 
     assert fake_huntflow.ping_route.call_count > 1
-    assert fake_huntflow.ping_route.calls.last.response.status_code == 200
 
+    assert all(response.status_code == 200 for response in responses)
     assert fake_huntflow.token_refresh_route.call_count == 1
