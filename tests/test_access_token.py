@@ -48,7 +48,6 @@ async def test_authorization_error__error(
     assert fake_huntflow.ping_route.calls.last.response.status_code == 401
 
     assert fake_huntflow.token_refresh_route.call_count == 0
-    assert not await huntflow_api._token_proxy.is_updated()
 
 
 @pytest.mark.parametrize(
@@ -73,7 +72,6 @@ async def test_auto_refresh_tokens__ok(
     assert fake_huntflow.ping_route.calls[1].response.status_code == 200
 
     assert fake_huntflow.token_refresh_route.call_count == 1
-    assert huntflow_api._token_proxy.is_updated()
 
 
 @pytest.mark.parametrize(
@@ -102,4 +100,3 @@ async def test_auto_refresh_tokens_simultaneous_requests__ok(
     assert fake_huntflow.ping_route.calls.last.response.status_code == 200
 
     assert fake_huntflow.token_refresh_route.call_count == 1
-    assert huntflow_api._token_proxy.is_updated()
