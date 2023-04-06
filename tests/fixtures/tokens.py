@@ -54,17 +54,17 @@ def refresh_token_data(
 
 
 @pytest.fixture()
-def storage_filename() -> str:
+def token_storage_filename() -> str:
     return f"{TOKEN_FILE_PATH}/test_token.json"
 
 
 @pytest.fixture()
 def token_file_storage(
-    storage_filename: str,
+    token_storage_filename: str,
     token_data: Dict[str, Any],
 ) -> Generator[str, None, None]:
     data = token_data
-    with open(storage_filename, "w") as f:
+    with open(token_storage_filename, "w") as f:
         json.dump(data, f)
 
     yield f.name

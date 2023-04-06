@@ -1,5 +1,5 @@
 import asyncio
-from typing import Callable, Type, Union
+from typing import Any, Callable, Dict, Type, Union
 
 import pytest
 import respx
@@ -12,12 +12,12 @@ from tests.fixtures.huntflow import Huntflow, TokenTypes
 @respx.mock
 async def test_valid_access_token__ok(
     fake_huntflow: Huntflow,
-    huntflow_api_factory: Callable[[bool], HuntflowAPI],
+    huntflow_api_factory: Callable[..., HuntflowAPI],
+    token_data: Dict[str, Any],
 ) -> None:
-    huntflow_api = huntflow_api_factory(False)
+    huntflow_api = huntflow_api_factory(auto_refresh_tokens=False)
 
-    token = await huntflow_api._token_proxy._storage.get()  # type: ignore[attr-defined]
-    fake_huntflow.add_token(token.access_token)
+    fake_huntflow.add_token(token_data["access_token"])
 
     response = await huntflow_api.request("GET", "/me")
 
@@ -33,16 +33,16 @@ async def test_valid_access_token__ok(
     ],
 )
 @respx.mock
-async def test_authorization_error__error(
+async def test_access_token_invalid_or_expired__authorization_error(
     fake_huntflow: Huntflow,
-    huntflow_api_factory: Callable[[bool], HuntflowAPI],
+    huntflow_api_factory: Callable[..., HuntflowAPI],
+    token_data: Dict[str, Any],
     unauthorized_token_type: TokenTypes,
     authorization_error: Union[Type[InvalidAccessTokenError], Type[TokenExpiredError]],
 ) -> None:
-    huntflow_api = huntflow_api_factory(False)
+    huntflow_api = huntflow_api_factory(auto_refresh_tokens=False)
 
-    token = await huntflow_api._token_proxy._storage.get()  # type: ignore[attr-defined]
-    fake_huntflow.add_token(token.access_token, unauthorized_token_type)
+    fake_huntflow.add_token(token_data["access_token"], unauthorized_token_type)
 
     with pytest.raises(authorization_error):
         await huntflow_api.request("GET", "/me")
@@ -60,13 +60,13 @@ async def test_authorization_error__error(
 @respx.mock
 async def test_auto_refresh_tokens__ok(
     fake_huntflow: Huntflow,
-    huntflow_api_factory: Callable[[bool], HuntflowAPI],
+    huntflow_api_factory: Callable[..., HuntflowAPI],
     unauthorized_token_type: TokenTypes,
+    token_data: Dict[str, Any],
 ) -> None:
-    huntflow_api = huntflow_api_factory(True)
+    huntflow_api = huntflow_api_factory(auto_refresh_tokens=True)
 
-    token = await huntflow_api._token_proxy._storage.get()  # type: ignore[attr-defined]
-    fake_huntflow.add_token(token.access_token, unauthorized_token_type)
+    fake_huntflow.add_token(token_data["access_token"], unauthorized_token_type)
 
     await huntflow_api.request("GET", "/me")
 
@@ -84,13 +84,13 @@ async def test_auto_refresh_tokens__ok(
 @respx.mock
 async def test_auto_refresh_tokens_simultaneous_requests__ok(
     fake_huntflow: Huntflow,
-    huntflow_api_factory: Callable[[bool], HuntflowAPI],
+    huntflow_api_factory: Callable[..., HuntflowAPI],
     unauthorized_token_type: TokenTypes,
+    token_data: Dict[str, Any],
 ) -> None:
-    huntflow_api = huntflow_api_factory(True)
+    huntflow_api = huntflow_api_factory(auto_refresh_tokens=True)
 
-    token = await huntflow_api._token_proxy._storage.get()  # type: ignore[attr-defined]
-    fake_huntflow.add_token(token.access_token, unauthorized_token_type)
+    fake_huntflow.add_token(token_data["access_token"], unauthorized_token_type)
 
     calls = [huntflow_api.request("GET", "/me") for _ in range(4)]
 
