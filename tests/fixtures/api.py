@@ -1,33 +1,17 @@
-from typing import Callable
-
 import pytest
 
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.tokens import ApiToken
-from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
+
+API_TOKEN = ApiToken("mocked token")
 
 
 @pytest.fixture()
-def huntflow_api_url() -> str:
+def api_url() -> str:
     return "https://api.huntflow.dev/v2"
 
 
 @pytest.fixture
-def api_client(huntflow_api_url: str, api_token: ApiToken) -> HuntflowAPI:
-    api_client = HuntflowAPI(base_url=huntflow_api_url, token=api_token)
+def api_client(api_url: str) -> HuntflowAPI:
+    api_client = HuntflowAPI(base_url=api_url, token=API_TOKEN)
     return api_client
-
-
-@pytest.fixture()
-def huntflow_api_factory(
-    huntflow_api_url: str,
-    huntflow_token_proxy: HuntflowTokenProxy,
-) -> Callable[[bool], HuntflowAPI]:
-    def create(auto_refresh_tokens: bool = False) -> HuntflowAPI:
-        return HuntflowAPI(
-            base_url=huntflow_api_url,
-            token_proxy=huntflow_token_proxy,
-            auto_refresh_tokens=auto_refresh_tokens,
-        )
-
-    return create

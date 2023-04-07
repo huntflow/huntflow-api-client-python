@@ -1,5 +1,6 @@
 import asyncio
-from typing import Any, Callable, Dict, Type, Union
+from pathlib import Path
+from typing import Type, Union
 
 import pytest
 import respx
@@ -8,21 +9,24 @@ from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.errors import InvalidAccessTokenError, TokenExpiredError
 from tests.fixtures.huntflow import Huntflow, TokenTypes
 
+from .helpers import get_huntflow_token_proxy, get_token_data
+
 
 @respx.mock
 async def test_valid_access_token__ok(
-    fake_huntflow: Huntflow,
-    huntflow_api_factory: Callable[..., HuntflowAPI],
-    token_data: Dict[str, Any],
+    huntflow: Huntflow,
+    tmp_path: Path,
 ) -> None:
-    huntflow_api = huntflow_api_factory(auto_refresh_tokens=False)
+    proxy, storage = get_huntflow_token_proxy(tmp_path)
+    api = HuntflowAPI(token_proxy=proxy)
 
-    fake_huntflow.add_token(token_data["access_token"])
+    api_token = get_token_data(storage)
+    huntflow.add_token(api_token["access_token"], TokenTypes.VALID_TOKEN)
 
-    response = await huntflow_api.request("GET", "/me")
+    response = await api.request("GET", "/me")
 
     assert response.status_code == 200
-    assert fake_huntflow.me_route.called
+    assert huntflow.me_route.called
 
 
 @pytest.mark.parametrize(
@@ -34,23 +38,24 @@ async def test_valid_access_token__ok(
 )
 @respx.mock
 async def test_access_token_invalid_or_expired__authorization_error(
-    fake_huntflow: Huntflow,
-    huntflow_api_factory: Callable[..., HuntflowAPI],
-    token_data: Dict[str, Any],
+    huntflow: Huntflow,
+    tmp_path: Path,
     unauthorized_token_type: TokenTypes,
     authorization_error: Union[Type[InvalidAccessTokenError], Type[TokenExpiredError]],
 ) -> None:
-    huntflow_api = huntflow_api_factory(auto_refresh_tokens=False)
+    proxy, storage = get_huntflow_token_proxy(tmp_path)
+    api = HuntflowAPI(token_proxy=proxy)
 
-    fake_huntflow.add_token(token_data["access_token"], unauthorized_token_type)
+    api_token = get_token_data(storage)
+    huntflow.add_token(api_token["access_token"], unauthorized_token_type)
 
     with pytest.raises(authorization_error):
-        await huntflow_api.request("GET", "/me")
+        await api.request("GET", "/me")
 
-    assert fake_huntflow.me_route.call_count == 1
-    assert fake_huntflow.me_route.calls.last.response.status_code == 401
+    assert huntflow.me_route.call_count == 1
+    assert huntflow.me_route.calls.last.response.status_code == 401
 
-    assert fake_huntflow.token_refresh_route.call_count == 0
+    assert huntflow.token_refresh_route.call_count == 0
 
 
 @pytest.mark.parametrize(
@@ -59,22 +64,23 @@ async def test_access_token_invalid_or_expired__authorization_error(
 )
 @respx.mock
 async def test_auto_refresh_tokens__ok(
-    fake_huntflow: Huntflow,
-    huntflow_api_factory: Callable[..., HuntflowAPI],
+    huntflow: Huntflow,
+    tmp_path: Path,
     unauthorized_token_type: TokenTypes,
-    token_data: Dict[str, Any],
 ) -> None:
-    huntflow_api = huntflow_api_factory(auto_refresh_tokens=True)
+    proxy, storage = get_huntflow_token_proxy(tmp_path)
+    api = HuntflowAPI(token_proxy=proxy, auto_refresh_tokens=True)
 
-    fake_huntflow.add_token(token_data["access_token"], unauthorized_token_type)
+    api_token = get_token_data(storage)
+    huntflow.add_token(api_token["access_token"], unauthorized_token_type)
 
-    await huntflow_api.request("GET", "/me")
+    await api.request("GET", "/me")
 
-    assert fake_huntflow.me_route.call_count == 2
-    assert fake_huntflow.me_route.calls[0].response.status_code == 401
-    assert fake_huntflow.me_route.calls[1].response.status_code == 200
+    assert huntflow.me_route.call_count == 2
+    assert huntflow.me_route.calls[0].response.status_code == 401
+    assert huntflow.me_route.calls[1].response.status_code == 200
 
-    assert fake_huntflow.token_refresh_route.call_count == 1
+    assert huntflow.token_refresh_route.call_count == 1
 
 
 @pytest.mark.parametrize(
@@ -83,20 +89,21 @@ async def test_auto_refresh_tokens__ok(
 )
 @respx.mock
 async def test_auto_refresh_tokens_simultaneous_requests__ok(
-    fake_huntflow: Huntflow,
-    huntflow_api_factory: Callable[..., HuntflowAPI],
+    huntflow: Huntflow,
+    tmp_path: Path,
     unauthorized_token_type: TokenTypes,
-    token_data: Dict[str, Any],
 ) -> None:
-    huntflow_api = huntflow_api_factory(auto_refresh_tokens=True)
+    proxy, storage = get_huntflow_token_proxy(tmp_path)
+    api = HuntflowAPI(token_proxy=proxy, auto_refresh_tokens=True)
 
-    fake_huntflow.add_token(token_data["access_token"], unauthorized_token_type)
+    api_token = get_token_data(storage)
+    huntflow.add_token(api_token["access_token"], unauthorized_token_type)
 
-    calls = [huntflow_api.request("GET", "/me") for _ in range(4)]
+    requests = [api.request("GET", "/me") for _ in range(4)]
 
-    responses = await asyncio.gather(*calls)
+    responses = await asyncio.gather(*requests)
 
-    assert fake_huntflow.me_route.call_count > 1
+    assert huntflow.me_route.call_count > 1
 
     assert all(response.status_code == 200 for response in responses)
-    assert fake_huntflow.token_refresh_route.call_count == 1
+    assert huntflow.token_refresh_route.call_count == 1

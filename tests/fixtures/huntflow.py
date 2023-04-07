@@ -8,7 +8,7 @@ import httpx
 import pytest
 import respx
 
-from .tokens import ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN
+from ..helpers import ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN
 
 
 class TokenTypes(enum.Enum):
@@ -96,5 +96,5 @@ class Huntflow:
 
 
 @pytest.fixture()
-def fake_huntflow(huntflow_api_url: str) -> Huntflow:
-    return Huntflow(base_url=huntflow_api_url)
+def huntflow(api_url: str) -> Huntflow:
+    return Huntflow(base_url=api_url)
