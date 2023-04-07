@@ -16,7 +16,9 @@ ACCOUNT_TAG_RESPONSE: Dict[str, Any] = {"color": "00ad3b", "id": 34, "name": "Bl
 CREATE_ACCOUNT_TAG_REQUEST: Dict[str, str] = {"color": "000000", "name": "Whitelist"}
 
 
-async def test_get_account_tag(httpx_mock: HTTPXMock, huntflow_token_proxy: HuntflowTokenProxy) -> None:
+async def test_get_account_tag(
+    httpx_mock: HTTPXMock, huntflow_token_proxy: HuntflowTokenProxy
+) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
         json=ACCOUNT_TAG_RESPONSE,
@@ -28,7 +30,9 @@ async def test_get_account_tag(httpx_mock: HTTPXMock, huntflow_token_proxy: Hunt
     assert response == AccountTagResponse(**ACCOUNT_TAG_RESPONSE)
 
 
-async def test_create_account_tag(httpx_mock: HTTPXMock, huntflow_token_proxy: HuntflowTokenProxy) -> None:
+async def test_create_account_tag(
+    httpx_mock: HTTPXMock, huntflow_token_proxy: HuntflowTokenProxy
+) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags",
         json=ACCOUNT_TAG_RESPONSE,
@@ -42,7 +46,9 @@ async def test_create_account_tag(httpx_mock: HTTPXMock, huntflow_token_proxy: H
     assert response == AccountTagResponse(**ACCOUNT_TAG_RESPONSE)
 
 
-async def test_update_account_tag(httpx_mock: HTTPXMock, huntflow_token_proxy: HuntflowTokenProxy) -> None:
+async def test_update_account_tag(
+    httpx_mock: HTTPXMock, huntflow_token_proxy: HuntflowTokenProxy
+) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
         json=ACCOUNT_TAG_RESPONSE,
@@ -56,7 +62,9 @@ async def test_update_account_tag(httpx_mock: HTTPXMock, huntflow_token_proxy: H
     assert response == AccountTagResponse(**ACCOUNT_TAG_RESPONSE)
 
 
-async def test_delete_applicant(httpx_mock: HTTPXMock, huntflow_token_proxy: HuntflowTokenProxy) -> None:
+async def test_delete_applicant(
+    httpx_mock: HTTPXMock, huntflow_token_proxy: HuntflowTokenProxy
+) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
         status_code=204,

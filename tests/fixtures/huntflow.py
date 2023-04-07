@@ -69,7 +69,7 @@ class HuntflowServer:
         request_data = json.loads(request.content)
         refresh_token = request_data["refresh_token"]
         assert refresh_token == self.token_pair.refresh_token
-        
+
         self.token_pair = TokenPair()
         self.is_expired_token = False
         return httpx.Response(

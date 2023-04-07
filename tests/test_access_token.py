@@ -18,7 +18,9 @@ async def test_valid_access_token__ok(
     fake_huntflow: HuntflowServer,
     huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
-    huntflow_api = HuntflowAPI(fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=True)
+    huntflow_api = HuntflowAPI(
+        fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=True
+    )
 
     response = await huntflow_api.request("GET", "/me")
 
@@ -31,7 +33,9 @@ async def test_access_token_invalid__error(
     fake_huntflow: HuntflowServer,
     huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
-    huntflow_api = HuntflowAPI(fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=False)
+    huntflow_api = HuntflowAPI(
+        fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=False
+    )
     fake_huntflow.set_token_pair(TokenPair())
 
     with pytest.raises(InvalidAccessTokenError):
@@ -48,7 +52,9 @@ async def test_access_token_expired__error(
     fake_huntflow: HuntflowServer,
     huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
-    huntflow_api = HuntflowAPI(fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=False)
+    huntflow_api = HuntflowAPI(
+        fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=False
+    )
     fake_huntflow.expire_token()
 
     with pytest.raises(TokenExpiredError):
@@ -65,7 +71,9 @@ async def test_auto_refresh_tokens__ok(
     fake_huntflow: HuntflowServer,
     huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
-    huntflow_api = HuntflowAPI(fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=True)
+    huntflow_api = HuntflowAPI(
+        fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=True
+    )
     fake_huntflow.expire_token()
 
     await huntflow_api.request("GET", "/me")
@@ -83,10 +91,11 @@ async def test_auto_refresh_tokens_several_api_one_proxy__ok(
     fake_huntflow: HuntflowServer,
     huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
-
     api_count = 10
     apis = [
-        HuntflowAPI(fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=True)
+        HuntflowAPI(
+            fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=True
+        )
         for _ in range(api_count)
     ]
     fake_huntflow.expire_token()
