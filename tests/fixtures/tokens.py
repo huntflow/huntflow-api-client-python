@@ -1,72 +1,51 @@
 import json
-import pathlib
-import time
 import uuid
-from typing import Any, Dict, Generator
+from typing import Any, Dict, Optional
 
 import pytest
 
-from huntflow_api_client.tokens import ApiToken
+from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
 
-TOKEN_FILE_PATH = pathlib.Path(__file__).parent.resolve()
 ACCESS_TOKEN_EXPIRES_IN = 86400 * 7
 REFRESH_TOKEN_EXPIRES_IN = 86400 * 14
 
 
-@pytest.fixture()
-def api_token() -> ApiToken:
-    return ApiToken("mocked token")
+class TokenPair:
+    def __init__(self, access_token: Optional[str] = None, refresh_token: Optional[str] = None):
+        self.access_token = access_token or uuid.uuid4().hex
+        self.refresh_token = refresh_token or uuid.uuid4().hex
+
+
+@pytest.fixture
+def token_pair():
+    return TokenPair()
 
 
 @pytest.fixture()
-def access_token_expires_in() -> int:
-    return ACCESS_TOKEN_EXPIRES_IN
+def token_filename(tmp_path) -> str:
+    return tmp_path / (uuid.uuid4().hex + ".json")
 
 
-@pytest.fixture()
-def refresh_token_expires_in() -> int:
-    return REFRESH_TOKEN_EXPIRES_IN
-
-
-@pytest.fixture()
-def token_data(access_token_expires_in: int) -> Dict[str, Any]:
-    now = time.time()
-    return {
-        "access_token": uuid.uuid4().hex,
-        "refresh_token": uuid.uuid4().hex,
-        "expiration_timestamp": now + access_token_expires_in,
-        "last_refresh_timestamp": now,
+def new_token_storage(file_name: str, token_pair: TokenPair) -> HuntflowTokenFileStorage:
+    token_data = {
+        "access_token": token_pair.access_token,
+        "refresh_token": token_pair.refresh_token,
     }
+    with open(file_name, "w") as fout:
+        json.dump(token_data, fout)
+    storage = HuntflowTokenFileStorage(file_name)
+    return storage
 
 
-@pytest.fixture()
-def refresh_token_data(
-    access_token_expires_in: int,
-    refresh_token_expires_in: int,
-) -> Dict[str, Any]:
+@pytest.fixture
+def token_storage(token_filename: str, token_pair: TokenPair) -> HuntflowTokenFileStorage:
+    return new_token_storage(token_filename, token_pair)
+
+
+def get_token_refresh_data(token_pair: TokenPair) -> Dict[str, Any]:
     return {
-        "access_token": uuid.uuid4().hex,
-        "token_type": "token_type",
-        "expires_in": access_token_expires_in,
-        "refresh_token_expires_in": refresh_token_expires_in,
-        "refresh_token": uuid.uuid4().hex,
+        "access_token": token_pair.access_token,
+        "expires_in": ACCESS_TOKEN_EXPIRES_IN,
+        "refresh_token_expires_in": REFRESH_TOKEN_EXPIRES_IN,
+        "refresh_token": token_pair.refresh_token,
     }
-
-
-@pytest.fixture()
-def token_storage_filename() -> str:
-    return f"{TOKEN_FILE_PATH}/test_token.json"
-
-
-@pytest.fixture()
-def token_file_storage(
-    token_storage_filename: str,
-    token_data: Dict[str, Any],
-) -> Generator[str, None, None]:
-    data = token_data
-    with open(token_storage_filename, "w") as f:
-        json.dump(data, f)
-
-    yield f.name
-
-    pathlib.Path.unlink(pathlib.Path(f.name))

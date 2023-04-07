@@ -1,25 +1,25 @@
-import enum
 import re
-import uuid
-from collections import defaultdict
-from typing import Dict
+import json
+from typing import Dict, Optional
 
 import httpx
 import pytest
 import respx
 
-from .tokens import ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN
+from tests.fixtures.tokens import TokenPair, get_token_refresh_data
 
 
-class TokenTypes(enum.Enum):
-    EXPIRED_TOKEN = 0
-    INVALID_TOKEN = 1
-    VALID_TOKEN = 2
+BASE_URL = "https://api.huntflow.dev/v2"
 
 
-class Huntflow:
-    def __init__(self, base_url: str):
-        self.base_url = base_url
+class HuntflowServer:
+    base_url = BASE_URL
+    token_pair: TokenPair
+    is_expired_token: bool
+
+    def __init__(self, token_pair: Optional[TokenPair] = None):
+        self.token_pair = token_pair or TokenPair()
+        self.is_expired_token = False
 
         self.token_refresh_matcher = re.compile(f"{self.base_url}/token/refresh")
         self.me_matcher = re.compile(f"{self.base_url}/me")
@@ -28,8 +28,6 @@ class Huntflow:
             side_effect=self.token_refresh,
         )
         self.me_route = respx.get(self.me_matcher).mock(side_effect=self.me)
-
-        self.tokens: Dict[TokenTypes, list] = defaultdict(list)
 
     @classmethod
     def access_token_is_valid(cls, _: httpx.Request) -> httpx.Response:
@@ -65,36 +63,37 @@ class Huntflow:
             },
         )
 
-    def token_refresh(self, _: httpx.Request) -> httpx.Response:
-        access_token = uuid.uuid4().hex
-        self.add_token(access_token)
+    def token_refresh(self, request: httpx.Request) -> httpx.Response:
+        if not self.is_expired_token:
+            return httpx.Response(400)
+        request_data = json.loads(request.content)
+        refresh_token = request_data["refresh_token"]
+        assert refresh_token == self.token_pair.refresh_token
+        
+        self.token_pair = TokenPair()
+        self.is_expired_token = False
         return httpx.Response(
             status_code=200,
-            json={
-                "access_token": access_token,
-                "token_type": "test_token_type",
-                "expires_in": ACCESS_TOKEN_EXPIRES_IN,
-                "refresh_token_expires_in": REFRESH_TOKEN_EXPIRES_IN,
-                "refresh_token": uuid.uuid4().hex,
-            },
+            json=get_token_refresh_data(self.token_pair),
         )
 
     def me(self, request: httpx.Request) -> httpx.Response:
         *_, access_token = request.headers["Authorization"].split()
 
-        if access_token in self.tokens[TokenTypes.VALID_TOKEN]:
+        if access_token == self.token_pair.access_token:
+            if self.is_expired_token:
+                return self.access_token_is_expired(request)
             return self.access_token_is_valid(request)
-        elif access_token in self.tokens[TokenTypes.INVALID_TOKEN]:
-            return self.access_token_is_invalid(request)
-        elif access_token in self.tokens[TokenTypes.EXPIRED_TOKEN]:
-            return self.access_token_is_expired(request)
-        else:
-            raise NotImplementedError
+        return self.access_token_is_invalid(request)
 
-    def add_token(self, token: str, token_type: TokenTypes = TokenTypes.VALID_TOKEN) -> None:
-        self.tokens[token_type].append(token)
+    def expire_token(self):
+        self.is_expired_token = True
+
+    def set_token_pair(self, token_pair: TokenPair):
+        self.token_pair = token_pair
+        self.is_expired_token = False
 
 
 @pytest.fixture()
-def fake_huntflow(huntflow_api_url: str) -> Huntflow:
-    return Huntflow(base_url=huntflow_api_url)
+def fake_huntflow(token_pair) -> HuntflowServer:
+    return HuntflowServer(token_pair)

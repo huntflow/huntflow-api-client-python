@@ -1,23 +1,24 @@
 import asyncio
-from typing import Any, Callable, Dict, Type, Union
+import json
 
 import pytest
 import respx
 
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.errors import InvalidAccessTokenError, TokenExpiredError
-from tests.fixtures.huntflow import Huntflow, TokenTypes
+from huntflow_api_client.tokens.locker import AsyncioLockLocker
+from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
+from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
+from tests.fixtures.huntflow import HuntflowServer
+from tests.fixtures.tokens import TokenPair
 
 
 @respx.mock
 async def test_valid_access_token__ok(
-    fake_huntflow: Huntflow,
-    huntflow_api_factory: Callable[..., HuntflowAPI],
-    token_data: Dict[str, Any],
+    fake_huntflow: HuntflowServer,
+    huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
-    huntflow_api = huntflow_api_factory(auto_refresh_tokens=False)
-
-    fake_huntflow.add_token(token_data["access_token"])
+    huntflow_api = HuntflowAPI(fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=True)
 
     response = await huntflow_api.request("GET", "/me")
 
@@ -25,26 +26,15 @@ async def test_valid_access_token__ok(
     assert fake_huntflow.me_route.called
 
 
-@pytest.mark.parametrize(
-    ("unauthorized_token_type", "authorization_error"),
-    [
-        (TokenTypes.INVALID_TOKEN, InvalidAccessTokenError),
-        (TokenTypes.EXPIRED_TOKEN, TokenExpiredError),
-    ],
-)
 @respx.mock
-async def test_access_token_invalid_or_expired__authorization_error(
-    fake_huntflow: Huntflow,
-    huntflow_api_factory: Callable[..., HuntflowAPI],
-    token_data: Dict[str, Any],
-    unauthorized_token_type: TokenTypes,
-    authorization_error: Union[Type[InvalidAccessTokenError], Type[TokenExpiredError]],
+async def test_access_token_invalid__error(
+    fake_huntflow: HuntflowServer,
+    huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
-    huntflow_api = huntflow_api_factory(auto_refresh_tokens=False)
+    huntflow_api = HuntflowAPI(fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=False)
+    fake_huntflow.set_token_pair(TokenPair())
 
-    fake_huntflow.add_token(token_data["access_token"], unauthorized_token_type)
-
-    with pytest.raises(authorization_error):
+    with pytest.raises(InvalidAccessTokenError):
         await huntflow_api.request("GET", "/me")
 
     assert fake_huntflow.me_route.call_count == 1
@@ -53,20 +43,30 @@ async def test_access_token_invalid_or_expired__authorization_error(
     assert fake_huntflow.token_refresh_route.call_count == 0
 
 
-@pytest.mark.parametrize(
-    "unauthorized_token_type",
-    (TokenTypes.INVALID_TOKEN, TokenTypes.EXPIRED_TOKEN),
-)
+@respx.mock
+async def test_access_token_expired__error(
+    fake_huntflow: HuntflowServer,
+    huntflow_token_proxy: HuntflowTokenProxy,
+) -> None:
+    huntflow_api = HuntflowAPI(fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=False)
+    fake_huntflow.expire_token()
+
+    with pytest.raises(TokenExpiredError):
+        await huntflow_api.request("GET", "/me")
+
+    assert fake_huntflow.me_route.call_count == 1
+    assert fake_huntflow.me_route.calls.last.response.status_code == 401
+
+    assert fake_huntflow.token_refresh_route.call_count == 0
+
+
 @respx.mock
 async def test_auto_refresh_tokens__ok(
-    fake_huntflow: Huntflow,
-    huntflow_api_factory: Callable[..., HuntflowAPI],
-    unauthorized_token_type: TokenTypes,
-    token_data: Dict[str, Any],
+    fake_huntflow: HuntflowServer,
+    huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
-    huntflow_api = huntflow_api_factory(auto_refresh_tokens=True)
-
-    fake_huntflow.add_token(token_data["access_token"], unauthorized_token_type)
+    huntflow_api = HuntflowAPI(fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=True)
+    fake_huntflow.expire_token()
 
     await huntflow_api.request("GET", "/me")
 
@@ -75,28 +75,69 @@ async def test_auto_refresh_tokens__ok(
     assert fake_huntflow.me_route.calls[1].response.status_code == 200
 
     assert fake_huntflow.token_refresh_route.call_count == 1
+    assert fake_huntflow.is_expired_token is False
 
 
-@pytest.mark.parametrize(
-    "unauthorized_token_type",
-    (TokenTypes.INVALID_TOKEN, TokenTypes.EXPIRED_TOKEN),
-)
 @respx.mock
-async def test_auto_refresh_tokens_simultaneous_requests__ok(
-    fake_huntflow: Huntflow,
-    huntflow_api_factory: Callable[..., HuntflowAPI],
-    unauthorized_token_type: TokenTypes,
-    token_data: Dict[str, Any],
+async def test_auto_refresh_tokens_several_api_one_proxy__ok(
+    fake_huntflow: HuntflowServer,
+    huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
-    huntflow_api = huntflow_api_factory(auto_refresh_tokens=True)
 
-    fake_huntflow.add_token(token_data["access_token"], unauthorized_token_type)
+    api_count = 10
+    apis = [
+        HuntflowAPI(fake_huntflow.base_url, token_proxy=huntflow_token_proxy, auto_refresh_tokens=True)
+        for _ in range(api_count)
+    ]
+    fake_huntflow.expire_token()
 
-    calls = [huntflow_api.request("GET", "/me") for _ in range(4)]
+    calls = [api.request("GET", "/me") for api in apis]
 
     responses = await asyncio.gather(*calls)
 
-    assert fake_huntflow.me_route.call_count > 1
+    # Why api_count * 2? Every first call will fail because of expired token,
+    # after refreshing there will be exactly one retry for the failed requests
+    assert fake_huntflow.me_route.call_count == api_count * 2
 
     assert all(response.status_code == 200 for response in responses)
     assert fake_huntflow.token_refresh_route.call_count == 1
+    assert fake_huntflow.is_expired_token is False
+
+
+@respx.mock
+async def test_auto_refresh_tokens_several_api_several_proxies__ok(
+    fake_huntflow: HuntflowServer,
+    token_filename: str,
+    token_pair: TokenPair,
+) -> None:
+    # note: there must the the same locker across different proxies
+    locker = AsyncioLockLocker()
+
+    token_data = {
+        "access_token": token_pair.access_token,
+        "refresh_token": token_pair.refresh_token,
+    }
+    with open(token_filename, "w") as fout:
+        json.dump(token_data, fout)
+
+    api_count = 10
+    apis = []
+    for _ in range(api_count):
+        storage = HuntflowTokenFileStorage(token_filename)
+        token_proxy = HuntflowTokenProxy(storage, locker)
+        api = HuntflowAPI(fake_huntflow.base_url, token_proxy=token_proxy, auto_refresh_tokens=True)
+        apis.append(api)
+
+    fake_huntflow.expire_token()
+
+    calls = [api.request("GET", "/me") for api in apis]
+
+    responses = await asyncio.gather(*calls)
+
+    # Why api_count * 2? Every first call will fail because of expired token,
+    # after refreshing there will be exactly one retry for the failed requests
+    assert fake_huntflow.me_route.call_count == api_count * 2
+
+    assert all(response.status_code == 200 for response in responses)
+    assert fake_huntflow.token_refresh_route.call_count == 1
+    assert fake_huntflow.is_expired_token is False
