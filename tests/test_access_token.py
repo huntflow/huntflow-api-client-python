@@ -15,11 +15,11 @@ from tests.api import FakeAPIServer, TokenPair
 @respx.mock
 async def test_valid_access_token__ok(
     fake_server: FakeAPIServer,
-    huntflow_token_proxy: HuntflowTokenProxy,
+    token_proxy: HuntflowTokenProxy,
 ) -> None:
     api = HuntflowAPI(
         fake_server.base_url,
-        token_proxy=huntflow_token_proxy,
+        token_proxy=token_proxy,
         auto_refresh_tokens=True,
     )
 
@@ -32,11 +32,11 @@ async def test_valid_access_token__ok(
 @respx.mock
 async def test_access_token_invalid__error(
     fake_server: FakeAPIServer,
-    huntflow_token_proxy: HuntflowTokenProxy,
+    token_proxy: HuntflowTokenProxy,
 ) -> None:
     huntflow_api = HuntflowAPI(
         fake_server.base_url,
-        token_proxy=huntflow_token_proxy,
+        token_proxy=token_proxy,
         auto_refresh_tokens=False,
     )
     fake_server.set_token_pair(TokenPair())
@@ -53,11 +53,11 @@ async def test_access_token_invalid__error(
 @respx.mock
 async def test_access_token_expired__error(
     fake_server: FakeAPIServer,
-    huntflow_token_proxy: HuntflowTokenProxy,
+    token_proxy: HuntflowTokenProxy,
 ) -> None:
     huntflow_api = HuntflowAPI(
         fake_server.base_url,
-        token_proxy=huntflow_token_proxy,
+        token_proxy=token_proxy,
         auto_refresh_tokens=False,
     )
     fake_server.expire_token()
@@ -74,11 +74,11 @@ async def test_access_token_expired__error(
 @respx.mock
 async def test_auto_refresh_tokens__ok(
     fake_server: FakeAPIServer,
-    huntflow_token_proxy: HuntflowTokenProxy,
+    token_proxy: HuntflowTokenProxy,
 ) -> None:
     huntflow_api = HuntflowAPI(
         fake_server.base_url,
-        token_proxy=huntflow_token_proxy,
+        token_proxy=token_proxy,
         auto_refresh_tokens=True,
     )
     fake_server.expire_token()
@@ -96,13 +96,13 @@ async def test_auto_refresh_tokens__ok(
 @respx.mock
 async def test_auto_refresh_tokens_several_api_one_proxy__ok(
     fake_server: FakeAPIServer,
-    huntflow_token_proxy: HuntflowTokenProxy,
+    token_proxy: HuntflowTokenProxy,
 ) -> None:
     api_count = 10
     apis = [
         HuntflowAPI(
             fake_server.base_url,
-            token_proxy=huntflow_token_proxy,
+            token_proxy=token_proxy,
             auto_refresh_tokens=True,
         )
         for _ in range(api_count)
