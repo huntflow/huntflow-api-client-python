@@ -20,13 +20,7 @@ class TokenPair:
 
 
 class Router:
-    api: "FakeAPIServer"
-    __instance = None
-
-    def __new__(cls, *args, **kwargs):  # type: ignore[no-untyped-def]
-        if cls.__instance is None:
-            cls.__instance = super().__new__(cls)
-        return cls.__instance
+    _api: "FakeAPIServer"
 
     def __init__(self, method: str, url: URLPatternTypes, name: Optional[str] = None):
         self.method = method
@@ -35,11 +29,11 @@ class Router:
 
     @classmethod
     def register_api(cls, api: "FakeAPIServer") -> None:
-        cls.api = api
+        cls._api = api
 
     def __call__(self, api_handler: Callable) -> Callable:
         def inner(*args: Any, **kwargs: Any) -> Any:
-            return api_handler(self.api, *args, **kwargs)
+            return api_handler(self._api, *args, **kwargs)
 
         respx.request(
             method=self.method,
