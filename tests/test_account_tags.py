@@ -3,11 +3,11 @@ from typing import Any, Dict
 from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
-from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from huntflow_api_client.entities.tags import AccountTag
 from huntflow_api_client.models.request.tags import CreateAccountTagRequest
 from huntflow_api_client.models.response.tags import AccountTagResponse
-from tests.fixtures.huntflow import BASE_URL
+from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
+from tests.api import BASE_URL
 
 ACCOUNT_ID = 1
 TAG_ID = 2
@@ -17,7 +17,8 @@ CREATE_ACCOUNT_TAG_REQUEST: Dict[str, str] = {"color": "000000", "name": "Whitel
 
 
 async def test_get_account_tag(
-    httpx_mock: HTTPXMock, huntflow_token_proxy: HuntflowTokenProxy
+    httpx_mock: HTTPXMock,
+    huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
@@ -31,7 +32,8 @@ async def test_get_account_tag(
 
 
 async def test_create_account_tag(
-    httpx_mock: HTTPXMock, huntflow_token_proxy: HuntflowTokenProxy
+    httpx_mock: HTTPXMock,
+    huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags",
@@ -47,7 +49,8 @@ async def test_create_account_tag(
 
 
 async def test_update_account_tag(
-    httpx_mock: HTTPXMock, huntflow_token_proxy: HuntflowTokenProxy
+    httpx_mock: HTTPXMock,
+    huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
@@ -63,7 +66,8 @@ async def test_update_account_tag(
 
 
 async def test_delete_applicant(
-    httpx_mock: HTTPXMock, huntflow_token_proxy: HuntflowTokenProxy
+    httpx_mock: HTTPXMock,
+    huntflow_token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",

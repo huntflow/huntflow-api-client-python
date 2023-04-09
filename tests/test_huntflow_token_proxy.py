@@ -1,12 +1,12 @@
 import json
 import time
 from datetime import datetime, timedelta
-from typing import Any, Dict
+from typing import Any
 
 from huntflow_api_client.tokens.locker import AsyncioLockLocker
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
-from tests.fixtures.tokens import TokenPair, get_token_refresh_data
+from tests.api import TokenPair, get_token_refresh_data
 
 
 async def test_get_auth_header__ok(
