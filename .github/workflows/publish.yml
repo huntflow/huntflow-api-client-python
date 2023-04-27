@@ -18,4 +18,4 @@ jobs:
           PUBLISH_REGISTRY_USERNAME: "__token__"
           PUBLISH_REGISTRY_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
           PUBLISH_REGISTRY: "https://test.pypi.org/legacy/"
-          PACKAGE_DIRECTORY: "./huntflow_api_client"
+          PACKAGE_DIRECTORY: "./huntflow_api_client/"
