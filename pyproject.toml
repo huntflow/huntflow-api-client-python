@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "huntflow-api-client"
-version = "0.0.1"
+version = "0.0.1-rc4"
 description = "Public client for Huntflow API"
 authors = ["Huntflow developers <developer@huntflow.ru>"]
 readme = "README.md"
