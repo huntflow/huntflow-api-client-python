@@ -8,8 +8,8 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-20.04
     steps:
-      - name: Publish PyPi package
-        uses: code-specialist/pypi-poetry-publish@v1
+      - name: PyPI Poetry Publish
+        uses: code-specialist/pypi-poetry-publish@v1.2
         with:
           PYTHON_VERSION: "3.8.9"
           BRANCH: "master"
