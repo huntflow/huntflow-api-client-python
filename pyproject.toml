@@ -1,13 +1,14 @@
 [tool.poetry]
-name = "huntflow-api-client-python"
-version = "0.1.0"
-description = "Public client for Huntflow API written in Python 3.8"
+name = "huntflow-api-client"
+version = "0.0.1"
+description = "Public client for Huntflow API"
 authors = ["Huntflow developers <developer@huntflow.ru>"]
 readme = "README.md"
+homepage = "https://github.com/huntflow/huntflow-api-client-python"
 packages = [{include = "huntflow_api_client"}]
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
+python = "^3.8.0"
 httpx = "^0.23.3"
 email-validator = "^1.3.1"
 pydantic = "^1.10.4"
