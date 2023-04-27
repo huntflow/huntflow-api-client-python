@@ -1,0 +1,20 @@
+name: Build and publish package to PyPI
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Publish PyPi package
+        uses: code-specialist/pypi-poetry-publish@v1
+        with:
+          PACKAGE_DIRECTORY: "./dist/"
+          PYTHON_VERSION: "3.8.9"
+          BRANCH: "master"
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          PUBLISH_REGISTRY_USERNAME: "__token__"
+          PUBLISH_REGISTRY_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
+          PUBLISH_REGISTRY: "https://test.pypi.org/legacy/"
