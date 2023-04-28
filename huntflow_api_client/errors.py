@@ -8,3 +8,7 @@ class TokenExpiredError(ApiError):
 
 class InvalidAccessTokenError(ApiError):
     pass
+
+
+class InvalidRefreshTokenError(ApiError):
+    pass

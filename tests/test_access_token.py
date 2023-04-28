@@ -1,11 +1,16 @@
 import asyncio
 import json
+from unittest.mock import AsyncMock
 
 import pytest
 import respx
 
 from huntflow_api_client import HuntflowAPI
-from huntflow_api_client.errors import InvalidAccessTokenError, TokenExpiredError
+from huntflow_api_client.errors import (
+    InvalidAccessTokenError,
+    TokenExpiredError,
+    InvalidRefreshTokenError,
+)
 from huntflow_api_client.tokens.locker import AsyncioLockLocker
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
@@ -69,6 +74,33 @@ async def test_access_token_expired__error(
     assert respx.routes["/me"].calls.last.response.status_code == 401
 
     assert respx.routes["/token/refresh"].call_count == 0
+
+
+@respx.mock
+async def test_invalid_refresh_token__error(
+    fake_server: FakeAPIServer,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    huntflow_api = HuntflowAPI(
+        fake_server.base_url,
+        token_proxy=token_proxy,
+        auto_refresh_tokens=True,
+    )
+    fake_server.set_token_pair(
+        TokenPair(
+            access_token=fake_server.token_pair.access_token,
+            refresh_token="1",
+        )
+    )
+    fake_server.expire_token()
+
+    with pytest.raises(InvalidRefreshTokenError):
+        await huntflow_api.request("GET", "/me")
+
+    assert respx.routes["/me"].call_count == 1
+    assert respx.routes["/me"].calls.last.response.status_code == 401
+
+    assert respx.routes["/token/refresh"].call_count == 1
 
 
 @respx.mock
