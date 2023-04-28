@@ -3,7 +3,11 @@ from typing import Optional
 
 import httpx
 
-from huntflow_api_client.errors import InvalidAccessTokenError, TokenExpiredError
+from huntflow_api_client.errors import (
+    InvalidAccessTokenError,
+    InvalidRefreshTokenError,
+    TokenExpiredError,
+)
 from huntflow_api_client.tokens.proxy import AbstractTokenProxy, DummyHuntflowTokenProxy
 from huntflow_api_client.tokens.token import ApiToken
 
@@ -150,6 +154,9 @@ class HuntflowAPI:
                     "/token/refresh",
                     json=refresh_data,
                 )
+                if response.status_code == 404:
+                    raise InvalidRefreshTokenError()
+
                 response.raise_for_status()
             await self._token_proxy.update(response.json())
         finally:
