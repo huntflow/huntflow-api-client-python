@@ -5,8 +5,8 @@ import httpx
 
 from huntflow_api_client.errors import (
     InvalidAccessTokenError,
-    TokenExpiredError,
     InvalidRefreshTokenError,
+    TokenExpiredError,
 )
 from huntflow_api_client.tokens.proxy import AbstractTokenProxy, DummyHuntflowTokenProxy
 from huntflow_api_client.tokens.token import ApiToken

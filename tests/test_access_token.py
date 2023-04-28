@@ -1,6 +1,5 @@
 import asyncio
 import json
-from unittest.mock import AsyncMock
 
 import pytest
 import respx
@@ -8,8 +7,8 @@ import respx
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.errors import (
     InvalidAccessTokenError,
-    TokenExpiredError,
     InvalidRefreshTokenError,
+    TokenExpiredError,
 )
 from huntflow_api_client.tokens.locker import AsyncioLockLocker
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
@@ -90,7 +89,7 @@ async def test_invalid_refresh_token__error(
         TokenPair(
             access_token=fake_server.token_pair.access_token,
             refresh_token="1",
-        )
+        ),
     )
     fake_server.expire_token()
 
