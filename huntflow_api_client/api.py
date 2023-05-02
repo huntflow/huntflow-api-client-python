@@ -111,6 +111,7 @@ class HuntflowAPI:
                 timeout=timeout,
             )
             await self._raise_token_expired(response)
+            response.raise_for_status()
         return response
 
     async def _raise_token_expired(self, response: httpx.Response) -> None:
