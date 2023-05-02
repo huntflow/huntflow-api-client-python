@@ -31,14 +31,12 @@ class Dictionary(BaseEntity, UpdateEntityMixin, ListEntityMixin, CreateEntityMix
     ) -> DictionaryCreateResponse:
         path = f"/accounts/{account_id}/dictionaries"
         response = await self._api.request("POST", path, json=data.jsonable_dict(exclude_none=True))
-        data = DictionaryCreateResponse.parse_obj(response.json())
-        return data
+        return DictionaryCreateResponse.parse_obj(response.json())
 
     async def get(self, account_id: int, dict_code: str) -> DictionaryResponse:
         path = f"/accounts/{account_id}/dictionaries/{dict_code}"
         response = await self._api.request("GET", path)
-        data = DictionaryResponse.parse_obj(response.json())
-        return data
+        return DictionaryResponse.parse_obj(response.json())
 
     async def update(
         self,
@@ -48,6 +46,4 @@ class Dictionary(BaseEntity, UpdateEntityMixin, ListEntityMixin, CreateEntityMix
     ) -> DictionaryUpdateResponse:
         path = f"/accounts/{account_id}/dictionaries/{dict_code}"
         response = await self._api.request("PUT", path, json=data.jsonable_dict(exclude_none=True))
-
-        data = DictionaryUpdateResponse.parse_obj(response.json())
-        return data
+        return DictionaryUpdateResponse.parse_obj(response.json())

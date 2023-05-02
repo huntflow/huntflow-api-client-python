@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from uuid import UUID
 
 from pydantic import BaseModel, Field, PositiveInt
@@ -39,7 +39,7 @@ class DictionaryItem(BaseModel):
 
 
 class DictionariesListResponse(BaseModel):
-    items: list[DictionaryItem]
+    items: List[DictionaryItem]
 
 
 class DictionaryField(BaseModel):
@@ -63,7 +63,7 @@ class DictionaryResponse(BaseModel):
     name: str = Field(..., description=descriptions.dict_name)
     foreign: Optional[str] = Field(None, description=descriptions.foreign)
     created: DatetimeWithTZ = Field(..., description="Date and time of creating a dictionary")
-    dictionary_fields: list[DictionaryField] = Field(
+    dictionary_fields: List[DictionaryField] = Field(
         ...,
         alias="fields",
         description="Dictionary fields",
