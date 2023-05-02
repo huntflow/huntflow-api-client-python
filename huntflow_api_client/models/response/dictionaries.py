@@ -31,7 +31,7 @@ class DictionaryCreateResponse(DictionaryTaskResponse):
 
 
 class DictionaryItem(BaseModel):
-    id: PositiveInt = Field(..., description=descriptions.dict_id, example=7)
+    id: PositiveInt = Field(..., description=descriptions.dict_id, example=7)  # noqa: A003 VNE003
     code: str = Field(..., description=descriptions.dict_code, example="citizenship")
     name: str = Field(..., description=descriptions.dict_name, example="Citizenship")
     foreign: Optional[str] = Field(None, description=descriptions.foreign, example="d_ctz")
@@ -43,7 +43,7 @@ class DictionariesListResponse(BaseModel):
 
 
 class DictionaryField(BaseModel):
-    id: int = Field(..., description="Dictionary field ID")
+    id: int = Field(..., description="Dictionary field ID")  # noqa: A003 VNE003
     name: str = Field(..., description="Dictionary field name")
     order: int = Field(..., description="Order")
     active: bool = Field(..., description="Activity flag")
@@ -58,11 +58,13 @@ class DictionaryField(BaseModel):
 
 
 class DictionaryResponse(BaseModel):
-    id: int = Field(..., description=descriptions.dict_id)
+    id: int = Field(..., description=descriptions.dict_id)  # noqa: A003 VNE003
     code: str = Field(..., description=descriptions.dict_code)
     name: str = Field(..., description=descriptions.dict_name)
     foreign: Optional[str] = Field(None, description=descriptions.foreign)
     created: DatetimeWithTZ = Field(..., description="Date and time of creating a dictionary")
     dictionary_fields: list[DictionaryField] = Field(
-        ..., alias="fields", description="Dictionary fields"
+        ...,
+        alias="fields",
+        description="Dictionary fields",
     )

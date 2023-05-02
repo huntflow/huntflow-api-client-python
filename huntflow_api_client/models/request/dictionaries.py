@@ -1,7 +1,8 @@
 from __future__ import annotations
-from typing import Optional, List
 
-from pydantic import BaseModel, constr, Field
+from typing import List, Optional
+
+from pydantic import BaseModel, Field, constr
 
 from huntflow_api_client.models.common import JsonRequestModel
 from huntflow_api_client.models.utils import descriptions
@@ -10,7 +11,8 @@ from huntflow_api_client.models.utils import descriptions
 class DictionaryItem(BaseModel):
     name: constr(min_length=1, max_length=255) = Field(..., description="Dictionary item name")
     foreign: Optional[constr(min_length=1, max_length=1024)] = Field(
-        None, description=descriptions.foreign
+        None,
+        description=descriptions.foreign,
     )
     meta: Optional[dict] = Field(
         None,
@@ -27,7 +29,8 @@ class DictionaryCreateRequest(JsonRequestModel):
     code: constr(min_length=1, max_length=128) = Field(..., description=descriptions.dict_code)
     name: constr(min_length=1, max_length=255) = Field(..., description=descriptions.dict_name)
     foreign: Optional[constr(min_length=1, max_length=1024)] = Field(
-        None, description=descriptions.foreign
+        None,
+        description=descriptions.foreign,
     )
     items: List[DictionaryItem] = Field(..., description=descriptions.dict_items)
 
@@ -35,6 +38,7 @@ class DictionaryCreateRequest(JsonRequestModel):
 class DictionaryUpdateRequest(JsonRequestModel):
     name: constr(min_length=1, max_length=255) = Field(..., description=descriptions.dict_name)
     foreign: Optional[constr(min_length=1, max_length=1024)] = Field(
-        None, description=descriptions.foreign
+        None,
+        description=descriptions.foreign,
     )
     items: list[DictionaryItem] = Field(..., description=descriptions.dict_items)
