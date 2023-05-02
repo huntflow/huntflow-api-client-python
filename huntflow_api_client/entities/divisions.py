@@ -13,14 +13,17 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
         self,
         account_id: int,
         coworker_id: Optional[int] = None,
+        only_available: bool = False,
     ) -> DivisionsListResponse:
         path = f"/accounts/{account_id}"
         if coworker_id is not None:
             path += f"/coworkers/{coworker_id}"
         path += "/divisions"
+        params = {"only_available": only_available}
         response = await self._api.request(
             "GET",
             path,
+            params=params,
         )
         return DivisionsListResponse.parse_obj(response.json())
 

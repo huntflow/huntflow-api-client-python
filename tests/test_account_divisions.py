@@ -69,21 +69,25 @@ async def test_list_account_division(
     httpx_mock: HTTPXMock,
     token_proxy: HuntflowTokenProxy,
 ) -> None:
+    only_available = True
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/divisions",
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/divisions?only_available=true",
         json=ACCOUNT_DIVISIONS_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     divisions = AccountDivision(api_client)
 
-    response = await divisions.list(ACCOUNT_ID)
+    response = await divisions.list(ACCOUNT_ID, only_available=only_available)
     assert response == DivisionsListResponse.parse_obj(ACCOUNT_DIVISIONS_LIST_RESPONSE)
 
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/coworkers/{COWORKER_ID}/divisions",
+        url=(
+            f"{BASE_URL}/accounts/{ACCOUNT_ID}/coworkers/{COWORKER_ID}"
+            f"/divisions?only_available=true"
+        ),
         json=ACCOUNT_DIVISIONS_LIST_RESPONSE,
     )
-    response = await divisions.list(ACCOUNT_ID, COWORKER_ID)
+    response = await divisions.list(ACCOUNT_ID, COWORKER_ID, only_available=only_available)
     assert response == DivisionsListResponse.parse_obj(ACCOUNT_DIVISIONS_LIST_RESPONSE)
 
 
