@@ -10,8 +10,8 @@ from huntflow_api_client.models.request.dictionaries import (
 )
 from huntflow_api_client.models.response.dictionaries import (
     DictionariesListResponse,
-    DictionaryCreateResponse,
     DictionaryResponse,
+    DictionaryTaskResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
@@ -140,7 +140,7 @@ async def test_create_dictionary(
 
     api_request = DictionaryCreateRequest(**DICT_CREATE_REQUEST)
     response = await dictionaries.create(ACCOUNT_ID, api_request)
-    assert response == DictionaryCreateResponse.parse_obj(DICT_CREATE_RESPONSE)
+    assert response == DictionaryTaskResponse.parse_obj(DICT_CREATE_RESPONSE)
 
 
 async def test_update_dictionary(
@@ -156,4 +156,4 @@ async def test_update_dictionary(
 
     api_request = DictionaryUpdateRequest(**DICT_UPDATE_REQUEST)
     response = await dictionaries.update(ACCOUNT_ID, DICT_CODE, api_request)
-    assert response == DictionaryCreateResponse.parse_obj(DICT_UPDATE_RESPONSE)
+    assert response == DictionaryTaskResponse.parse_obj(DICT_UPDATE_RESPONSE)

@@ -11,9 +11,8 @@ from huntflow_api_client.models.request.dictionaries import (
 )
 from huntflow_api_client.models.response.dictionaries import (
     DictionariesListResponse,
-    DictionaryCreateResponse,
     DictionaryResponse,
-    DictionaryUpdateResponse,
+    DictionaryTaskResponse,
 )
 
 
@@ -28,10 +27,10 @@ class Dictionary(BaseEntity, UpdateEntityMixin, ListEntityMixin, CreateEntityMix
         self,
         account_id: int,
         data: DictionaryCreateRequest,
-    ) -> DictionaryCreateResponse:
+    ) -> DictionaryTaskResponse:
         path = f"/accounts/{account_id}/dictionaries"
         response = await self._api.request("POST", path, json=data.jsonable_dict(exclude_none=True))
-        return DictionaryCreateResponse.parse_obj(response.json())
+        return DictionaryTaskResponse.parse_obj(response.json())
 
     async def get(self, account_id: int, dict_code: str) -> DictionaryResponse:
         path = f"/accounts/{account_id}/dictionaries/{dict_code}"
@@ -43,7 +42,7 @@ class Dictionary(BaseEntity, UpdateEntityMixin, ListEntityMixin, CreateEntityMix
         account_id: int,
         dict_code: str,
         data: DictionaryUpdateRequest,
-    ) -> DictionaryUpdateResponse:
+    ) -> DictionaryTaskResponse:
         path = f"/accounts/{account_id}/dictionaries/{dict_code}"
         response = await self._api.request("PUT", path, json=data.jsonable_dict(exclude_none=True))
-        return DictionaryUpdateResponse.parse_obj(response.json())
+        return DictionaryTaskResponse.parse_obj(response.json())
