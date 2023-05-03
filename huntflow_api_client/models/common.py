@@ -2,8 +2,8 @@ import json
 from typing import AbstractSet, Any, Callable, Dict, Mapping, Optional, Union
 
 from pydantic import BaseModel
-from pydantic.typing import IntStr
 
+IntStr = Union[int, str]
 AbstractSetIntStr = AbstractSet[IntStr]
 MappingIntStrAny = Mapping[IntStr, Any]
 
