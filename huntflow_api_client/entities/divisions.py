@@ -35,6 +35,6 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/divisions/batch",
-            json=divisions.jsonable_dict(),
+            json=divisions.jsonable_dict(exclude_none=True),
         )
         return BatchDivisionsResponse.parse_obj(response.json())
