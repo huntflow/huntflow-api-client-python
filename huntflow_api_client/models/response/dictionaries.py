@@ -1,10 +1,10 @@
+from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
 
 from pydantic import BaseModel, Field, PositiveInt
 
 from huntflow_api_client.models.utils import descriptions
-from huntflow_api_client.models.utils.fields import DatetimeWithTZ
 
 
 class DictionaryTaskResponsePayload(BaseModel):
@@ -35,7 +35,7 @@ class DictionaryItem(BaseModel):
     code: str = Field(..., description=descriptions.dict_code, example="citizenship")
     name: str = Field(..., description=descriptions.dict_name, example="Citizenship")
     foreign: Optional[str] = Field(None, description=descriptions.foreign, example="d_ctz")
-    created: DatetimeWithTZ = Field(..., description="Date and time of creating a dictionary")
+    created: datetime = Field(..., description="Date and time of creating a dictionary")
 
 
 class DictionariesListResponse(BaseModel):
@@ -62,9 +62,9 @@ class DictionaryResponse(BaseModel):
     code: str = Field(..., description=descriptions.dict_code)
     name: str = Field(..., description=descriptions.dict_name)
     foreign: Optional[str] = Field(None, description=descriptions.foreign)
-    created: DatetimeWithTZ = Field(..., description="Date and time of creating a dictionary")
+    created: datetime = Field(..., description="Date and time of creating a dictionary")
     dictionary_fields: List[DictionaryField] = Field(
         ...,
         alias="fields",
-        description="Dictionary fields",
+        description="List of dictionary fields",
     )
