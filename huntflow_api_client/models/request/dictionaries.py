@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import List, Optional
 
 from pydantic import BaseModel, Field
@@ -21,10 +19,7 @@ class DictionaryItem(BaseModel):
         description=descriptions.meta,
         example={"latitude": 55.5374, "longitude": 60.1408},
     )
-    items: Optional[List[DictionaryItem]] = Field(None, description=descriptions.dict_items)
-
-
-DictionaryItem.update_forward_refs()
+    items: Optional[List["DictionaryItem"]] = Field(None, description=descriptions.dict_items)
 
 
 class DictionaryCreateRequest(JsonRequestModel):
