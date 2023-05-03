@@ -33,7 +33,9 @@ class DictionaryItem(BaseModel):
     code: str = Field(..., description="Dictionary code", example="citizenship")
     name: str = Field(..., description="Dictionary name", example="Citizenship")
     foreign: Optional[str] = Field(
-        None, description="The unique identifier in the customer's internal system", example="d_ctz"
+        None,
+        description="The unique identifier in the customer's internal system",
+        example="d_ctz",
     )
     created: datetime = Field(..., description="Date and time of creating a dictionary")
 
@@ -50,7 +52,8 @@ class DictionaryField(BaseModel):
     parent: Optional[int] = Field(None, description="Parent dictionary field ID")
     deep: int = Field(..., description="Depth level")
     foreign: Optional[str] = Field(
-        None, description="The unique identifier in the customer's internal system",
+        None,
+        description="The unique identifier in the customer's internal system",
     )
     meta: Optional[dict] = Field(
         None,
@@ -64,7 +67,8 @@ class DictionaryResponse(BaseModel):
     code: str = Field(..., description="Dictionary code")
     name: str = Field(..., description="Dictionary name")
     foreign: Optional[str] = Field(
-        None, description="The unique identifier in the customer's internal system",
+        None,
+        description="The unique identifier in the customer's internal system",
     )
     created: datetime = Field(..., description="Date and time of creating a dictionary")
     dictionary_fields: List[DictionaryField] = Field(
