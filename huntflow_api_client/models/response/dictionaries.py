@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field, PositiveInt
 
 
 class DictionaryTaskResponsePayload(BaseModel):
-    task_id: UUID = Field(..., description="Job ID")
+    task_id: UUID = Field(..., description="Task ID")
 
 
 class DictionaryTaskResponseMeta(BaseModel):
