@@ -19,7 +19,7 @@ class DeadLineDate(BaseModel):
 
 
 class DeadLineDatesBulkRequest(BaseModel):
-    __root__: list[DeadLineDate]
+    __root__: List[DeadLineDate]
 
 
 class StartDate(BaseModel):
@@ -31,4 +31,4 @@ class StartDate(BaseModel):
 
 
 class StartDatesBulkRequest(BaseModel):
-    __root__: list[StartDate]
+    __root__: List[StartDate]
