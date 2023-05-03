@@ -63,4 +63,4 @@ class DictionaryResponse(BaseModel):
         description="The unique identifier in the customer's internal system",
     )
     created: datetime = Field(..., description="Date and time of creating a dictionary")
-    fields: List[DictionaryField] = Field(...,description="List of dictionary fields", )
+    fields: List[DictionaryField] = Field(..., description="List of dictionary fields")
