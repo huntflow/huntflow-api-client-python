@@ -3,8 +3,6 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from huntflow_api_client.models.utils import descriptions
-
 
 class Division(BaseModel):
     id: int = Field(..., description="Division ID", example=2)
@@ -15,7 +13,7 @@ class Division(BaseModel):
     deep: int = Field(..., description="Depth level")
     foreign: Optional[str] = Field(
         None,
-        description=descriptions.foreign,
+        description="The unique identifier in the customer's internal system",
         example="it_department",
     )
     meta: Optional[dict] = Field(
@@ -43,12 +41,12 @@ class DivisionsListResponse(BaseModel):
 
 
 class BatchDivisionsPayload(BaseModel):
-    task_id: UUID = Field(..., description=descriptions.task_id)
+    task_id: UUID = Field(..., description="Task ID")
 
 
 class BatchDivisionsMeta(BaseModel):
     data: dict = Field(..., description="Request body content")
-    account_id: int = Field(..., description=descriptions.organization_id, example=11)
+    account_id: int = Field(..., description="Organization ID", example=11)
 
 
 class BatchDivisionsResponse(BaseModel):

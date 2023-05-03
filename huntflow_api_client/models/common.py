@@ -33,3 +33,4 @@ class JsonRequestModel(BaseModel):
             "encoder": encoder,
         }
         return json.loads(self.json(**params, **dumps_kwargs))  # type: ignore
+
