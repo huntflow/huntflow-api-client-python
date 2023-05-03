@@ -12,7 +12,7 @@ class ListResponseMixin(BaseModel):
     class Config:
         allow_population_by_field_name = True
 
-    def dict(self, *args, **kwargs):  # noqa: A003
+    def dict(self, *args, **kwargs) -> t.Dict[str, t.Any]:  # type: ignore # noqa A003
         exclude = kwargs.get("exclude")
 
         # if backend does not returns total_items parameter - remove it from response object

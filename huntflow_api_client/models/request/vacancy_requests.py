@@ -1,6 +1,6 @@
 import typing as t
 
-from pydantic import BaseModel, EmailStr, Extra, Field, PositiveInt, conint, constr
+from pydantic import BaseModel, EmailStr, Extra, Field, PositiveInt
 
 from huntflow_api_client.models.common import JsonRequestModel
 
@@ -20,8 +20,10 @@ class CreateVacancyRequestRequest(JsonRequestModel):
         description="Account vacancy request ID",
         example=1,
     )
-    position: constr(min_length=1, max_length=255) = Field(
+    position: str = Field(
         ...,
+        min_length=1,
+        max_length=255,
         description="The name of the vacancy (occupation)",
         example="Developer",
     )
@@ -30,8 +32,10 @@ class CreateVacancyRequestRequest(JsonRequestModel):
         None,
         description="List of people to send a request for approval",
     )
-    applicants_to_hire: t.Optional[conint(gt=0, le=999)] = Field(
+    applicants_to_hire: t.Optional[int] = Field(
         None,
+        le=999,
+        gt=0,
         description="Number of applicants should be hired on the fill quota",
         include_in_schema=False,
     )

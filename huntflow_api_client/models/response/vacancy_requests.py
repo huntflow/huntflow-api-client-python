@@ -49,7 +49,7 @@ class VacancyRequestApprovalState(BaseModel):
     )
 
     @validator("status", pre=True)
-    def prepare_data(cls, status):  # noqa: N805
+    def prepare_data(cls, status: str) -> t.Optional[str]:  # noqa: N805
         return status.lower() if status else None
 
 
@@ -76,7 +76,10 @@ class VacancyRequest(BaseModel):
     )
     vacancy: t.Optional[PositiveInt] = Field(None, description="Vacancy ID")
     creator: UserInfo = Field(..., description="User who create the request")
-    files: t.List[File] = Field(None, description="List of files attached to the request")
+    files: t.Optional[t.List[File]] = Field(
+        None,
+        description="List of files attached to the request",
+    )
     states: t.List[VacancyRequestApprovalState] = Field(..., description="List of approval states")
     values: t.Optional[dict] = Field(
         None,
@@ -85,9 +88,10 @@ class VacancyRequest(BaseModel):
     )
 
     @validator("values", pre=True)
-    def prepare_data(cls, values):  # noqa: N805
+    def prepare_data(cls, values: t.Any) -> t.Optional[dict]:  # noqa: N805
         if isinstance(values, dict):
             return values
+        return None
 
     class Config:
         allow_population_by_field_name = True
