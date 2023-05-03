@@ -26,15 +26,16 @@ class CreateVacancyRequestRequest(JsonRequestModel):
         example="Developer",
     )
     money: t.Optional[str] = Field(None, description="Salary", example="$10000")
-    attendees: t.Optional[list[VacancyRequestAttendee]] = Field(
-        None, description="List of people to send a request for approval",
+    attendees: t.Optional[t.List[VacancyRequestAttendee]] = Field(
+        None,
+        description="List of people to send a request for approval",
     )
     applicants_to_hire: t.Optional[conint(gt=0, le=999)] = Field(
         None,
         description="Number of applicants should be hired on the fill quota",
         include_in_schema=False,
     )
-    files: t.Optional[list[PositiveInt]] = Field(
+    files: t.Optional[t.List[PositiveInt]] = Field(
         None,
         description="List of file IDs to attach to the vacancy request.",
         example=[1, 2, 3],

@@ -40,10 +40,14 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
         return VacancyRequestResponse.parse_obj(response.json())
 
     async def create(
-        self, account_id: int, request_data: CreateVacancyRequestRequest,
+        self,
+        account_id: int,
+        request_data: CreateVacancyRequestRequest,
     ) -> VacancyRequestResponse:
         path = f"/accounts/{account_id}/vacancy_requests"
         response = await self._api.request(
-            "POST", path, json=request_data.jsonable_dict(exclude_none=True),
+            "POST",
+            path,
+            json=request_data.jsonable_dict(exclude_none=True),
         )
         return VacancyRequestResponse.parse_obj(response.json())

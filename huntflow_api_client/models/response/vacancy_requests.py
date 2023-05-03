@@ -76,8 +76,8 @@ class VacancyRequest(BaseModel):
     )
     vacancy: t.Optional[PositiveInt] = Field(None, description="Vacancy ID")
     creator: UserInfo = Field(..., description="User who create the request")
-    files: list[File] = Field(None, description="List of files attached to the request")
-    states: list[VacancyRequestApprovalState] = Field(..., description="List of approval states")
+    files: t.List[File] = Field(None, description="List of files attached to the request")
+    states: t.List[VacancyRequestApprovalState] = Field(..., description="List of approval states")
     values: t.Optional[dict] = Field(
         None,
         description="Vacancy request values",
