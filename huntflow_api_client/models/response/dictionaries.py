@@ -4,8 +4,6 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field, PositiveInt
 
-from huntflow_api_client.models.utils import descriptions
-
 
 class DictionaryTaskResponsePayload(BaseModel):
     task_id: UUID = Field(..., description="Job ID")
@@ -13,7 +11,7 @@ class DictionaryTaskResponsePayload(BaseModel):
 
 class DictionaryTaskResponseMeta(BaseModel):
     data: dict = Field(..., description="Request body")
-    account_id: int = Field(..., description=descriptions.organization_id)
+    account_id: int = Field(..., description="Organization ID")
 
 
 class DictionaryTaskResponse(BaseModel):
@@ -31,10 +29,12 @@ class DictionaryCreateResponse(DictionaryTaskResponse):
 
 
 class DictionaryItem(BaseModel):
-    id: PositiveInt = Field(..., description=descriptions.dict_id, example=7)  # noqa: A003 VNE003
-    code: str = Field(..., description=descriptions.dict_code, example="citizenship")
-    name: str = Field(..., description=descriptions.dict_name, example="Citizenship")
-    foreign: Optional[str] = Field(None, description=descriptions.foreign, example="d_ctz")
+    id: PositiveInt = Field(..., description="Dictionary ID", example=7)  # noqa: A003 VNE003
+    code: str = Field(..., description="Dictionary code", example="citizenship")
+    name: str = Field(..., description="Dictionary name", example="Citizenship")
+    foreign: Optional[str] = Field(
+        None, description="The unique identifier in the customer's internal system", example="d_ctz"
+    )
     created: datetime = Field(..., description="Date and time of creating a dictionary")
 
 
@@ -49,19 +49,23 @@ class DictionaryField(BaseModel):
     active: bool = Field(..., description="Activity flag")
     parent: Optional[int] = Field(None, description="Parent dictionary field ID")
     deep: int = Field(..., description="Depth level")
-    foreign: Optional[str] = Field(None, description=descriptions.foreign)
+    foreign: Optional[str] = Field(
+        None, description="The unique identifier in the customer's internal system",
+    )
     meta: Optional[dict] = Field(
         None,
-        description=descriptions.meta,
+        description="Meta information",
         example={"latitude": 55.5374, "longitude": 60.1408},
     )
 
 
 class DictionaryResponse(BaseModel):
-    id: int = Field(..., description=descriptions.dict_id)  # noqa: A003 VNE003
-    code: str = Field(..., description=descriptions.dict_code)
-    name: str = Field(..., description=descriptions.dict_name)
-    foreign: Optional[str] = Field(None, description=descriptions.foreign)
+    id: int = Field(..., description="Dictionary ID")  # noqa: A003 VNE003
+    code: str = Field(..., description="Dictionary code")
+    name: str = Field(..., description="Dictionary name")
+    foreign: Optional[str] = Field(
+        None, description="The unique identifier in the customer's internal system",
+    )
     created: datetime = Field(..., description="Date and time of creating a dictionary")
     dictionary_fields: List[DictionaryField] = Field(
         ...,
