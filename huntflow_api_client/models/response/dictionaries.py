@@ -20,14 +20,6 @@ class DictionaryTaskResponse(BaseModel):
     meta: DictionaryTaskResponseMeta
 
 
-class DictionaryUpdateResponse(DictionaryTaskResponse):
-    pass
-
-
-class DictionaryCreateResponse(DictionaryTaskResponse):
-    pass
-
-
 class DictionaryItem(BaseModel):
     id: PositiveInt = Field(..., description="Dictionary ID", example=7)  # noqa: A003 VNE003
     code: str = Field(..., description="Dictionary code", example="citizenship")
