@@ -74,12 +74,7 @@ class VacancyItem(Vacancy):
     created: datetime = Field(..., description="Date and time of creating a vacancy")
     additional_fields_list: List[str] = Field(
         [],
-        description=(
-            "List of additional field names. "
-            "[Getting a schema of additional fields]"
-            "(/v2/docs#/Vacancies/get_additional_fields_schema_accounts"
-            "__account_id__vacancies_additional_fields_get)"
-        ),
+        description="List of additional field names. ",
         example=["deadline"],
     )
     multiple: Optional[bool] = Field(
