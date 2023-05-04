@@ -7,7 +7,7 @@ from huntflow_api_client.models.request.production_calendars import (
     StartDatesBulkRequest,
 )
 from huntflow_api_client.models.response.production_calendars import (
-    AccountCalendar,
+    AccountCalendarResponse,
     CalendarListResponse,
     CalendarResponse,
     DatesBulkResponse,
@@ -35,13 +35,13 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         response = await self._api.request("GET", path)
         return CalendarResponse.parse_obj(response.json())
 
-    async def get_organizations_calendar(self, account_id: int) -> AccountCalendar:
+    async def get_organizations_calendar(self, account_id: int) -> AccountCalendarResponse:
         """
         Get organization's production calendar by organization id
         """
         path = f"/accounts/{account_id}/calendar"
         response = await self._api.request("GET", path)
-        return AccountCalendar.parse_obj(response.json())
+        return AccountCalendarResponse.parse_obj(response.json())
 
     async def get_non_working_days_in_period(
         self,

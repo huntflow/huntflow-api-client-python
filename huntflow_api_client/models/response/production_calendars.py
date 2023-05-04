@@ -9,7 +9,7 @@ class CalendarResponse(BaseModel):
     name: str = Field(..., description="Calendar name", example="Russian Federation")
 
 
-class AccountCalendar(BaseModel):
+class AccountCalendarResponse(BaseModel):
     account: PositiveInt = Field(..., description="Organization ID")
     production_calendar: PositiveInt = Field(..., description="Calendar ID")
 

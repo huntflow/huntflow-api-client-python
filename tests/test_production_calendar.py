@@ -13,7 +13,7 @@ from huntflow_api_client.models.request.production_calendars import (
     StartDatesBulkRequest,
 )
 from huntflow_api_client.models.response.production_calendars import (
-    AccountCalendar,
+    AccountCalendarResponse,
     CalendarListResponse,
     CalendarResponse,
     DatesBulkResponse,
@@ -100,7 +100,7 @@ async def test_get_organizations_calendar(
     calendars = ProductionCalendar(api_client)
 
     response = await calendars.get_organizations_calendar(account_id=ACCOUNT_ID)
-    assert response == AccountCalendar.parse_obj(ORG_CALENDAR_GET_RESPONSE)
+    assert response == AccountCalendarResponse.parse_obj(ORG_CALENDAR_GET_RESPONSE)
 
 
 async def test_get_non_working_days_in_period(
