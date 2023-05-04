@@ -103,7 +103,7 @@ class FakeAPIServer:
                             "type": "not_found",
                             "title": "error.robot_token.not_found",
                         },
-                    ]
+                    ],
                 },
             )
 

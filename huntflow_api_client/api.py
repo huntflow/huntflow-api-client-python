@@ -3,11 +3,7 @@ from typing import Optional
 
 import httpx
 
-from huntflow_api_client.errors.errors import (
-    InvalidAccessTokenError,
-    InvalidRefreshTokenError,
-    TokenExpiredError,
-)
+from huntflow_api_client.errors.errors import InvalidAccessTokenError, TokenExpiredError
 from huntflow_api_client.errors.utils import async_error_handler_deco
 from huntflow_api_client.tokens.proxy import AbstractTokenProxy, DummyHuntflowTokenProxy
 from huntflow_api_client.tokens.token import ApiToken

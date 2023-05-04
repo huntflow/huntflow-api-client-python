@@ -1,39 +1,33 @@
 import asyncio
 
-import httpx
-
-from huntflow_api_client.errors.errors import (
-    InvalidAccessTokenError,
-    ApiError,
-    InvalidRefreshTokenError,
-)
-from huntflow_api_client.errors.handlers import HANDLERS, AbstractErrorHandler
-from huntflow_api_client.errors.utils import async_error_handler_deco
-
-error_data = {
-    "errors": [
-        {
-            "type": "authorization_error",
-            "title": "error.robot_token.not_found",
-            "detail": "token_expired",
-        }
-    ]
-}
-error = httpx.HTTPStatusError(
-    "error",
-    request=httpx.Request("GET", ""),
-    response=httpx.Response(status_code=429, json=error_data),
-)
+from huntflow_api_client import HuntflowAPI
+from huntflow_api_client.entities.dictionaries import Dictionary
+from huntflow_api_client.entities.divisions import AccountDivision
+from huntflow_api_client.entities.tags import AccountTag
+from huntflow_api_client.models.request.dictionaries import DictionaryCreateRequest, DictionaryItem
+from huntflow_api_client.models.request.divisions import BatchDivisionsRequest, Division
+from huntflow_api_client.tokens import ApiToken
 
 
-@async_error_handler_deco
 async def main():
-    error = httpx.HTTPStatusError(
-        "error",
-        request=httpx.Request("GET", "https://domain/token/refresh"),
-        response=httpx.Response(status_code=404, json=error_data),
+    account_id = 14
+    token = ApiToken(access_token="ebac5b230f7cc151c08d9d7c62a172192d925b21f5abfc147d6f2f8f371b2d30")
+    api = "https://dev-9691-api.huntflow.dev/v2"
+    api_client = HuntflowAPI(api, token=token, auto_refresh_tokens=True)
+
+    data = BatchDivisionsRequest.parse_obj(
+        {
+            "items": [
+                Division(name="1")
+            ]
+        }
     )
-    raise error
+
+    divisions = AccountDivision(api_client)
+    response = await divisions.create(account_id, data)
+    print(response)
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+
+    asyncio.run(main())

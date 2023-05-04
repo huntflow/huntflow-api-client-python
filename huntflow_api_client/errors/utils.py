@@ -1,16 +1,19 @@
 from typing import Callable
-from huntflow_api_client.errors.handlers import HANDLERS
+
 import httpx
+
+from huntflow_api_client.errors.handlers import HANDLERS
 
 
 def async_error_handler_deco(func: Callable) -> Callable:
-    async def inner(*args, **kwargs):
+    async def inner(*args, **kwargs):  # type: ignore
         try:
             return await func(*args, **kwargs)
         except httpx.HTTPStatusError as e:
+            error = e
             for handler in HANDLERS:
                 if handler.handle_exception.code == e.response.status_code:
-                    raise handler.process_exception(e)
-            raise
+                    error = handler.process_exception(e)
+        raise error
 
     return inner

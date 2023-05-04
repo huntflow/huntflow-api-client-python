@@ -1,96 +1,108 @@
 import json
-from typing import Generic, TypeVar, Type, List, Union, Dict
+from typing import Any, Dict, Generic, List, Tuple, Type, TypeVar, Union
+
 import httpx
 
 from huntflow_api_client.errors import errors
 
-EntityType = TypeVar("EntityType", bound=errors.ApiError)
+ApiErrorEntity = TypeVar("ApiErrorEntity", bound=Union[errors.ApiError])
 
 
-class AbstractErrorHandler(Generic[EntityType]):
-    handle_exception: Type[EntityType] = errors.ApiError
+class BaseErrorHandler(Generic[ApiErrorEntity]):
+    """
+    A base class that converts HTTPStatusErrors to custom API errors.
+    """
+
+    handle_exception: Type[ApiErrorEntity]
 
     @staticmethod
-    def _get_response_errors(e: httpx.HTTPStatusError) -> List[Dict[str, str]]:
-        content = e.response.content
+    def _get_response_errors(ex: httpx.HTTPStatusError) -> List[errors.Error]:
+        content: bytes = ex.response.content
         if not content:
             return []
-        content = json.loads(content)
-        return content.get("errors", [])
 
-    @classmethod
-    def process_exception(cls, e: httpx.HTTPStatusError) -> EntityType:
-        error_list = cls._get_response_errors(e)
+        content_data: Dict[str, Any] = json.loads(content)
+        error_list = content_data.get("errors", [])
         result: List[errors.Error] = []
 
         for error in error_list:
             error = errors.Error.parse_obj(error)
             result.append(error)
+        return result
 
-        return cls.handle_exception(errors=result)
+    @classmethod
+    def process_exception(cls, ex: httpx.HTTPStatusError) -> ApiErrorEntity:
+        error_list = cls._get_response_errors(ex)
+        return cls.handle_exception(errors=error_list)
 
 
-class AuthorizationErrorHandler(AbstractErrorHandler[errors.AuthorizationError]):
+class AuthorizationErrorHandler(
+    BaseErrorHandler[
+        Union[
+            errors.AuthorizationError,
+            errors.InvalidAccessTokenError,
+            errors.TokenExpiredError,
+        ],
+    ],
+):
     handle_exception = errors.AuthorizationError
 
     @classmethod
     def process_exception(
         cls,
-        e: httpx.HTTPStatusError,
+        ex: httpx.HTTPStatusError,
     ) -> Union[errors.AuthorizationError, errors.InvalidAccessTokenError, errors.TokenExpiredError]:
-        error_list = cls._get_response_errors(e)
-        result: List[errors.Error] = []
-
-        for error in error_list:
-            error = errors.Error.parse_obj(error)
-            result.append(error)
+        error_list = cls._get_response_errors(ex)
 
         try:
-            msg = error_list[0]["detail"]
-        except (KeyError, IndexError):
+            msg = error_list[0].detail
+        except IndexError:
             msg = None
 
         if msg == "token_expired":
-            return errors.TokenExpiredError(errors=result)
+            return errors.TokenExpiredError(errors=error_list)
         if msg == "Invalid access token":
-            return errors.InvalidAccessTokenError(errors=result)
+            return errors.InvalidAccessTokenError(errors=error_list)
 
-        return errors.AuthorizationError(errors=result)
+        return errors.AuthorizationError(errors=error_list)
 
 
-class BadRequestErrorHandler(AbstractErrorHandler[errors.BadRequestError]):
+class BadRequestErrorHandler(BaseErrorHandler[errors.BadRequestError]):
     handle_exception = errors.BadRequestError
 
 
-class NotFoundErrorHandler(AbstractErrorHandler[errors.NotFoundError]):
+class NotFoundErrorHandler(
+    BaseErrorHandler[
+        Union[
+            errors.NotFoundError,
+            errors.InvalidRefreshTokenError,
+        ],
+    ],
+):
     handle_exception = errors.NotFoundError
 
     @classmethod
     def process_exception(
         cls,
-        e: httpx.HTTPStatusError,
+        ex: httpx.HTTPStatusError,
     ) -> Union[errors.NotFoundError, errors.InvalidRefreshTokenError]:
-        error_list = cls._get_response_errors(e)
-        result: List[errors.Error] = []
-        for error in error_list:
-            error = errors.Error.parse_obj(error)
-            result.append(error)
+        error_list = cls._get_response_errors(ex)
 
         try:
-            msg = error_list[0]["title"]
-        except (KeyError, IndexError):
+            msg = error_list[0].title
+        except IndexError:
             msg = None
 
         if msg == "error.robot_token.not_found":
-            return errors.InvalidRefreshTokenError(errors=result)
-        return errors.NotFoundError(errors=result)
+            return errors.InvalidRefreshTokenError(errors=error_list)
+        return errors.NotFoundError(errors=error_list)
 
 
-class TooManyRequestsErrorHandler(AbstractErrorHandler[errors.TooManyRequestsError]):
+class TooManyRequestsErrorHandler(BaseErrorHandler[errors.TooManyRequestsError]):
     handle_exception = errors.TooManyRequestsError
 
 
-HANDLERS = (
+HANDLERS: Tuple = (
     AuthorizationErrorHandler,
     BadRequestErrorHandler,
     NotFoundErrorHandler,
