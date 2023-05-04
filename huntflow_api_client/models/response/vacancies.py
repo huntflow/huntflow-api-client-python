@@ -20,7 +20,7 @@ class AccountVacancyRequestSchemaField(BaseModel):
         example=["New position", "Replacing an employee"],
     )
     value: Optional[str] = Field(None, description="Default value", example="New position")
-    fields_: Optional[dict[str, "AccountVacancyRequestSchemaField"]] = Field(
+    fields_: Optional[Dict[str, "AccountVacancyRequestSchemaField"]] = Field(
         None,
         description="Nested fields.py",
         alias="fields.py",
