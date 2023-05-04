@@ -3,11 +3,12 @@ from typing import Optional
 
 import httpx
 
-from huntflow_api_client.errors import (
+from huntflow_api_client.errors.errors import (
     InvalidAccessTokenError,
     InvalidRefreshTokenError,
     TokenExpiredError,
 )
+from huntflow_api_client.errors.utils import async_error_handler_deco
 from huntflow_api_client.tokens.proxy import AbstractTokenProxy, DummyHuntflowTokenProxy
 from huntflow_api_client.tokens.token import ApiToken
 
@@ -85,6 +86,7 @@ class HuntflowAPI:
             timeout=timeout,
         )
 
+    @async_error_handler_deco
     async def _request(  # type: ignore[no-untyped-def]
         self,
         method: str,
@@ -110,24 +112,10 @@ class HuntflowAPI:
                 headers=headers,
                 timeout=timeout,
             )
-            await self._raise_token_expired(response)
+            response.raise_for_status()
         return response
 
-    async def _raise_token_expired(self, response: httpx.Response) -> None:
-        if response.status_code != 401:
-            return
-        if not hasattr(response, "_content"):
-            await response.aread()
-        data = response.json()
-        try:
-            msg = data["errors"][0]["detail"]
-        except KeyError:
-            msg = None
-        if msg == "token_expired":
-            raise TokenExpiredError()
-        if msg == "Invalid access token":
-            raise InvalidAccessTokenError()
-
+    @async_error_handler_deco
     async def _run_token_refresh(self) -> None:
         # Why do we have to check if token was changed?
         # Consider the situation:
@@ -154,9 +142,6 @@ class HuntflowAPI:
                     "/token/refresh",
                     json=refresh_data,
                 )
-                if response.status_code == 404:
-                    raise InvalidRefreshTokenError()
-
                 response.raise_for_status()
             await self._token_proxy.update(response.json())
         finally:
