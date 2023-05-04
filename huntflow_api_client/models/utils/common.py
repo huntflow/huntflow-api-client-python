@@ -2,7 +2,7 @@ from datetime import date
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, Field, PositiveInt, conint
+from pydantic import BaseModel, Field, PositiveInt
 
 
 class VacancyState(str, Enum):
@@ -16,12 +16,12 @@ class VacancyState(str, Enum):
 
 
 class Vacancy(BaseModel):
-    account_division: PositiveInt = Field(
+    account_division: Optional[PositiveInt] = Field(
         None,
         description="Division ID",
         example=12,
     )
-    account_region: PositiveInt = Field(
+    account_region: Optional[PositiveInt] = Field(
         None,
         description="Account region",
         example=1,
@@ -37,10 +37,12 @@ class Vacancy(BaseModel):
         example="Google",
     )
     money: Optional[str] = Field(None, description="Salary", example="$10000")
-    priority: conint(ge=0, le=1) = Field(
+    priority: Optional[int] = Field(
         None,
         description="The priority of a vacancy (0 for usual or 1 for high)",
         example=0,
+        ge=0,
+        le=1,
     )
     hidden: bool = Field(False, description="Is the vacancy hidden from the colleagues?")
     state: VacancyState = Field(VacancyState.OPEN, description="The state of a vacancy")
@@ -48,11 +50,13 @@ class Vacancy(BaseModel):
 
 class FillQuota(BaseModel):
     deadline: Optional[date] = Field(None, description="Date when the quota should be filled")
-    applicants_to_hire: conint(ge=1, le=999) = Field(
+    applicants_to_hire: Optional[int] = Field(
         None,
         description="Number of applicants should be hired on the fill quota",
+        ge=1,
+        le=999,
     )
-    vacancy_request: PositiveInt = Field(
+    vacancy_request: Optional[PositiveInt] = Field(
         None,
         description="Vacancy request ID",
         example=12,

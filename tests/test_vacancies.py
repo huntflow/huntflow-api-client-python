@@ -1,4 +1,5 @@
 import datetime
+from typing import Any, Dict
 
 from pytest_httpx import HTTPXMock
 
@@ -23,7 +24,7 @@ from tests.api import BASE_URL
 ACCOUNT_ID = 1
 VACANCY_ID = 2
 
-GET_ORG_ADD_FIELDS_SCHEMA_RESPONSE = {
+GET_ORG_ADD_FIELDS_SCHEMA_RESPONSE: Dict[str, Any] = {
     "responsible_recruiter": {
         "id": 1,
         "type": "dictionary",
@@ -55,7 +56,7 @@ GET_ORG_ADD_FIELDS_SCHEMA_RESPONSE = {
         "account": ACCOUNT_ID,
     },
 }
-GET_LIST_VACANCIES_RESPONSE = {
+GET_LIST_VACANCIES_RESPONSE: Dict[str, Any] = {
     "page": 1,
     "count": 30,
     "total_pages": 1,
@@ -95,7 +96,7 @@ GET_LIST_VACANCIES_RESPONSE = {
         },
     ],
 }
-GET_VACANCY_RESPONSE = {
+GET_VACANCY_RESPONSE: Dict[str, Any] = {
     "account_division": None,
     "account_region": None,
     "position": "Manager",
@@ -118,7 +119,7 @@ GET_VACANCY_RESPONSE = {
     "source": None,
     "blocks": [],
 }
-CREATE_VACANCY_RESPONSE = {
+CREATE_VACANCY_RESPONSE: Dict[str, Any] = {
     "account_division": None,
     "account_region": None,
     "position": "Developer",
@@ -140,7 +141,7 @@ CREATE_VACANCY_RESPONSE = {
     "multiple": False,
     "vacancy_request": None,
 }
-PATCH_VACANCY_RESPONSE = {
+PATCH_VACANCY_RESPONSE: Dict[str, Any] = {
     "account_division": None,
     "account_region": None,
     "position": "Developer",
@@ -162,7 +163,7 @@ PATCH_VACANCY_RESPONSE = {
     "multiple": False,
     "vacancy_request": None,
 }
-UPDATE_VACANCY_RESPONSE = {
+UPDATE_VACANCY_RESPONSE: Dict[str, Any] = {
     "account_division": None,
     "account_region": None,
     "position": "Developer",
@@ -244,10 +245,10 @@ async def test_create_vacancy(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    data = VacancyCreateRequest(
+    data = VacancyCreateRequest(  # type: ignore
         position="Developer",
         fill_quotas=[
-            FillQuota(
+            FillQuota(  # type: ignore
                 deadline=datetime.date(2023, 7, 1),
                 applicants_to_hire=1,
             ),
@@ -268,10 +269,10 @@ async def test_update_vacancy(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    data = VacancyUpdateRequest(
+    data = VacancyUpdateRequest(  # type: ignore
         position="Manager",
-        money=99999999,
-        fill_quotas=[EditedFillQuota(id=1)],
+        money="99999999",
+        fill_quotas=[EditedFillQuota(id=1)],  # type: ignore
     )
     response = await vacancies.update(ACCOUNT_ID, VACANCY_ID, data)
     assert response == VacancyResponse(**UPDATE_VACANCY_RESPONSE)
@@ -288,8 +289,7 @@ async def test_delete_vacancy(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    response = await vacancies.delete(ACCOUNT_ID, VACANCY_ID)
-    assert response is None
+    await vacancies.delete(ACCOUNT_ID, VACANCY_ID)
 
 
 async def test_patch_vacancy(
@@ -303,7 +303,7 @@ async def test_patch_vacancy(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    data = VacancyUpdatePartialRequest(
+    data = VacancyUpdatePartialRequest(  # type: ignore
         money="$100000000",
     )
     response = await vacancies.patch(ACCOUNT_ID, VACANCY_ID, data)

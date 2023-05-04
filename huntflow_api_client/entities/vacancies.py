@@ -1,9 +1,8 @@
-from typing import List, Union
+from typing import Any, Dict, List, Optional, Union
 
 from huntflow_api_client.entities.base import BaseEntity, CRUDEntityMixin, UpdateEntityMixin
 from huntflow_api_client.models.request.vacancies import (
     VacancyCreateRequest,
-    VacancyListState,
     VacancyUpdatePartialRequest,
     VacancyUpdateRequest,
 )
@@ -30,9 +29,9 @@ class Vacancy(BaseEntity, CRUDEntityMixin, UpdateEntityMixin):
         count: int = 30,
         page: int = 1,
         mine: bool = False,
-        state: Union[VacancyListState, List[VacancyListState]] = None,
+        state: Optional[Union[str, List[str]]] = None,
     ) -> VacancyListResponse:
-        params = {
+        params: Dict[str, Any] = {
             "count": count,
             "page": page,
             "mine": mine,

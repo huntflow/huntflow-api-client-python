@@ -29,31 +29,31 @@ class VacancyCreateRequest(Vacancy, JsonRequestModel):
         description="Organization offer ID",
         example=10,
     )
-    state: VacancyCreateState = Field(
+    state: VacancyCreateState = Field(  # type: ignore
         VacancyCreateState.OPEN,
         description="The state of a vacancy",
     )
-    coworkers: List[PositiveInt] = Field(
+    coworkers: Optional[List[PositiveInt]] = Field(
         None,
         description="List of coworkers working with a vacancy",
         example=[1, 2],
     )
-    body: str = Field(
+    body: Optional[str] = Field(
         None,
         description="The responsibilities for a vacancy in HTML format",
         example="<p>Test body</p>",
     )
-    requirements: str = Field(
+    requirements: Optional[str] = Field(
         None,
         description="The requirements for a vacancy in HTML format",
         example="<p>Test requirements</p>",
     )
-    conditions: str = Field(
+    conditions: Optional[str] = Field(
         None,
         description="The conditions for a vacancy in HTML format",
         example="<p>Test conditions</p>",
     )
-    files: List[PositiveInt] = Field(
+    files: Optional[List[PositiveInt]] = Field(
         None,
         description="List of file IDs attached to a vacancy.",
         example=[1, 2, 3],
@@ -65,23 +65,26 @@ class VacancyCreateRequest(Vacancy, JsonRequestModel):
 
 
 class VacancyUpdateRequest(Vacancy, JsonRequestModel):
-    body: str = Field(
+    body: Optional[str] = Field(
         None,
         description="The responsibilities for a vacancy in HTML format",
         example="<p>Test body</p>",
     )
-    requirements: str = Field(
+    requirements: Optional[str] = Field(
         None,
         description="The requirements for a vacancy in HTML format",
         example="<p>Test requirements</p>",
     )
-    conditions: str = Field(
+    conditions: Optional[str] = Field(
         None,
         description="The conditions for a vacancy in HTML format",
         example="<p>Test conditions</p>",
     )
-    files: List[PositiveInt] = Field(None, description="The list of files attached to a vacancy")
-    fill_quotas: List[EditedFillQuota] = Field(None, description="Fill quota ID")
+    files: Optional[List[PositiveInt]] = Field(
+        None,
+        description="The list of files attached to a vacancy",
+    )
+    fill_quotas: Optional[List[EditedFillQuota]] = Field(None, description="Fill quota ID")
     account_vacancy_hold_reason: Optional[PositiveInt] = Field(
         None,
         description="Vacancy hold reason ID",
@@ -98,7 +101,7 @@ class VacancyUpdateRequest(Vacancy, JsonRequestModel):
 
 
 class VacancyUpdatePartialRequest(VacancyUpdateRequest):
-    position: str = Field(
+    position: Optional[str] = Field(  # type: ignore
         None,
         description="The name of the vacancy (occupation)",
         example="Developer",
