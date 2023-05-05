@@ -5,10 +5,15 @@ from huntflow_api_client.models.response.tags import AccountTagResponse
 
 class AccountTag(BaseEntity, CRUDEntityMixin):
     async def get(self, account_id: int, account_tag_id: int) -> AccountTagResponse:
-        response = await self._api.request(
-            "GET",
-            f"/accounts/{account_id}/tags/{account_tag_id}",
-        )
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/tags/-tag_id-
+
+        :param account_id: Organization ID
+        :param account_tag_id: Tag ID
+        :return: The specified tag
+        """
+        response = await self._api.request("GET", f"/accounts/{account_id}/tags/{account_tag_id}")
         return AccountTagResponse(**response.json())
 
     async def create(
@@ -16,6 +21,13 @@ class AccountTag(BaseEntity, CRUDEntityMixin):
         account_id: int,
         account_tag: CreateAccountTagRequest,
     ) -> AccountTagResponse:
+        """
+        API method reference https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/tags
+
+        :param account_id: Organization ID
+        :param account_tag: Tag data
+        :return: Tag
+        """
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/tags",
@@ -29,6 +41,15 @@ class AccountTag(BaseEntity, CRUDEntityMixin):
         account_tag_id: int,
         data: CreateAccountTagRequest,
     ) -> AccountTagResponse:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#put-/accounts/-account_id-/tags/-tag_id-
+
+        :param account_id: Organization ID
+        :param account_tag_id: Tag ID
+        :param data: Tag data
+        :return: Tag
+        """
         response = await self._api.request(
             "PUT",
             f"/accounts/{account_id}/tags/{account_tag_id}",
@@ -37,6 +58,13 @@ class AccountTag(BaseEntity, CRUDEntityMixin):
         return AccountTagResponse(**response.json())
 
     async def delete(self, account_id: int, account_tag_id: int) -> None:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#delete-/accounts/-account_id-/hooks/-webhook_id-
+
+        :param account_id: Organization ID
+        :param account_tag_id: Tag ID
+        """
         await self._api.request(
             "DELETE",
             f"/accounts/{account_id}/tags/{account_tag_id}",
