@@ -7,6 +7,11 @@ import respx
 from respx.types import URLPatternTypes
 
 from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
+from tests.utils.http_responses import (
+    RESPONSE_INVALID_REFRESH,
+    RESPONSE_TOKEN_EXPIRED,
+    RESPONSE_INVALID_TOKEN,
+)
 
 BASE_URL = "https://api.huntflow.dev/v2"
 ACCESS_TOKEN_EXPIRES_IN = 86400 * 7
@@ -60,33 +65,11 @@ class FakeAPIServer:
 
     @classmethod
     def access_token_is_expired(cls, _: httpx.Request) -> httpx.Response:
-        return httpx.Response(
-            status_code=401,
-            json={
-                "errors": [
-                    {
-                        "type": "authorization_error",
-                        "title": "Authorization Error",
-                        "detail": "token_expired",
-                    },
-                ],
-            },
-        )
+        return RESPONSE_TOKEN_EXPIRED
 
     @classmethod
     def access_token_is_invalid(cls, _: httpx.Request) -> httpx.Response:
-        return httpx.Response(
-            status_code=401,
-            json={
-                "errors": [
-                    {
-                        "type": "authorization_error",
-                        "title": "Authorization Error",
-                        "detail": "Invalid access token",
-                    },
-                ],
-            },
-        )
+        return RESPONSE_INVALID_TOKEN
 
     @Router("POST", "/token/refresh")
     def token_refresh(self, request: httpx.Request) -> httpx.Response:
@@ -95,17 +78,7 @@ class FakeAPIServer:
         request_data = json.loads(request.content)
         refresh_token = request_data["refresh_token"]
         if refresh_token != self.token_pair.refresh_token:
-            return httpx.Response(
-                404,
-                json={
-                    "errors": [
-                        {
-                            "type": "not_found",
-                            "title": "error.robot_token.not_found",
-                        },
-                    ],
-                },
-            )
+            return RESPONSE_INVALID_REFRESH
 
         self.token_pair = TokenPair()
         self.is_expired_token = False

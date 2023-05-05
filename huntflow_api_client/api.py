@@ -4,7 +4,7 @@ from typing import Optional
 import httpx
 
 from huntflow_api_client.errors.errors import InvalidAccessTokenError, TokenExpiredError
-from huntflow_api_client.errors.utils import async_error_handler_deco
+from huntflow_api_client.errors.utils import convert_response_to_error
 from huntflow_api_client.tokens.proxy import AbstractTokenProxy, DummyHuntflowTokenProxy
 from huntflow_api_client.tokens.token import ApiToken
 
@@ -82,7 +82,7 @@ class HuntflowAPI:
             timeout=timeout,
         )
 
-    @async_error_handler_deco
+    @convert_response_to_error
     async def _request(  # type: ignore[no-untyped-def]
         self,
         method: str,
@@ -108,10 +108,9 @@ class HuntflowAPI:
                 headers=headers,
                 timeout=timeout,
             )
-            response.raise_for_status()
+
         return response
 
-    @async_error_handler_deco
     async def _run_token_refresh(self) -> None:
         # Why do we have to check if token was changed?
         # Consider the situation:
@@ -134,11 +133,11 @@ class HuntflowAPI:
         try:
             refresh_data = await self._token_proxy.get_refresh_data()
             async with self.http_client as client:
-                response = await client.post(
+                request = convert_response_to_error(client.post)
+                response = await request(
                     "/token/refresh",
                     json=refresh_data,
                 )
-                response.raise_for_status()
             await self._token_proxy.update(response.json())
         finally:
             await self._token_proxy.release_lock()

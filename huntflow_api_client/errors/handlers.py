@@ -16,8 +16,8 @@ class BaseErrorHandler(Generic[ApiErrorEntity]):
     handle_exception: Type[ApiErrorEntity]
 
     @staticmethod
-    def _get_response_errors(ex: httpx.HTTPStatusError) -> List[errors.Error]:
-        content: bytes = ex.response.content
+    def _get_response_errors(response: httpx.Response) -> List[errors.Error]:
+        content: bytes = response.content
         if not content:
             return []
 
@@ -31,8 +31,8 @@ class BaseErrorHandler(Generic[ApiErrorEntity]):
         return result
 
     @classmethod
-    def process_exception(cls, ex: httpx.HTTPStatusError) -> ApiErrorEntity:
-        error_list = cls._get_response_errors(ex)
+    def process_response(cls, response: httpx.Response) -> ApiErrorEntity:
+        error_list = cls._get_response_errors(response)
         return cls.handle_exception(errors=error_list)
 
 
@@ -48,11 +48,11 @@ class AuthorizationErrorHandler(
     handle_exception = errors.AuthorizationError
 
     @classmethod
-    def process_exception(
+    def process_response(
         cls,
-        ex: httpx.HTTPStatusError,
+        response: httpx.Response,
     ) -> Union[errors.AuthorizationError, errors.InvalidAccessTokenError, errors.TokenExpiredError]:
-        error_list = cls._get_response_errors(ex)
+        error_list = cls._get_response_errors(response)
 
         try:
             msg = error_list[0].detail
@@ -82,11 +82,11 @@ class NotFoundErrorHandler(
     handle_exception = errors.NotFoundError
 
     @classmethod
-    def process_exception(
+    def process_response(
         cls,
-        ex: httpx.HTTPStatusError,
+        response: httpx.Response,
     ) -> Union[errors.NotFoundError, errors.InvalidRefreshTokenError]:
-        error_list = cls._get_response_errors(ex)
+        error_list = cls._get_response_errors(response)
 
         try:
             msg = error_list[0].title
