@@ -9,8 +9,8 @@ from respx.types import URLPatternTypes
 from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
 from tests.utils.http_responses import (
     RESPONSE_INVALID_REFRESH,
-    RESPONSE_TOKEN_EXPIRED,
     RESPONSE_INVALID_TOKEN,
+    RESPONSE_TOKEN_EXPIRED,
 )
 
 BASE_URL = "https://api.huntflow.dev/v2"
