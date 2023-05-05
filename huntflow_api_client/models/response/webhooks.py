@@ -7,7 +7,7 @@ from huntflow_api_client.models.utils.common import WebhookEvent
 
 
 class WebhookResponse(BaseModel):
-    id: PositiveInt = Field(..., description="Webhook ID")  # noqa A003
+    id: PositiveInt = Field(..., description="Webhook ID")
     account: PositiveInt = Field(..., description="Organization ID")
     url: AnyHttpUrl = Field(..., description="Webhook URL", example="https://example.com/hooks")
     created: datetime = Field(..., description="Date and time of creating a webhook")
