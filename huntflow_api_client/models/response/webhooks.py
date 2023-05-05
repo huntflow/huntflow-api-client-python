@@ -12,7 +12,7 @@ class WebhookResponse(BaseModel):
     url: AnyHttpUrl = Field(..., description="Webhook URL", example="https://example.com/hooks")
     created: datetime = Field(..., description="Date and time of creating a webhook")
     active: bool = Field(..., description="Webhook activity flag", example=True)
-    webhook_events: List[WebhookEvent] = Field(..., description="Event types")
+    webhook_events: List[WebhookEvent] = Field(..., description="List of webhook events")
 
 
 class WebhooksListResponse(BaseModel):

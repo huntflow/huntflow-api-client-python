@@ -66,7 +66,7 @@ async def test_create_webhook(
         secret="",
         url="https://some.site/hook/handler",
         active=True,
-        webhook_events=[WebhookEvent.APPLICANT.value, WebhookEvent.VACANCY.value],
+        webhook_events=[WebhookEvent.APPLICANT, WebhookEvent.VACANCY],
     )
     response = await webhooks.create(ACCOUNT_ID, data)
     assert response == WebhookResponse(**WEBHOOK_CREATE_RESPONSE)
