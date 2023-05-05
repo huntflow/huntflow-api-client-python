@@ -29,11 +29,12 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
             raise ValueError(
                 "Only one parameter from coworker_id and only_available must be specified",
             )
-        params = {"only_available": only_available}
         path = f"/accounts/{account_id}"
         if coworker_id is not None:
             path += f"/coworkers/{coworker_id}"
             params = {}
+        else:
+            params = {"only_available": only_available}
         path += "/divisions"
         response = await self._api.request(
             "GET",
