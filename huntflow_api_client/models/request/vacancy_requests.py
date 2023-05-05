@@ -45,7 +45,7 @@ class CreateVacancyRequestRequest(JsonRequestModel):
     )
     files: t.Optional[list[PositiveInt]] = Field(
         None,
-        description=("List of file IDs to attach to the vacancy request."),
+        description="List of file IDs to attach to the vacancy request.",
         example=[1, 2, 3],
     )
 
