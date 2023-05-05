@@ -13,10 +13,7 @@ class Account(BaseEntity, GetEntityMixin, ListEntityMixin):
 
         :return: Information about the current user
         """
-        response = await self._api.request(
-            "GET",
-            "/me",
-        )
+        response = await self._api.request("GET", "/me")
         return MeResponse.parse_obj(response.json())
 
     async def list(self) -> OrganizationsListResponse:
@@ -26,10 +23,7 @@ class Account(BaseEntity, GetEntityMixin, ListEntityMixin):
         :return: List of available organizations for the
             user associated with the passed authentication
         """
-        response = await self._api.request(
-            "GET",
-            "/accounts",
-        )
+        response = await self._api.request("GET", "/accounts")
         return OrganizationsListResponse.parse_obj(response.json())
 
     async def get(self, account_id: int) -> OrganizationInfoResponse:
@@ -39,8 +33,5 @@ class Account(BaseEntity, GetEntityMixin, ListEntityMixin):
         :param account_id: Organization ID
         :return: Information about the specified organization
         """
-        response = await self._api.request(
-            "GET",
-            f"/accounts/{account_id}",
-        )
+        response = await self._api.request("GET", f"/accounts/{account_id}")
         return OrganizationInfoResponse.parse_obj(response.json())
