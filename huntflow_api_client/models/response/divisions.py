@@ -7,7 +7,7 @@ from huntflow_api_client.models.utils import descriptions
 
 
 class Division(BaseModel):
-    id: int = Field(..., description="Division ID", example=2)  # noqa: A003 VNE003
+    id: int = Field(..., description="Division ID", example=2)
     name: str = Field(..., description="Division name", example="IT Department")
     order: int = Field(..., description="Order number", example=1)
     active: bool = Field(..., description="Activity flag")
