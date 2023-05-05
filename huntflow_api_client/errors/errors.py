@@ -6,17 +6,17 @@ from pydantic import BaseModel
 
 class Location(BaseModel):
     entity: str
-    variable: str  # noqa VNE002
+    variable: str  # noqa: VNE002
 
 
 class Error(BaseModel):
-    type: str  # noqa A003 VNE003
+    type: str
     title: str
     location: Optional[Location] = None
     detail: Optional[str] = None
 
 
-class ApiError(Exception):
+class BaseApiError(Exception):
     code: int = 500
     errors: List[Error]
 
@@ -29,15 +29,15 @@ class ApiError(Exception):
         return json.dumps({"Code": self.code, "Errors": errors}, indent=4, ensure_ascii=False)
 
 
-class AuthorizationError(ApiError):
+class AuthorizationError(BaseApiError):
     code = 401
 
 
-class BadRequestError(ApiError):
+class BadRequestError(BaseApiError):
     code = 400
 
 
-class NotFoundError(ApiError):
+class NotFoundError(BaseApiError):
     code = 404
 
 
@@ -53,5 +53,17 @@ class InvalidRefreshTokenError(NotFoundError):
     pass
 
 
-class TooManyRequestsError(ApiError):
+class TooManyRequestsError(BaseApiError):
     code = 429
+
+
+class InternalApiError(BaseApiError):
+    pass
+
+
+class PaymentRequiredError(BaseApiError):
+    code = 402
+
+
+class AccessDeniedError(BaseApiError):
+    code = 403

@@ -5,15 +5,15 @@ import httpx
 
 from huntflow_api_client.errors import errors
 
-ApiErrorEntity = TypeVar("ApiErrorEntity", bound=errors.ApiError)
+BaseApiErrorEntity = TypeVar("BaseApiErrorEntity", bound=errors.BaseApiError)
 
 
-class BaseErrorHandler(Generic[ApiErrorEntity]):
+class BaseErrorHandler(Generic[BaseApiErrorEntity]):
     """
     A base class that converts HTTPStatusErrors to custom API errors.
     """
 
-    handle_exception: Type[ApiErrorEntity]
+    handle_exception: Type[BaseApiErrorEntity]
 
     @staticmethod
     def _get_response_errors(response: httpx.Response) -> List[errors.Error]:
@@ -31,7 +31,7 @@ class BaseErrorHandler(Generic[ApiErrorEntity]):
         return result
 
     @classmethod
-    def process_response(cls, response: httpx.Response) -> ApiErrorEntity:
+    def process_response(cls, response: httpx.Response) -> BaseApiErrorEntity:
         error_list = cls._get_response_errors(response)
         return cls.handle_exception(errors=error_list)
 
@@ -102,9 +102,24 @@ class TooManyRequestsErrorHandler(BaseErrorHandler[errors.TooManyRequestsError])
     handle_exception = errors.TooManyRequestsError
 
 
+class PaymentRequiredErrorHandler(BaseErrorHandler[errors.PaymentRequiredError]):
+    handle_exception = errors.PaymentRequiredError
+
+
+class AccessDeniedErrorHandler(BaseErrorHandler[errors.AccessDeniedError]):
+    handle_exception = errors.AccessDeniedError
+
+
+class InternalApiErrorHandler(BaseErrorHandler[errors.InternalApiError]):
+    handle_exception = errors.InternalApiError
+
+
 HANDLERS: Tuple = (
     AuthorizationErrorHandler,
     BadRequestErrorHandler,
     NotFoundErrorHandler,
     TooManyRequestsErrorHandler,
+    PaymentRequiredErrorHandler,
+    AccessDeniedErrorHandler,
+    InternalApiErrorHandler,
 )
