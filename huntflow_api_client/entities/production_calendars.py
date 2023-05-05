@@ -1,4 +1,5 @@
 import datetime
+from typing import Any, Dict, Optional
 
 from huntflow_api_client.entities.base import BaseEntity, GetEntityMixin, ListEntityMixin
 from huntflow_api_client.models.request.production_calendars import (
@@ -14,8 +15,6 @@ from huntflow_api_client.models.response.production_calendars import (
     NonWorkingDaysBulkResponse,
     NonWorkingDaysResponse,
 )
-
-TODAY = datetime.date.today()
 
 
 class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
@@ -54,9 +53,9 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
     async def get_non_working_days_in_period(
         self,
         calendar_id: int,
-        deadline: str,
-        start: datetime.date = TODAY,
-        verbose: bool = True,
+        deadline: datetime.date,
+        start: Optional[datetime.date] = None,
+        verbose: Optional[bool] = True,
     ) -> NonWorkingDaysResponse:
         """
         API method reference
@@ -70,7 +69,9 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         :return: The total number of non-working/working days and
             a list of weekends and holidays within a range
         """
-        params = {"start": start.strftime("%Y-%m-%d"), "verbose": verbose}
+        params: Dict[str, Any] = {"verbose": verbose}
+        if start:
+            params["start"] = start.strftime("%Y-%m-%d")
         path = f"/production_calendars/{calendar_id}/days/{deadline}"
         response = await self._api.request("GET", path, params=params)
         return NonWorkingDaysResponse.parse_obj(response.json())
@@ -97,7 +98,7 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         self,
         calendar_id: int,
         days: int,
-        start: str,
+        start: Optional[datetime.date] = None,
     ) -> str:
         """
         API method reference
@@ -108,7 +109,9 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         :param start: A date to start counting
         :return: Deadline after {days} working days
         """
-        params = {"start": start}
+        params = None
+        if start:
+            params = {"start": start}
         path = f"/production_calendars/{calendar_id}/deadline/{days}"
         response = await self._api.request("GET", path, params=params)
         return response.json()
@@ -134,7 +137,7 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         self,
         calendar_id: int,
         days: int,
-        deadline: str,
+        deadline: datetime.date,
     ) -> str:
         """
         API method reference
@@ -146,7 +149,9 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         :return: A date in {days} working days ahead, according to {calendar_id}
             production calendar
         """
-        params = {"deadline": deadline}
+        params = None
+        if deadline:
+            params = {"deadline": deadline}
         path = f"/production_calendars/{calendar_id}/start/{days}"
         response = await self._api.request("GET", path, params=params)
         return response.json()

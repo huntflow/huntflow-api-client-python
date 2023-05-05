@@ -3,7 +3,7 @@ import datetime
 from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
-from huntflow_api_client.entities.production_calendars import TODAY, ProductionCalendar
+from huntflow_api_client.entities.production_calendars import ProductionCalendar
 from huntflow_api_client.models.request.production_calendars import (
     DeadLineDate,
     DeadLineDatesBulkRequest,
@@ -25,8 +25,9 @@ from tests.api import BASE_URL
 
 ACCOUNT_ID = 1
 CALENDAR_ID = 1
-DEADLINE_DATE = "2023-01-01"
-START_DATE = "2023-04-01"
+TODAY = datetime.date.today()
+DEADLINE_DATE = datetime.date(2023, 1, 1)
+START_DATE = datetime.date(2023, 4, 1)
 DAYS_COUNT = 2
 CALENDAR_LIST_RESPONSE = {
     "items": [{"id": 1, "name": "Russian Federation"}, {"id": 2, "name": "Kazakhstan"}],
@@ -35,7 +36,7 @@ CALENDAR_GET_RESPONSE = {"id": 1, "name": "Russian Federation"}
 ORG_CALENDAR_GET_RESPONSE = {"account": 19, "production_calendar": 1}
 NON_WORKING_DAYS_GET_RESPONSE = {
     "start": TODAY.strftime("%Y-%m-%d"),
-    "deadline": DEADLINE_DATE,
+    "deadline": DEADLINE_DATE.strftime("%Y-%m-%d"),
     "total_days": 5,
     "not_working_days": 1,
     "production_calendar": 1,
@@ -45,7 +46,7 @@ MULTIPLE_NON_WORKING_DAYS_GET_RESPONSE = {
     "items": [
         {
             "start": TODAY.strftime("%Y-%m-%d"),
-            "deadline": DEADLINE_DATE,
+            "deadline": DEADLINE_DATE.strftime("%Y-%m-%d"),
             "total_days": 7,
             "not_working_days": 2,
             "production_calendar": 1,
@@ -108,8 +109,8 @@ async def test_get_non_working_days_in_period(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/production_calendars/{CALENDAR_ID}/days/{DEADLINE_DATE}?start="
-        f"{TODAY.strftime('%Y-%m-%d')}&verbose=true",
+        url=f"{BASE_URL}/production_calendars/{CALENDAR_ID}/days/"
+        f"{DEADLINE_DATE.strftime('%Y-%m-%d')}?verbose=true",
         json=NON_WORKING_DAYS_GET_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
