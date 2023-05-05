@@ -42,5 +42,5 @@ class OrganizationInfoResponse(BaseModel):
     photo: Optional[AnyHttpUrl] = Field(
         None,
         description="Organization logo url",
-        example="https://huntflow.ru/logo.jpg",
+        example="https://huntflow.dev/logo.jpg",
     )
