@@ -25,7 +25,7 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
 
         :return: DivisionsListResponse
         """
-        if coworker_id is not None and only_available is True:
+        if coworker_id is not None and only_available:
             raise ValueError(
                 "Only one parameter from coworker_id and only_available must be specified",
             )
