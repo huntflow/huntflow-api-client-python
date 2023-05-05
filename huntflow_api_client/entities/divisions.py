@@ -9,7 +9,7 @@ from huntflow_api_client.models.response.divisions import (
 
 
 class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
-    async def list(  # noqa: A003
+    async def list(
         self,
         account_id: int,
         coworker_id: Optional[int] = None,

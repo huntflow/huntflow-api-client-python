@@ -14,5 +14,5 @@ class ApiToken:
         attrs = {field.name for field in fields(cls)}
         return cls(**{k: v for k, v in dict_.items() if k in attrs})
 
-    def dict(self) -> Dict[str, Any]:  # noqa: A003
+    def dict(self) -> Dict[str, Any]:
         return asdict(self)

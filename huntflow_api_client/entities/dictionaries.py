@@ -17,7 +17,7 @@ from huntflow_api_client.models.response.dictionaries import (
 
 
 class Dictionary(BaseEntity, UpdateEntityMixin, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
-    async def list(self, account_id: int) -> DictionariesListResponse:  # noqa: A003 VNE003
+    async def list(self, account_id: int) -> DictionariesListResponse:
         path = f"/accounts/{account_id}/dictionaries"
         response = await self._api.request("GET", path)
         data = DictionariesListResponse.parse_obj(response.json())

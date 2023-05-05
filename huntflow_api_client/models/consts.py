@@ -7,3 +7,9 @@ class WebhookEvent(str, Enum):
     RESPONSE = "RESPONSE"
     OFFER = "OFFER"
     VACANCY_REQUEST = "VACANCY-REQUEST"
+
+
+class MemberType(str, Enum):
+    owner = "owner"
+    manager = "manager"
+    watcher = "watcher"

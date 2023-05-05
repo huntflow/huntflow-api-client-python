@@ -21,7 +21,7 @@ class DictionaryTaskResponse(BaseModel):
 
 
 class DictionaryItem(BaseModel):
-    id: PositiveInt = Field(..., description="Dictionary ID", example=7)  # noqa: A003 VNE003
+    id: PositiveInt = Field(..., description="Dictionary ID", example=7)
     code: str = Field(..., description="Dictionary code", example="citizenship")
     name: str = Field(..., description="Dictionary name", example="Citizenship")
     foreign: Optional[str] = Field(
@@ -37,7 +37,7 @@ class DictionariesListResponse(BaseModel):
 
 
 class DictionaryField(BaseModel):
-    id: int = Field(..., description="Dictionary field ID")  # noqa: A003 VNE003
+    id: int = Field(..., description="Dictionary field ID")
     name: str = Field(..., description="Dictionary field name")
     order: int = Field(..., description="Order")
     active: bool = Field(..., description="Activity flag")
@@ -55,7 +55,7 @@ class DictionaryField(BaseModel):
 
 
 class DictionaryResponse(BaseModel):
-    id: int = Field(..., description="Dictionary ID")  # noqa: A003 VNE003
+    id: int = Field(..., description="Dictionary ID")
     code: str = Field(..., description="Dictionary code")
     name: str = Field(..., description="Dictionary name")
     foreign: Optional[str] = Field(
