@@ -110,8 +110,8 @@ class AccessDeniedErrorHandler(BaseErrorHandler[errors.AccessDeniedError]):
     handle_exception = errors.AccessDeniedError
 
 
-class InternalApiErrorHandler(BaseErrorHandler[errors.InternalApiError]):
-    handle_exception = errors.InternalApiError
+class ApiInternalErrorHandler(BaseErrorHandler[errors.ApiInternalError]):
+    handle_exception = errors.ApiInternalError
 
 
 HANDLERS: Tuple = (
@@ -121,5 +121,5 @@ HANDLERS: Tuple = (
     TooManyRequestsErrorHandler,
     PaymentRequiredErrorHandler,
     AccessDeniedErrorHandler,
-    InternalApiErrorHandler,
+    ApiInternalErrorHandler,
 )

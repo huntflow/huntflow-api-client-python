@@ -78,3 +78,40 @@ RESPONSE_TOO_MANY_REQUESTS = httpx.Response(
         ],
     },
 )
+
+
+RESPONSE_PAYMENT_REQUIRED = httpx.Response(
+    402,
+    json={
+        "errors": [
+            {
+                "type": "payment_required",
+                "title": "Payment Required Error",
+            },
+        ],
+    },
+)
+
+RESPONSE_ACCESS_DENIED = httpx.Response(
+    403,
+    json={
+        "errors": [
+            {
+                "type": "access_denied",
+                "title": "Access Denied Error",
+            },
+        ],
+    },
+)
+
+RESPONSE_INTERNAL_ERROR = httpx.Response(
+    500,
+    json={
+        "errors": [
+            {
+                "type": "internal_error",
+                "title": "Internal Error",
+            },
+        ],
+    },
+)

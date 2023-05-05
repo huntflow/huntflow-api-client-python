@@ -83,3 +83,33 @@ async def test_too_many_requests_error_handler() -> None:
     assert json.loads(http_responses.RESPONSE_TOO_MANY_REQUESTS.content) == compose_source_errors(
         custom_error.errors,
     )
+
+
+async def test_payment_required_error_handler() -> None:
+    custom_error = handlers.PaymentRequiredErrorHandler.process_response(
+        http_responses.RESPONSE_PAYMENT_REQUIRED,
+    )
+    assert isinstance(custom_error, errors.PaymentRequiredError)
+    assert json.loads(http_responses.RESPONSE_PAYMENT_REQUIRED.content) == compose_source_errors(
+        custom_error.errors,
+    )
+
+
+async def test_access_denied_error_handler() -> None:
+    custom_error = handlers.AccessDeniedErrorHandler.process_response(
+        http_responses.RESPONSE_ACCESS_DENIED,
+    )
+    assert isinstance(custom_error, errors.AccessDeniedError)
+    assert json.loads(http_responses.RESPONSE_ACCESS_DENIED.content) == compose_source_errors(
+        custom_error.errors,
+    )
+
+
+async def test_internal_api_error_handler() -> None:
+    custom_error = handlers.ApiInternalErrorHandler.process_response(
+        http_responses.RESPONSE_INTERNAL_ERROR,
+    )
+    assert isinstance(custom_error, errors.ApiInternalError)
+    assert json.loads(http_responses.RESPONSE_INTERNAL_ERROR.content) == compose_source_errors(
+        custom_error.errors,
+    )

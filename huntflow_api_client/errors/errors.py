@@ -57,7 +57,7 @@ class TooManyRequestsError(BaseApiError):
     code = 429
 
 
-class InternalApiError(BaseApiError):
+class ApiInternalError(BaseApiError):
     pass
 
 
