@@ -3,7 +3,7 @@ from typing import List
 from pydantic import Field
 
 from huntflow_api_client.models.common import JsonRequestModel
-from huntflow_api_client.models.utils.consts import WebhookEvent
+from huntflow_api_client.models.consts import WebhookEvent
 
 
 class WebhookRequest(JsonRequestModel):

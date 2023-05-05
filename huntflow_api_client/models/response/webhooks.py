@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import AnyHttpUrl, BaseModel, Field, PositiveInt
 
-from huntflow_api_client.models.utils.consts import WebhookEvent
+from huntflow_api_client.models.consts import WebhookEvent
 
 
 class WebhookResponse(BaseModel):
