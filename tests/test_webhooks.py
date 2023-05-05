@@ -4,9 +4,9 @@ from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.webhooks import Webhook
+from huntflow_api_client.models.consts import WebhookEvent
 from huntflow_api_client.models.request.webhooks import WebhookRequest
 from huntflow_api_client.models.response.webhooks import WebhookResponse, WebhooksListResponse
-from huntflow_api_client.models.consts import WebhookEvent
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
 
