@@ -22,21 +22,19 @@ class Account(BaseEntity):
         :return: List of available organizations for the
         user associated with the passed authentication
         """
-        path = "/accounts"
         response = await self._api.request(
             "GET",
-            path,
+            "/accounts",
         )
         return OrganizationsListResponse.parse_obj(response.json())
 
     async def get_org_info(self, account_id: int) -> OrganizationInfoResponse:
         """
-       :param account_id: Organization ID
-       :return: Information about the specified organization
-       """
-        path = f"/accounts/{account_id}"
+        :param account_id: Organization ID
+        :return: Information about the specified organization
+        """
         response = await self._api.request(
             "GET",
-            path,
+            f"/accounts/{account_id}",
         )
         return OrganizationInfoResponse.parse_obj(response.json())
