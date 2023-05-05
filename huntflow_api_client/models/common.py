@@ -35,7 +35,7 @@ class JsonRequestModel(BaseModel):
         return json.loads(self.json(**params, **dumps_kwargs))  # type: ignore
 
 
-class ListResponseMixin(BaseModel):
+class PaginatedResponse(BaseModel):
     page: PositiveInt = Field(..., description="Page number", example=1)
     count: int = Field(..., description="Number of items per page", example=30)
     total_pages: int = Field(..., description="Total number of pages", example=2)

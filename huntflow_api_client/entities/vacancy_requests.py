@@ -23,13 +23,16 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
         values: bool = False,
     ) -> VacancyRequestListResponse:
         """
+        API method reference:
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/vacancy_requests
+
         :param account_id: Organization ID
         :param vacancy_id: Vacancy ID. If supplied,
             only vacancy requests related to the specified vacancy will be returned
         :param count: Number of items per page
         :param page: Page number
         :param values: Show values flag. If True, vacancy requests fields will be included
-        :return: VacancyRequestListResponse
+        :return:  List of vacancy requests
         """
         path = f"/accounts/{account_id}/vacancy_requests"
         params = {
@@ -45,9 +48,12 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
 
     async def get(self, account_id: int, vacancy_request_id: int) -> VacancyRequestResponse:
         """
+        API method reference:
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/vacancy_requests/-vacancy_request_id-
+
         :param account_id: Organization ID
-        :param vacancy_request_id:
-        :return: VacancyRequestResponse
+        :param vacancy_request_id: Vacancy request ID
+        :return: Specified vacancy request's data
         """
         path = f"/accounts/{account_id}/vacancy_requests/{vacancy_request_id}"
         response = await self._api.request("GET", path)
@@ -59,9 +65,12 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
         request_data: CreateVacancyRequestRequest,
     ) -> VacancyRequestResponse:
         """
+        API method reference:
+            https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/vacancy_requests
+
         :param account_id: Organization ID
-        :param request_data: CreateVacancyRequestRequest
-        :return: VacancyRequestResponse
+        :param request_data: Request body structure
+        :return: Created vacancy request's data
         """
         path = f"/accounts/{account_id}/vacancy_requests"
         response = await self._api.request(

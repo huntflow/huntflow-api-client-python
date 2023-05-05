@@ -16,6 +16,10 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
         only_available: bool = False,
     ) -> DivisionsListResponse:
         """
+        API method reference:
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/divisions
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/coworkers/-coworker_id-/divisions
+
         :param account_id: Organization ID
         :param coworker_id: If specified - will be returned divisions for specified coworker
         :param only_available:	If True,
@@ -23,7 +27,7 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
 
         :raises ValueError: Only one parameter from coworker_id and only_available must be specified
 
-        :return: DivisionsListResponse
+        :return: List of company divisions.
         """
         if coworker_id is not None and only_available:
             raise ValueError(
@@ -49,10 +53,13 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
         divisions: BatchDivisionsRequest,
     ) -> BatchDivisionsResponse:
         """
+        API method reference:
+            https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/divisions/batch
+
         :param account_id: Organization ID
         :param divisions: BatchDivisionsRequest
 
-        :return: BatchDivisionsResponse
+        :return: An object that contains the task ID of the delayed background update task
         """
         response = await self._api.request(
             "POST",

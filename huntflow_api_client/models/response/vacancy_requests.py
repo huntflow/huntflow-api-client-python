@@ -6,7 +6,7 @@ from enum import Enum
 
 from pydantic import BaseModel, EmailStr, Field, PositiveInt
 
-from huntflow_api_client.models.common import ListResponseMixin
+from huntflow_api_client.models.common import PaginatedResponse
 from huntflow_api_client.models.utils.fields import File
 
 
@@ -84,7 +84,7 @@ class VacancyRequest(BaseModel):
     )
 
 
-class VacancyRequestListResponse(ListResponseMixin):
+class VacancyRequestListResponse(PaginatedResponse):
     total_items: t.Optional[int] = Field(..., description="Total number of items", example=50)
     items: t.List[VacancyRequest]
 
