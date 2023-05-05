@@ -11,7 +11,7 @@ class Account(BaseEntity, GetEntityMixin, ListEntityMixin):
         """
         API method reference https://api.huntflow.ai/v2/docs#get-/me
 
-        :return: MeResponse
+        :return: Information about the current user
         """
         response = await self._api.request("GET", "/me")
         return MeResponse.parse_obj(response.json())
@@ -20,7 +20,8 @@ class Account(BaseEntity, GetEntityMixin, ListEntityMixin):
         """
         API method reference https://api.huntflow.ai/v2/docs#get-/accounts
 
-        :return: OrganizationsListResponse
+        :return: List of available organizations for the user
+            associated with the passed authentication
         """
         response = await self._api.request("GET", "/accounts")
         return OrganizationsListResponse.parse_obj(response.json())
@@ -30,7 +31,7 @@ class Account(BaseEntity, GetEntityMixin, ListEntityMixin):
         API method reference https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-
 
         :param account_id: Organization ID
-        :return: OrganizationInfoResponse
+        :return: Information about the specified organization
         """
         response = await self._api.request("GET", f"/accounts/{account_id}")
         return OrganizationInfoResponse.parse_obj(response.json())
