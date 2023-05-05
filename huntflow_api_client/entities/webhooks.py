@@ -9,7 +9,7 @@ from huntflow_api_client.models.response.webhooks import WebhookResponse, Webhoo
 
 
 class Webhook(BaseEntity, ListEntityMixin, CreateEntityMixin, DeleteEntityMixin):
-    async def list(self, account_id: int) -> WebhooksListResponse:  # noqa A003
+    async def list(self, account_id: int) -> WebhooksListResponse:
         path = f"/accounts/{account_id}/hooks"
         response = await self._api.request("GET", path)
         return WebhooksListResponse(**response.json())
