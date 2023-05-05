@@ -34,7 +34,7 @@ CALENDAR_LIST_RESPONSE = {
 CALENDAR_GET_RESPONSE = {"id": 1, "name": "Russian Federation"}
 ORG_CALENDAR_GET_RESPONSE = {"account": 19, "production_calendar": 1}
 NON_WORKING_DAYS_GET_RESPONSE = {
-    "start": TODAY,
+    "start": TODAY.strftime("%Y-%m-%d"),
     "deadline": DEADLINE_DATE,
     "total_days": 5,
     "not_working_days": 1,
@@ -44,7 +44,7 @@ NON_WORKING_DAYS_GET_RESPONSE = {
 MULTIPLE_NON_WORKING_DAYS_GET_RESPONSE = {
     "items": [
         {
-            "start": TODAY,
+            "start": TODAY.strftime("%Y-%m-%d"),
             "deadline": DEADLINE_DATE,
             "total_days": 7,
             "not_working_days": 2,
@@ -109,7 +109,7 @@ async def test_get_non_working_days_in_period(
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/production_calendars/{CALENDAR_ID}/days/{DEADLINE_DATE}?start="
-        f"{TODAY}&verbose=true",
+        f"{TODAY.strftime('%Y-%m-%d')}&verbose=true",
         json=NON_WORKING_DAYS_GET_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

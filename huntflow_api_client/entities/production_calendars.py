@@ -15,7 +15,7 @@ from huntflow_api_client.models.response.production_calendars import (
     NonWorkingDaysResponse,
 )
 
-TODAY = datetime.date.today().strftime("%Y-%m-%d")
+TODAY = datetime.date.today()
 
 
 class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
@@ -55,7 +55,7 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         self,
         calendar_id: int,
         deadline: str,
-        start: str = TODAY,
+        start: datetime.date = TODAY,
         verbose: bool = True,
     ) -> NonWorkingDaysResponse:
         """
@@ -70,7 +70,7 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         :return: The total number of non-working/working days and
             a list of weekends and holidays within a range
         """
-        params = {"start": start, "verbose": verbose}
+        params = {"start": start.strftime("%Y-%m-%d"), "verbose": verbose}
         path = f"/production_calendars/{calendar_id}/days/{deadline}"
         response = await self._api.request("GET", path, params=params)
         return NonWorkingDaysResponse.parse_obj(response.json())
