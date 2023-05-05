@@ -13,6 +13,13 @@ from huntflow_api_client.tokens.token import ApiToken
 
 logger = logging.getLogger(__name__)
 
+"""
+WHAT IS THE DUCK SAYING?
+   (.)< I LOVE HUNTFLOW
+`(___)
+~~~~~~~~~
+"""
+
 
 class HuntflowAPI:
     def __init__(

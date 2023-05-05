@@ -15,11 +15,26 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
         coworker_id: Optional[int] = None,
         only_available: bool = False,
     ) -> DivisionsListResponse:
+        """
+        :param account_id: Organization ID
+        :param coworker_id: If specified - will be returned divisions for specified coworker
+        :param only_available:	If True,
+            then only divisions available to the current user will be returned
+
+        :raises ValueError: Only one parameter from coworker_id and only_available must be specified
+
+        :return: DivisionsListResponse
+        """
+        if coworker_id is not None and only_available is True:
+            raise ValueError(
+                "Only one parameter from coworker_id and only_available must be specified",
+            )
+        params = {"only_available": only_available}
         path = f"/accounts/{account_id}"
         if coworker_id is not None:
             path += f"/coworkers/{coworker_id}"
+            params = {}
         path += "/divisions"
-        params = {"only_available": only_available}
         response = await self._api.request(
             "GET",
             path,
@@ -32,6 +47,12 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
         account_id: int,
         divisions: BatchDivisionsRequest,
     ) -> BatchDivisionsResponse:
+        """
+        :param account_id: Organization ID
+        :param divisions: BatchDivisionsRequest
+
+        :return: BatchDivisionsResponse
+        """
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/divisions/batch",

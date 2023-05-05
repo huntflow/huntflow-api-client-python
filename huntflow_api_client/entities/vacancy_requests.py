@@ -14,7 +14,7 @@ from huntflow_api_client.models.response.vacancy_requests import (
 
 
 class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMixin):
-    async def list(  # noqa: A003
+    async def list(
         self,
         account_id: int,
         vacancy_id: Optional[int] = None,
@@ -22,6 +22,15 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
         page: int = 1,
         values: bool = False,
     ) -> VacancyRequestListResponse:
+        """
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID. If supplied,
+            only vacancy requests related to the specified vacancy will be returned
+        :param count: Number of items per page
+        :param page: Page number
+        :param values: Show values flag. If True, vacancy requests fields will be included
+        :return: VacancyRequestListResponse
+        """
         path = f"/accounts/{account_id}/vacancy_requests"
         params = {
             "count": count,
@@ -35,6 +44,11 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
         return VacancyRequestListResponse.parse_obj(response.json())
 
     async def get(self, account_id: int, vacancy_request_id: int) -> VacancyRequestResponse:
+        """
+        :param account_id: Organization ID
+        :param vacancy_request_id:
+        :return: VacancyRequestResponse
+        """
         path = f"/accounts/{account_id}/vacancy_requests/{vacancy_request_id}"
         response = await self._api.request("GET", path)
         return VacancyRequestResponse.parse_obj(response.json())
@@ -44,6 +58,11 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
         account_id: int,
         request_data: CreateVacancyRequestRequest,
     ) -> VacancyRequestResponse:
+        """
+        :param account_id: Organization ID
+        :param request_data: CreateVacancyRequestRequest
+        :return: VacancyRequestResponse
+        """
         path = f"/accounts/{account_id}/vacancy_requests"
         response = await self._api.request(
             "POST",

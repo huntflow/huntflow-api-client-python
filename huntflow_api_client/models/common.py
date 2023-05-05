@@ -1,7 +1,7 @@
 import json
 from typing import AbstractSet, Any, Callable, Dict, Mapping, Optional, Union
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, PositiveInt
 
 IntStr = Union[int, str]
 AbstractSetIntStr = AbstractSet[IntStr]
@@ -33,3 +33,9 @@ class JsonRequestModel(BaseModel):
             "encoder": encoder,
         }
         return json.loads(self.json(**params, **dumps_kwargs))  # type: ignore
+
+
+class ListResponseMixin(BaseModel):
+    page: PositiveInt = Field(..., description="Page number", example=1)
+    count: int = Field(..., description="Number of items per page", example=30)
+    total_pages: int = Field(..., description="Total number of pages", example=2)

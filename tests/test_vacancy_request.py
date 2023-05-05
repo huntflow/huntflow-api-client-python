@@ -111,6 +111,7 @@ async def test_get_vacancy_request(
 
     response = await vacancy_request.get(ACCOUNT_ID, 1)
     assert response == VacancyRequestResponse.parse_obj(VACANCY_REQUEST_RESPONSE)
+    assert response.values
 
 
 async def test_create_vacancy_request(

@@ -4,10 +4,10 @@ import datetime
 import typing as t
 from enum import Enum
 
-from pydantic import BaseModel, EmailStr, Field, PositiveInt, validator
+from pydantic import BaseModel, EmailStr, Field, PositiveInt
 
+from huntflow_api_client.models.common import ListResponseMixin
 from huntflow_api_client.models.utils.fields import File
-from huntflow_api_client.models.utils.pagination import ListResponseMixin
 
 
 class VacancyRequestStatus(str, Enum):
@@ -17,7 +17,7 @@ class VacancyRequestStatus(str, Enum):
 
 
 class UserInfo(BaseModel):
-    id: PositiveInt = Field(  # noqa: VNE003 A003
+    id: PositiveInt = Field(
         ...,
         description="Coworker who create the vacancy request",
     )
@@ -30,7 +30,7 @@ class UserInfo(BaseModel):
 
 
 class VacancyRequestApprovalState(BaseModel):
-    id: PositiveInt = Field(..., description="Approval ID")  # noqa: VNE003 A003
+    id: PositiveInt = Field(..., description="Approval ID")
 
     status: VacancyRequestStatus = Field(..., description="Approval status")
     email: EmailStr = Field(
@@ -48,13 +48,9 @@ class VacancyRequestApprovalState(BaseModel):
         description="Date and time of the last approval change",
     )
 
-    @validator("status", pre=True)
-    def prepare_data(cls, status: str) -> t.Optional[str]:  # noqa: N805
-        return status.lower() if status else None
-
 
 class VacancyRequest(BaseModel):
-    id: PositiveInt = Field(..., description="Vacancy request ID")  # noqa: VNE003 A003
+    id: PositiveInt = Field(..., description="Vacancy request ID")
     position: str = Field(
         ...,
         description="The name of the vacancy (occupation)",
@@ -81,23 +77,15 @@ class VacancyRequest(BaseModel):
         description="List of files attached to the request",
     )
     states: t.List[VacancyRequestApprovalState] = Field(..., description="List of approval states")
-    values: t.Optional[dict] = Field(
+    values: t.Optional[t.Dict] = Field(
         None,
-        description="Vacancy request values",
+        description="Vacancy request values, depends on account_vacancy_request",
         example={"position": "Developer", "account_division": 1844, "category": 687},
     )
 
-    @validator("values", pre=True)
-    def prepare_data(cls, values: t.Any) -> t.Optional[dict]:  # noqa: N805
-        if isinstance(values, dict):
-            return values
-        return None
-
-    class Config:
-        allow_population_by_field_name = True
-
 
 class VacancyRequestListResponse(ListResponseMixin):
+    total_items: t.Optional[int] = Field(..., description="Total number of items", example=50)
     items: t.List[VacancyRequest]
 
 
