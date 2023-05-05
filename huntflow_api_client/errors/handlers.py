@@ -5,7 +5,7 @@ import httpx
 
 from huntflow_api_client.errors import errors
 
-ApiErrorEntity = TypeVar("ApiErrorEntity", bound=Union[errors.ApiError])
+ApiErrorEntity = TypeVar("ApiErrorEntity", bound=errors.ApiError)
 
 
 class BaseErrorHandler(Generic[ApiErrorEntity]):
