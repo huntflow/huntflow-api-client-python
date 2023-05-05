@@ -3,7 +3,6 @@ from typing import List, Optional
 from pydantic import Field
 
 from huntflow_api_client.models.common import JsonRequestModel
-from huntflow_api_client.models.utils import descriptions
 
 
 class Division(JsonRequestModel):
@@ -11,7 +10,7 @@ class Division(JsonRequestModel):
     foreign: str = Field(
         ...,
         min_length=1,
-        description=descriptions.foreign,
+        description="The unique identifier in the customer's internal system",
         example="d1",
     )
     meta: Optional[dict] = Field(

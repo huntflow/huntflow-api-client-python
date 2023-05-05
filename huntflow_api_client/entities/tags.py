@@ -19,7 +19,7 @@ class AccountTag(BaseEntity, CRUDEntityMixin):
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/tags",
-            json=account_tag.jsonable_dict(),
+            json=account_tag.jsonable_dict(exclude_none=True),
         )
         return AccountTagResponse(**response.json())
 
@@ -32,7 +32,7 @@ class AccountTag(BaseEntity, CRUDEntityMixin):
         response = await self._api.request(
             "PUT",
             f"/accounts/{account_id}/tags/{account_tag_id}",
-            json=data.jsonable_dict(),
+            json=data.jsonable_dict(exclude_none=True),
         )
         return AccountTagResponse(**response.json())
 
