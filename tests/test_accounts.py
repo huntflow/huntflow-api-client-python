@@ -67,7 +67,7 @@ async def test_available_org_list(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     accounts = Account(api_client)
 
-    response = await accounts.available_org_list()
+    response = await accounts.list()
     assert response == OrganizationsListResponse(**ORG_LIST_RESPONSE)
 
 
@@ -82,5 +82,5 @@ async def test_get_org_info(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     accounts = Account(api_client)
 
-    response = await accounts.get_org_info(ACCOUNT_ID)
+    response = await accounts.get(ACCOUNT_ID)
     assert response == OrganizationInfoResponse(**GET_ORG_INFO_RESPONSE)
