@@ -1,27 +1,4 @@
-from enum import Enum
-
 from pydantic import AnyHttpUrl, BaseModel, Field, PositiveInt
-
-
-class FieldType(str, Enum):
-    string = "string"
-    integer = "integer"
-    text = "text"
-    date = "date"
-    select = "select"
-    complex = "complex"  # noqa: A003 VNE003
-    contract = "contract"
-    reason = "reason"
-    stoplist = "stoplist"
-    compensation = "compensation"
-    dictionary = "dictionary"
-    income = "income"
-    position_status = "position_status"
-    division = "division"
-    region = "region"
-    url = "url"
-    hidden = "hidden"
-    html = "html"
 
 
 class File(BaseModel):
