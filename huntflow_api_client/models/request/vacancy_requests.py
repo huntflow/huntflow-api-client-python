@@ -41,7 +41,8 @@ class CreateVacancyRequestRequest(JsonRequestModel):
     )
     money: t.Optional[str] = Field(None, description="Salary", example="$10000")
     attendees: t.Optional[list[VacancyRequestAttendee]] = Field(
-        None, description="List of people to send a request for approval",
+        None,
+        description="List of people to send a request for approval",
     )
     files: t.Optional[list[PositiveInt]] = Field(
         None,
