@@ -4,7 +4,7 @@ from typing import Optional
 import httpx
 
 from huntflow_api_client.errors.errors import InvalidAccessTokenError, TokenExpiredError
-from huntflow_api_client.errors.utils import convert_response_to_error
+from huntflow_api_client.errors.response_hooks import raise_for_status
 from huntflow_api_client.tokens.proxy import AbstractTokenProxy, DummyHuntflowTokenProxy
 from huntflow_api_client.tokens.token import ApiToken
 
@@ -46,6 +46,7 @@ class HuntflowAPI:
     @property
     def http_client(self) -> httpx.AsyncClient:
         http_client = httpx.AsyncClient(base_url=self.base_url)
+        http_client.event_hooks["response"] = [raise_for_status]
         return http_client
 
     async def request(  # type: ignore[no-untyped-def]
@@ -82,7 +83,6 @@ class HuntflowAPI:
             timeout=timeout,
         )
 
-    @convert_response_to_error
     async def _request(  # type: ignore[no-untyped-def]
         self,
         method: str,
@@ -133,11 +133,7 @@ class HuntflowAPI:
         try:
             refresh_data = await self._token_proxy.get_refresh_data()
             async with self.http_client as client:
-                request = convert_response_to_error(client.post)
-                response = await request(
-                    "/token/refresh",
-                    json=refresh_data,
-                )
+                response = await client.post("/token/refresh", json=refresh_data)
             await self._token_proxy.update(response.json())
         finally:
             await self._token_proxy.release_lock()

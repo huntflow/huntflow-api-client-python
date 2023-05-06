@@ -1,43 +1,42 @@
-import json
+from dataclasses import dataclass
 from typing import List, Optional
 
-from pydantic import BaseModel
 
-
-class Location(BaseModel):
-    entity: str
-    variable: str  # noqa: VNE002
-
-
-class Error(BaseModel):
+@dataclass(frozen=True)
+class Error:
     type: str
     title: str
-    location: Optional[Location] = None
+    location: Optional[dict] = None
     detail: Optional[str] = None
 
 
-class BaseApiError(Exception):
+class ApiError(Exception):
     code: int = 500
     errors: List[Error]
 
-    def __init__(self, *args, errors: Optional[List[Error]] = None):  # type: ignore
+    def __init__(self, code: Optional[int] = None, errors: Optional[List[Error]] = None):
+        self.code = code or self.code
         self.errors = errors or []
-        super().__init__(*args)
-
-    def __str__(self):  # type: ignore
-        errors = [item.dict(exclude_none=True) for item in self.errors]
-        return json.dumps({"Code": self.code, "Errors": errors}, indent=4, ensure_ascii=False)
+        super().__init__()
 
 
-class AuthorizationError(BaseApiError):
-    code = 401
-
-
-class BadRequestError(BaseApiError):
+class BadRequestError(ApiError):
     code = 400
 
 
-class NotFoundError(BaseApiError):
+class AuthorizationError(ApiError):
+    code = 401
+
+
+class PaymentRequiredError(ApiError):
+    code = 402
+
+
+class AccessDeniedError(ApiError):
+    code = 403
+
+
+class NotFoundError(ApiError):
     code = 404
 
 
@@ -53,17 +52,5 @@ class InvalidRefreshTokenError(NotFoundError):
     pass
 
 
-class TooManyRequestsError(BaseApiError):
+class TooManyRequestsError(ApiError):
     code = 429
-
-
-class ApiInternalError(BaseApiError):
-    pass
-
-
-class PaymentRequiredError(BaseApiError):
-    code = 402
-
-
-class AccessDeniedError(BaseApiError):
-    code = 403

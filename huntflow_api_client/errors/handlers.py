@@ -1,58 +1,67 @@
-import json
-from typing import Any, Dict, Generic, List, Tuple, Type, TypeVar, Union
+import abc
+from json import JSONDecodeError
+from typing import Dict, List
 
 import httpx
 
-from huntflow_api_client.errors import errors
+from huntflow_api_client.errors import (
+    AccessDeniedError,
+    ApiError,
+    AuthorizationError,
+    BadRequestError,
+    Error,
+    InvalidAccessTokenError,
+    InvalidRefreshTokenError,
+    NotFoundError,
+    PaymentRequiredError,
+    TokenExpiredError,
+    TooManyRequestsError,
+)
 
-BaseApiErrorEntity = TypeVar("BaseApiErrorEntity", bound=errors.BaseApiError)
 
-
-class BaseErrorHandler(Generic[BaseApiErrorEntity]):
-    """
-    A base class that converts HTTPStatusErrors to custom API errors.
-    """
-
-    handle_exception: Type[BaseApiErrorEntity]
-
+class AbstractErrorHandler(abc.ABC):
     @staticmethod
-    def _get_response_errors(response: httpx.Response) -> List[errors.Error]:
-        content: bytes = response.content
-        if not content:
-            return []
+    def _parse_errors(response: httpx.Response) -> List[Error]:
+        errors = []
+        try:
+            body = response.json()
+        except JSONDecodeError:
+            pass
+        else:
+            for err in body.get("errors", []):
+                errors.append(Error(**err))
+        return errors
 
-        content_data: Dict[str, Any] = json.loads(content)
-        error_list = content_data.get("errors", [])
-        result: List[errors.Error] = []
-
-        for error in error_list:
-            error = errors.Error.parse_obj(error)
-            result.append(error)
-        return result
-
-    @classmethod
-    def process_response(cls, response: httpx.Response) -> BaseApiErrorEntity:
-        error_list = cls._get_response_errors(response)
-        return cls.handle_exception(errors=error_list)
+    @abc.abstractmethod
+    def raise_exception(self, response: httpx.Response) -> None:
+        pass
 
 
-class AuthorizationErrorHandler(
-    BaseErrorHandler[
-        Union[
-            errors.AuthorizationError,
-            errors.InvalidAccessTokenError,
-            errors.TokenExpiredError,
-        ],
-    ],
-):
-    handle_exception = errors.AuthorizationError
+class DefaultErrorHandler(AbstractErrorHandler):
+    def raise_exception(self, response: httpx.Response) -> None:
+        """
+        :param response: httpx.Response
+        :raises: ApiError
+        """
+        raise ApiError(code=response.status_code, errors=self._parse_errors(response))
 
-    @classmethod
-    def process_response(
-        cls,
-        response: httpx.Response,
-    ) -> Union[errors.AuthorizationError, errors.InvalidAccessTokenError, errors.TokenExpiredError]:
-        error_list = cls._get_response_errors(response)
+
+class ErrorHandler400(AbstractErrorHandler):
+    def raise_exception(self, response: httpx.Response) -> None:
+        """
+        :param response: httpx.Response
+        :raises: BadRequestError
+        """
+        raise BadRequestError(errors=self._parse_errors(response))
+
+
+class ErrorHandler401(AbstractErrorHandler):
+    def raise_exception(self, response: httpx.Response) -> None:
+        """
+        :param response: httpx.Response
+        :raises: AuthorizationError, InvalidAccessTokenError, TokenExpiredError
+        """
+        error_list = self._parse_errors(response)
 
         try:
             msg = error_list[0].detail
@@ -60,33 +69,38 @@ class AuthorizationErrorHandler(
             msg = None
 
         if msg == "token_expired":
-            return errors.TokenExpiredError(errors=error_list)
-        if msg == "Invalid access token":
-            return errors.InvalidAccessTokenError(errors=error_list)
+            raise TokenExpiredError(errors=error_list)
+        elif msg == "Invalid access token":
+            raise InvalidAccessTokenError(errors=error_list)
 
-        return errors.AuthorizationError(errors=error_list)
-
-
-class BadRequestErrorHandler(BaseErrorHandler[errors.BadRequestError]):
-    handle_exception = errors.BadRequestError
+        raise AuthorizationError(errors=error_list)
 
 
-class NotFoundErrorHandler(
-    BaseErrorHandler[
-        Union[
-            errors.NotFoundError,
-            errors.InvalidRefreshTokenError,
-        ],
-    ],
-):
-    handle_exception = errors.NotFoundError
+class ErrorHandler402(AbstractErrorHandler):
+    def raise_exception(self, response: httpx.Response) -> None:
+        """
+        :param response: httpx.Response
+        :raises: PaymentRequiredError
+        """
+        raise PaymentRequiredError(errors=self._parse_errors(response))
 
-    @classmethod
-    def process_response(
-        cls,
-        response: httpx.Response,
-    ) -> Union[errors.NotFoundError, errors.InvalidRefreshTokenError]:
-        error_list = cls._get_response_errors(response)
+
+class ErrorHandler403(AbstractErrorHandler):
+    def raise_exception(self, response: httpx.Response) -> None:
+        """
+        :param response: httpx.Response
+        :raises: AccessDeniedError
+        """
+        raise AccessDeniedError(errors=self._parse_errors(response))
+
+
+class ErrorHandler404(AbstractErrorHandler):
+    def raise_exception(self, response: httpx.Response) -> None:
+        """
+        :param response: httpx.Response
+        :raises: InvalidRefreshTokenError, NotFoundError
+        """
+        error_list = self._parse_errors(response)
 
         try:
             msg = error_list[0].title
@@ -94,32 +108,25 @@ class NotFoundErrorHandler(
             msg = None
 
         if msg == "error.robot_token.not_found":
-            return errors.InvalidRefreshTokenError(errors=error_list)
-        return errors.NotFoundError(errors=error_list)
+            raise InvalidRefreshTokenError(errors=error_list)
+
+        raise NotFoundError(errors=error_list)
 
 
-class TooManyRequestsErrorHandler(BaseErrorHandler[errors.TooManyRequestsError]):
-    handle_exception = errors.TooManyRequestsError
+class ErrorHandler429(AbstractErrorHandler):
+    def raise_exception(self, response: httpx.Response) -> None:
+        """
+        :param response: httpx.Response
+        :raises: TooManyRequestsError
+        """
+        raise TooManyRequestsError(errors=self._parse_errors(response))
 
 
-class PaymentRequiredErrorHandler(BaseErrorHandler[errors.PaymentRequiredError]):
-    handle_exception = errors.PaymentRequiredError
-
-
-class AccessDeniedErrorHandler(BaseErrorHandler[errors.AccessDeniedError]):
-    handle_exception = errors.AccessDeniedError
-
-
-class ApiInternalErrorHandler(BaseErrorHandler[errors.ApiInternalError]):
-    handle_exception = errors.ApiInternalError
-
-
-HANDLERS: Tuple = (
-    AuthorizationErrorHandler,
-    BadRequestErrorHandler,
-    NotFoundErrorHandler,
-    TooManyRequestsErrorHandler,
-    PaymentRequiredErrorHandler,
-    AccessDeniedErrorHandler,
-    ApiInternalErrorHandler,
-)
+ERROR_HANDLERS: Dict[int, AbstractErrorHandler] = {
+    400: ErrorHandler400(),
+    401: ErrorHandler401(),
+    402: ErrorHandler402(),
+    403: ErrorHandler403(),
+    404: ErrorHandler404(),
+    429: ErrorHandler429(),
+}
