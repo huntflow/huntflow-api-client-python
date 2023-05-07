@@ -19,6 +19,12 @@ class ApiError(Exception):
         self.errors = errors or []
         super().__init__()
 
+    def __str__(self) -> str:
+        return repr(self)
+
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}(code={self.code}, errors={self.errors})"
+
 
 class BadRequestError(ApiError):
     code = 400
