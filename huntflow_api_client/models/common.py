@@ -50,9 +50,13 @@ class Applicant(BaseModel):
     email: Optional[EmailStr] = Field(None, description="Email address", example="mail@mail.ru")
     skype: Optional[str] = Field(None, description="Skype login", example="my_skype")
     position: Optional[str] = Field(
-        None, description="Applicant’s occupation", example="Front-end developer",
+        None,
+        description="Applicant’s occupation",
+        example="Front-end developer",
     )
     company: Optional[str] = Field(
-        None, description="Applicant’s place of work", example="Google Inc.",
+        None,
+        description="Applicant’s place of work",
+        example="Google Inc.",
     )
     photo: Optional[int] = Field(None, description="Applicant’s photo ID", example=1)
