@@ -89,8 +89,8 @@ class ApplicantItem(Applicant):
         description="Agreement's state of applicant to personal data processing",
         example=AgreementState.declined,
     )
-    doubles: list[ApplicantDouble] = Field(..., description="List of duplicates")
-    social: list[ApplicantSocial] = Field(..., description="List of applicant's social accounts")
+    doubles: List[ApplicantDouble] = Field(..., description="List of duplicates")
+    social: List[ApplicantSocial] = Field(..., description="List of applicant's social accounts")
 
 
 class ApplicantListResponse(PaginatedResponse):
