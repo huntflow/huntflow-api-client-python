@@ -9,7 +9,7 @@ class FieldType(str, Enum):
     text = "text"
     date = "date"
     select = "select"
-    complex = "complex"  # noqa: A003 VNE003
+    complex = "complex"
     contract = "contract"
     reason = "reason"
     stoplist = "stoplist"
@@ -25,7 +25,7 @@ class FieldType(str, Enum):
 
 
 class File(BaseModel):
-    id: PositiveInt = Field(..., description="File ID", example=19)  # noqa: A003 VNE003
+    id: PositiveInt = Field(..., description="File ID", example=19)
     url: AnyHttpUrl = Field(..., description="File URL")
     content_type: str = Field(..., description="MIME type of file", example="application/pdf")
     name: str = Field(..., description="File name", example="Resume.pdf")

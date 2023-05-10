@@ -23,7 +23,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin, UpdateEntityMixin):
         response = await self._api.request("GET", path)
         return AdditionalFieldsSchemaResponse(**response.json())
 
-    async def list(  # noqa: A003
+    async def list(
         self,
         account_id: int,
         count: int = 30,

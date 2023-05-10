@@ -3,8 +3,7 @@ from typing import List, Optional
 
 from pydantic import Field, PositiveInt
 
-from huntflow_api_client.models.common import JsonRequestModel
-from huntflow_api_client.models.utils.common import EditedFillQuota, FillQuota, Vacancy
+from huntflow_api_client.models.common import EditedFillQuota, FillQuota, JsonRequestModel, Vacancy
 
 
 class VacancyListState(str, Enum):

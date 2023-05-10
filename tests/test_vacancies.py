@@ -5,6 +5,7 @@ from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.vacancies import Vacancy
+from huntflow_api_client.models.common import EditedFillQuota, FillQuota
 from huntflow_api_client.models.request.vacancies import (
     VacancyCreateRequest,
     VacancyListState,
@@ -17,7 +18,6 @@ from huntflow_api_client.models.response.vacancies import (
     VacancyListResponse,
     VacancyResponse,
 )
-from huntflow_api_client.models.utils.common import EditedFillQuota, FillQuota
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
 

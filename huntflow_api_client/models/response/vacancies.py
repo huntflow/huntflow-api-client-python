@@ -3,14 +3,13 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Extra, Field, PositiveInt, root_validator
 
-from huntflow_api_client.models.utils.common import Vacancy
-from huntflow_api_client.models.utils.fields import FieldType, File
-from huntflow_api_client.models.utils.pagination import ListResponseMixin
+from huntflow_api_client.models.common import PaginatedResponse, Vacancy
+from huntflow_api_client.models.fields import FieldType, File
 
 
 class AccountVacancyRequestSchemaField(BaseModel):
-    id: PositiveInt = Field(..., description="Field ID")  # noqa A003
-    type: FieldType = Field(..., description="Field type", example=FieldType.select)  # noqa A003
+    id: PositiveInt = Field(..., description="Field ID")
+    type: FieldType = Field(..., description="Field type", example=FieldType.select)
     title: Optional[str] = Field(None, description="Field title", example="Reason")
     required: bool = Field(False, description="Field required flag")
     order: int = Field(..., description="The order of the field on the form", example=1)
@@ -70,7 +69,7 @@ class AdditionalFieldsSchemaResponse(BaseModel):
 
 
 class VacancyItem(Vacancy):
-    id: Optional[PositiveInt] = Field(None, description="Vacancy ID", example=150)  # noqa A003
+    id: Optional[PositiveInt] = Field(None, description="Vacancy ID", example=150)
     created: datetime = Field(..., description="Date and time of creating a vacancy")
     additional_fields_list: List[str] = Field(
         [],
@@ -91,12 +90,13 @@ class VacancyItem(Vacancy):
     class Config:
         extra = "allow"
 
-    def dict(self, *args, **kwargs):  # type: ignore # noqa A003
+    def dict(self, *args, **kwargs):  # type: ignore
         include = set(self.__fields__) | set(self.additional_fields_list)
         return super().dict(include=include)
 
 
-class VacancyListResponse(ListResponseMixin):
+class VacancyListResponse(PaginatedResponse):
+    total_items: Optional[int] = Field(..., description="Total number of items", example=50)
     items: List[VacancyItem]
 
 
@@ -136,13 +136,13 @@ class VacancyResponse(VacancyChild):
     class Config:
         extra = "allow"
 
-    def dict(self, *args, **kwargs):  # type: ignore # noqa A003
+    def dict(self, *args, **kwargs):  # type: ignore
         include = set(self.__fields__) | set(self.additional_fields_list)
         return super().dict(include=include)
 
 
 class VacancyCreateResponse(Vacancy):
-    id: PositiveInt = Field(..., description="Vacancy ID", example=10)  # noqa A003
+    id: PositiveInt = Field(..., description="Vacancy ID", example=10)
     created: datetime = Field(..., description="Date and time of creating a vacancy")
     coworkers: Optional[List[PositiveInt]] = Field(
         None,

@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, PositiveInt
 
 
 class CalendarResponse(BaseModel):
-    id: PositiveInt = Field(..., description="Calendar ID")  # noqa: VNE003, A003
+    id: PositiveInt = Field(..., description="Calendar ID")
     name: str = Field(..., description="Calendar name", example="Russian Federation")
 
 
