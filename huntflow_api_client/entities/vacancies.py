@@ -19,8 +19,16 @@ class Vacancy(BaseEntity, CRUDEntityMixin, UpdateEntityMixin):
         self,
         account_id: int,
     ) -> AdditionalFieldsSchemaResponse:
-        path = f"/accounts/{account_id}/vacancies/additional_fields"
-        response = await self._api.request("GET", path)
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/vacancies/additional_fields
+
+        :param account_id: Organization ID
+        :return: Schema of additional fields for vacancies set in organization
+        """
+        response = await self._api.request(
+            "GET", f"/accounts/{account_id}/vacancies/additional_fields",
+        )
         return AdditionalFieldsSchemaResponse(**response.json())
 
     async def list(
@@ -31,6 +39,16 @@ class Vacancy(BaseEntity, CRUDEntityMixin, UpdateEntityMixin):
         mine: bool = False,
         state: Optional[Union[str, List[str]]] = None,
     ) -> VacancyListResponse:
+        """
+        API method reference https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/vacancies
+
+        :param account_id: Organization ID
+        :param count: Number of items per page
+        :param page: Page number
+        :param mine: Shows only vacancies that the current user is working on
+        :param state: The state of a vacancy
+        :return:  List of vacancies
+        """
         params: Dict[str, Any] = {
             "count": count,
             "page": page,
@@ -38,18 +56,34 @@ class Vacancy(BaseEntity, CRUDEntityMixin, UpdateEntityMixin):
         }
         if state:
             params["state"] = state
-        path = f"/accounts/{account_id}/vacancies"
-        response = await self._api.request("GET", path, params=params)
+        response = await self._api.request(
+            "GET", f"/accounts/{account_id}/vacancies", params=params,
+        )
         return VacancyListResponse(**response.json())
 
     async def get(self, account_id: int, vacancy_id: int) -> VacancyResponse:
-        path = f"/accounts/{account_id}/vacancies/{vacancy_id}"
-        response = await self._api.request("GET", path)
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/vacancies/-vacancy_id-
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        :return: The specified vacancy
+        """
+        response = await self._api.request("GET", f"/accounts/{account_id}/vacancies/{vacancy_id}")
         return VacancyResponse(**response.json())
 
     async def create(self, account_id: int, data: VacancyCreateRequest) -> VacancyCreateResponse:
-        path = f"/accounts/{account_id}/vacancies"
-        response = await self._api.request("POST", path, json=data.jsonable_dict(exclude_none=True))
+        """
+        API method reference https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/vacancies
+
+        :param account_id: Organization ID
+        :param data: Vacancy data
+        :return: The created vacancy
+        """
+        response = await self._api.request(
+            "POST", f"/accounts/{account_id}/vacancies", json=data.jsonable_dict(exclude_none=True),
+        )
         return VacancyCreateResponse(**response.json())
 
     async def update(
@@ -58,13 +92,31 @@ class Vacancy(BaseEntity, CRUDEntityMixin, UpdateEntityMixin):
         vacancy_id: int,
         data: VacancyUpdateRequest,
     ) -> VacancyResponse:
-        path = f"/accounts/{account_id}/vacancies/{vacancy_id}"
-        response = await self._api.request("PUT", path, json=data.jsonable_dict(exclude_none=True))
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#put-/accounts/-account_id-/vacancies/-vacancy_id-
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        :param data: Vacancy data
+        :return: The updated vacancy
+        """
+        response = await self._api.request(
+            "PUT",
+            f"/accounts/{account_id}/vacancies/{vacancy_id}",
+            json=data.jsonable_dict(exclude_none=True),
+        )
         return VacancyResponse(**response.json())
 
     async def delete(self, account_id: int, vacancy_id: int) -> None:
-        path = f"/accounts/{account_id}/vacancies/{vacancy_id}"
-        await self._api.request("DELETE", path)
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#delete-/accounts/-account_id-/vacancies/-vacancy_id-
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        """
+        await self._api.request("DELETE", f"/accounts/{account_id}/vacancies/{vacancy_id}")
 
     async def patch(
         self,
@@ -72,10 +124,18 @@ class Vacancy(BaseEntity, CRUDEntityMixin, UpdateEntityMixin):
         vacancy_id: int,
         data: VacancyUpdatePartialRequest,
     ) -> VacancyResponse:
-        path = f"/accounts/{account_id}/vacancies/{vacancy_id}"
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#patch-/accounts/-account_id-/vacancies/-vacancy_id-
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        :param data: Vacancy data
+        :return: The updated vacancy
+        """
         response = await self._api.request(
             "PATCH",
-            path,
+            f"/accounts/{account_id}/vacancies/{vacancy_id}",
             json=data.jsonable_dict(exclude_none=True),
         )
         return VacancyResponse(**response.json())
