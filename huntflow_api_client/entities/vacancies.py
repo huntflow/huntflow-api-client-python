@@ -27,7 +27,8 @@ class Vacancy(BaseEntity, CRUDEntityMixin, UpdateEntityMixin):
         :return: Schema of additional fields for vacancies set in organization
         """
         response = await self._api.request(
-            "GET", f"/accounts/{account_id}/vacancies/additional_fields",
+            "GET",
+            f"/accounts/{account_id}/vacancies/additional_fields",
         )
         return AdditionalFieldsSchemaResponse(**response.json())
 
@@ -57,7 +58,9 @@ class Vacancy(BaseEntity, CRUDEntityMixin, UpdateEntityMixin):
         if state:
             params["state"] = state
         response = await self._api.request(
-            "GET", f"/accounts/{account_id}/vacancies", params=params,
+            "GET",
+            f"/accounts/{account_id}/vacancies",
+            params=params,
         )
         return VacancyListResponse(**response.json())
 
@@ -82,7 +85,9 @@ class Vacancy(BaseEntity, CRUDEntityMixin, UpdateEntityMixin):
         :return: The created vacancy
         """
         response = await self._api.request(
-            "POST", f"/accounts/{account_id}/vacancies", json=data.jsonable_dict(exclude_none=True),
+            "POST",
+            f"/accounts/{account_id}/vacancies",
+            json=data.jsonable_dict(exclude_none=True),
         )
         return VacancyCreateResponse(**response.json())
 
