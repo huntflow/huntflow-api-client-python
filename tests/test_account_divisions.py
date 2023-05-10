@@ -1,5 +1,6 @@
 import uuid
 
+import pytest
 from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
@@ -81,14 +82,14 @@ async def test_list_account_division(
     assert response == DivisionsListResponse.parse_obj(ACCOUNT_DIVISIONS_LIST_RESPONSE)
 
     httpx_mock.add_response(
-        url=(
-            f"{BASE_URL}/accounts/{ACCOUNT_ID}/coworkers/{COWORKER_ID}"
-            f"/divisions?only_available=true"
-        ),
+        url=(f"{BASE_URL}/accounts/{ACCOUNT_ID}/coworkers/{COWORKER_ID}" f"/divisions"),
         json=ACCOUNT_DIVISIONS_LIST_RESPONSE,
     )
-    response = await divisions.list(ACCOUNT_ID, COWORKER_ID, only_available=only_available)
+    response = await divisions.list(ACCOUNT_ID, COWORKER_ID)
     assert response == DivisionsListResponse.parse_obj(ACCOUNT_DIVISIONS_LIST_RESPONSE)
+
+    with pytest.raises(ValueError):
+        await divisions.list(ACCOUNT_ID, 1, True)
 
 
 async def test_create_account_division(
