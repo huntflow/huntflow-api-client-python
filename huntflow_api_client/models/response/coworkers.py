@@ -24,7 +24,7 @@ class CoworkerResponse(BaseModel):
     head: Optional[int] = Field(None, description="Head user ID", example=2)
     email: Optional[EmailStr] = Field(None, description="Email", example="mail@gmail.com")
     meta: Optional[dict] = Field(None, description="Additional meta information")
-    permissions: list[Permission] = Field(default_factory=list, description="Coworker permissions")
+    permissions: List[Permission] = Field(default_factory=list, description="Coworker permissions")
 
     class Config:
         allow_population_by_field_name = True
