@@ -4,7 +4,7 @@ from typing import List, Optional, Union
 from pydantic import BaseModel, EmailStr, Field, PositiveInt
 
 from huntflow_api_client.models.common import Applicant, PaginatedResponse
-from huntflow_api_client.models.consts import AgreementState
+from huntflow_api_client.models.consts import AgreementState as AgreementStateEnum
 
 
 class ApplicantTag(BaseModel):
@@ -40,10 +40,10 @@ class ApplicantResume(BaseModel):
 
 
 class ApplicantAgreement(BaseModel):
-    state: Optional[AgreementState] = Field(
+    state: Optional[AgreementStateEnum] = Field(
         None,
         description="Agreement's state of applicant to personal data processing",
-        example=AgreementState.accepted,
+        example=AgreementStateEnum.accepted,
     )
     decision_date: Optional[datetime] = Field(
         None,
@@ -84,10 +84,10 @@ class ApplicantItem(Applicant):
     tags: List[ApplicantTag] = Field(..., description="List of tags")
     links: List[ApplicantLink] = Field(..., description="Applicant's vacancies")
     external: Optional[List[ApplicantResume]] = Field(None, description="Applicant's resume")
-    agreement: Optional[ApplicantAgreement] = Field(
+    agreement: Optional[AgreementStateEnum] = Field(
         None,
         description="Agreement's state of applicant to personal data processing",
-        example=AgreementState.declined,
+        example=AgreementStateEnum.declined,
     )
     doubles: List[ApplicantDouble] = Field(..., description="List of duplicates")
     social: List[ApplicantSocial] = Field(..., description="List of applicant's social accounts")
@@ -111,10 +111,10 @@ class ApplicantCreateResponse(Applicant):
         example=[1, 2, 3],
     )
     doubles: List[ApplicantDouble] = Field(..., description="List of duplicates")
-    agreement: Optional[ApplicantAgreement] = Field(
+    agreement: Optional[AgreementStateEnum] = Field(
         None,
         description="Agreement's state of applicant to personal data processing",
-        example=AgreementState.sent,
+        example=AgreementStateEnum.sent,
     )
     external: List[ApplicantResume] = Field(..., description="Applicant's resume")
     social: List[ApplicantSocial] = Field(..., description="List of applicant's social accounts")
