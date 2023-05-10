@@ -63,7 +63,7 @@ class AdditionalFieldsSchemaResponse(BaseModel):
 
     @root_validator(pre=True)
     def prepare_data(
-        cls, values: Dict[str, AccountVacancyRequestSchemaField]  # noqa N805
+        cls, values: Dict[str, AccountVacancyRequestSchemaField]
     ) -> Dict[str, Dict[str, AccountVacancyRequestSchemaField]]:
         return {"__root__": values}
 
