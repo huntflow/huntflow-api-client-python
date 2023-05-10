@@ -1,7 +1,7 @@
 import json
 from typing import AbstractSet, Any, Callable, Dict, Mapping, Optional, Union
 
-from pydantic import BaseModel, Field, PositiveInt
+from pydantic import BaseModel, EmailStr, Field, PositiveInt
 
 IntStr = Union[int, str]
 AbstractSetIntStr = AbstractSet[IntStr]
@@ -39,3 +39,16 @@ class PaginatedResponse(BaseModel):
     page: PositiveInt = Field(..., description="Page number", example=1)
     count: int = Field(..., description="Number of items per page", example=30)
     total_pages: int = Field(..., description="Total number of pages", example=2)
+
+
+class Applicant(BaseModel):
+    first_name: Optional[str] = Field(None, description="First name", example="John")
+    last_name: Optional[str] = Field(None, description="Last name", example="Doe")
+    middle_name: str = Field(None, description="Middle name", example="Michael")
+    money: str = Field(None, description="Salary expectation", example="$100000")
+    phone: str = Field(None, description="Phone number", example="89999999999")
+    email: EmailStr = Field(None, description="Email address", example="mail@mail.ru")
+    skype: str = Field(None, description="Skype login", example="my_skype")
+    position: str = Field(None, description="Applicant’s occupation", example="Front-end developer")
+    company: str = Field(None, description="Applicant’s place of work", example="Google Inc.")
+    photo: int = Field(None, description="Applicant’s photo ID", example=1)
