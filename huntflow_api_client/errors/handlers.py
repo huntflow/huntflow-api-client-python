@@ -41,7 +41,7 @@ class DefaultErrorHandler(AbstractErrorHandler):
     def raise_exception(self, response: httpx.Response) -> None:
         """
         :param response: httpx.Response
-        :raises: ApiError
+        :raises ApiError
         """
         raise ApiError(code=response.status_code, errors=self._parse_errors(response))
 
@@ -50,7 +50,7 @@ class ErrorHandler400(AbstractErrorHandler):
     def raise_exception(self, response: httpx.Response) -> None:
         """
         :param response: httpx.Response
-        :raises: BadRequestError
+        :raises BadRequestError
         """
         raise BadRequestError(errors=self._parse_errors(response))
 
@@ -59,7 +59,9 @@ class ErrorHandler401(AbstractErrorHandler):
     def raise_exception(self, response: httpx.Response) -> None:
         """
         :param response: httpx.Response
-        :raises: AuthorizationError, InvalidAccessTokenError, TokenExpiredError
+        :raises AuthorizationError
+        :raises InvalidAccessTokenError
+        :raises TokenExpiredError
         """
         error_list = self._parse_errors(response)
 
@@ -80,7 +82,7 @@ class ErrorHandler402(AbstractErrorHandler):
     def raise_exception(self, response: httpx.Response) -> None:
         """
         :param response: httpx.Response
-        :raises: PaymentRequiredError
+        :raises PaymentRequiredError
         """
         raise PaymentRequiredError(errors=self._parse_errors(response))
 
@@ -89,7 +91,7 @@ class ErrorHandler403(AbstractErrorHandler):
     def raise_exception(self, response: httpx.Response) -> None:
         """
         :param response: httpx.Response
-        :raises: AccessDeniedError
+        :raises AccessDeniedError
         """
         raise AccessDeniedError(errors=self._parse_errors(response))
 
@@ -98,7 +100,8 @@ class ErrorHandler404(AbstractErrorHandler):
     def raise_exception(self, response: httpx.Response) -> None:
         """
         :param response: httpx.Response
-        :raises: InvalidRefreshTokenError, NotFoundError
+        :raises InvalidRefreshTokenError
+        :raises NotFoundError
         """
         error_list = self._parse_errors(response)
 
@@ -117,7 +120,7 @@ class ErrorHandler429(AbstractErrorHandler):
     def raise_exception(self, response: httpx.Response) -> None:
         """
         :param response: httpx.Response
-        :raises: TooManyRequestsError
+        :raises TooManyRequestsError
         """
         raise TooManyRequestsError(errors=self._parse_errors(response))
 
