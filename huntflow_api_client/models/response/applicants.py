@@ -79,7 +79,7 @@ class ApplicantItem(Applicant):
     email: Optional[Union[EmailStr, str]] = Field(
         None,
         description="Email address",
-        example="mail@mail.ru",  # type: ignore
+        example="mail@some.domain.com",  # type: ignore
     )
     tags: List[ApplicantTag] = Field(..., description="List of tags")
     links: List[ApplicantLink] = Field(..., description="Applicant's vacancies")
