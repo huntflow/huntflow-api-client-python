@@ -1,6 +1,6 @@
 from typing import Any, Dict, List, Optional, Union
 
-from huntflow_api_client.entities.base import BaseEntity, CRUDEntityMixin, UpdateEntityMixin
+from huntflow_api_client.entities.base import BaseEntity, CRUDEntityMixin
 from huntflow_api_client.models.request.vacancies import (
     VacancyCreateRequest,
     VacancyUpdatePartialRequest,
@@ -14,8 +14,8 @@ from huntflow_api_client.models.response.vacancies import (
 )
 
 
-class Vacancy(BaseEntity, CRUDEntityMixin, UpdateEntityMixin):
-    async def get_org_vacancy_additional_fields_schema(
+class Vacancy(BaseEntity, CRUDEntityMixin):
+    async def get_additional_fields_schema(
         self,
         account_id: int,
     ) -> AdditionalFieldsSchemaResponse:
