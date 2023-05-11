@@ -186,3 +186,7 @@ class VacancyCreateResponse(Vacancy):
 
     class Config:
         extra = "ignore"
+
+
+class AssignCoworkerResponse(BaseModel):
+    status: bool
