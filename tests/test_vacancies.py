@@ -28,7 +28,7 @@ GET_ORG_ADD_FIELDS_SCHEMA_RESPONSE: Dict[str, Any] = {
     "responsible_recruiter": {
         "id": 1,
         "type": "dictionary",
-        "title": "Ответственный рекрутер вакансии *",
+        "title": "Test recruiter",
         "required": True,
         "order": 1,
         "value": None,
@@ -43,7 +43,7 @@ GET_ORG_ADD_FIELDS_SCHEMA_RESPONSE: Dict[str, Any] = {
     "manager": {
         "id": 1,
         "type": "dictionary",
-        "title": "Нанимающий менеджер *",
+        "title": "Test manager",
         "required": True,
         "order": 2,
         "value": None,
@@ -198,7 +198,7 @@ async def test_get_get_org_vacancy_additional_fields_schema(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    response = await vacancies.get_org_vacancy_additional_fields_schema(ACCOUNT_ID)
+    response = await vacancies.get_additional_fields_schema(ACCOUNT_ID)
     assert response == AdditionalFieldsSchemaResponse(**GET_ORG_ADD_FIELDS_SCHEMA_RESPONSE)
 
 
