@@ -6,23 +6,23 @@ from huntflow_api_client.models.common import PaginatedResponse
 
 
 class Permission(BaseModel):
-    permission: str = Field(..., description="Permission name", example="status")
-    value: Optional[str] = Field(None, description="Permission value", example="97")
-    vacancy: Optional[int] = Field(None, description="Vacancy ID", example=1)
+    permission: str = Field(..., description="Permission name")
+    value: Optional[str] = Field(None, description="Permission value")
+    vacancy: Optional[int] = Field(None, description="Vacancy ID")
 
 
 class CoworkerResponse(BaseModel):
-    id: int = Field(..., description="Coworker ID", example=12)
-    member: int = Field(..., description="User ID", example=1)
-    name: Optional[str] = Field(None, description="Coworker name", example="John Doe")
+    id: int = Field(..., description="Coworker ID")
+    member: int = Field(..., description="User ID")
+    name: Optional[str] = Field(None, description="Coworker name")
     member_type: str = Field(
         ...,
         alias="type",
         description="Coworker type (role)",
         example="owner",
     )
-    head: Optional[int] = Field(None, description="Head user ID", example=2)
-    email: Optional[EmailStr] = Field(None, description="Email", example="mail@gmail.com")
+    head: Optional[int] = Field(None, description="Head user ID")
+    email: Optional[EmailStr] = Field(None, description="Email")
     meta: Optional[dict] = Field(None, description="Additional meta information")
     permissions: List[Permission] = Field(default_factory=list, description="Coworker permissions")
 
@@ -31,5 +31,5 @@ class CoworkerResponse(BaseModel):
 
 
 class CoworkersListResponse(PaginatedResponse):
-    total_items: Optional[int] = Field(..., description="Total number of items", example=50)
+    total_items: Optional[int] = Field(..., description="Total number of items")
     items: List[CoworkerResponse] = Field(..., description="List of coworkers")
