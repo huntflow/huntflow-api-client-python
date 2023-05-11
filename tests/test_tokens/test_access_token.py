@@ -5,7 +5,7 @@ import pytest
 import respx
 
 from huntflow_api_client import HuntflowAPI
-from huntflow_api_client.errors import (
+from huntflow_api_client.errors.errors import (
     InvalidAccessTokenError,
     InvalidRefreshTokenError,
     TokenExpiredError,
