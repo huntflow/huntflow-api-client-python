@@ -6,8 +6,8 @@ from pytest_httpx import HTTPXMock
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.vacancies import Vacancy
 from huntflow_api_client.models.common import EditedFillQuota, FillQuota
-from huntflow_api_client.models.request.coworkers import AssignCoworkerRequest
 from huntflow_api_client.models.request.vacancies import (
+    AssignCoworkerRequest,
     VacancyCreateRequest,
     VacancyListState,
     VacancyUpdatePartialRequest,

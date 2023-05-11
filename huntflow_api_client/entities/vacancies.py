@@ -1,8 +1,8 @@
 from typing import Any, Dict, List, Optional, Union
 
 from huntflow_api_client.entities.base import BaseEntity, CRUDEntityMixin
-from huntflow_api_client.models.request.coworkers import AssignCoworkerRequest
 from huntflow_api_client.models.request.vacancies import (
+    AssignCoworkerRequest,
     VacancyCreateRequest,
     VacancyUpdatePartialRequest,
     VacancyUpdateRequest,
@@ -148,7 +148,11 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         return VacancyResponse(**response.json())
 
     async def assign_coworker(
-        self, account_id: int, vacancy_id: int, account_member_id: int, data: AssignCoworkerRequest,
+        self,
+        account_id: int,
+        vacancy_id: int,
+        account_member_id: int,
+        data: AssignCoworkerRequest,
     ) -> AssignCoworkerResponse:
         """
         API method reference

@@ -105,3 +105,12 @@ class VacancyUpdatePartialRequest(VacancyUpdateRequest):
         description="The name of the vacancy (occupation)",
         example="Developer",
     )
+
+
+class PermissionItem(JsonRequestModel):
+    permission: str = Field(..., description="Permission ID")
+    value: PositiveInt = Field(..., description="Vacancy status ID")
+
+
+class AssignCoworkerRequest(JsonRequestModel):
+    permissions: List[PermissionItem]
