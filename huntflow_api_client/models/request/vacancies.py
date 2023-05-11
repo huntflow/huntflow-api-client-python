@@ -4,6 +4,7 @@ from typing import List, Optional
 from pydantic import Field, PositiveInt
 
 from huntflow_api_client.models.common import EditedFillQuota, FillQuota, JsonRequestModel, Vacancy
+from huntflow_api_client.models.response.coworkers import Permission
 
 
 class VacancyListState(str, Enum):
@@ -107,10 +108,5 @@ class VacancyUpdatePartialRequest(VacancyUpdateRequest):
     )
 
 
-class PermissionItem(JsonRequestModel):
-    permission: str = Field(..., description="Permission ID")
-    value: PositiveInt = Field(..., description="Vacancy status ID")
-
-
 class AssignCoworkerRequest(JsonRequestModel):
-    permissions: List[PermissionItem]
+    permissions: List[Permission]
