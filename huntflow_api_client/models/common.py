@@ -2,7 +2,7 @@ import json
 from datetime import date
 from typing import AbstractSet, Any, Callable, Dict, Mapping, Optional, Union
 
-from pydantic import AnyHttpUrl, BaseModel, Field, PositiveInt
+from pydantic import AnyHttpUrl, BaseModel, EmailStr, Field, PositiveInt
 
 from huntflow_api_client.models.consts import VacancyState
 
@@ -101,3 +101,28 @@ class File(BaseModel):
     url: AnyHttpUrl = Field(..., description="File URL")
     content_type: str = Field(..., description="MIME type of file", example="application/pdf")
     name: str = Field(..., description="File name", example="Resume.pdf")
+
+
+class Applicant(BaseModel):
+    first_name: Optional[str] = Field(None, description="First name", example="John")
+    last_name: Optional[str] = Field(None, description="Last name", example="Doe")
+    middle_name: Optional[str] = Field(None, description="Middle name", example="Michael")
+    money: Optional[str] = Field(None, description="Salary expectation", example="$100000")
+    phone: Optional[str] = Field(None, description="Phone number", example="89999999999")
+    email: Optional[EmailStr] = Field(
+        None,
+        description="Email address",
+        example="mail@some.domain.com",
+    )
+    skype: Optional[str] = Field(None, description="Skype login", example="my_skype")
+    position: Optional[str] = Field(
+        None,
+        description="Applicant’s occupation",
+        example="Front-end developer",
+    )
+    company: Optional[str] = Field(
+        None,
+        description="Applicant’s place of work",
+        example="Google Inc.",
+    )
+    photo: Optional[int] = Field(None, description="Applicant’s photo ID", example=1)

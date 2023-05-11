@@ -65,7 +65,7 @@ async def test_update_account_tag(
     assert response == AccountTagResponse(**ACCOUNT_TAG_RESPONSE)
 
 
-async def test_delete_applicant(
+async def test_delete_tag(
     httpx_mock: HTTPXMock,
     token_proxy: HuntflowTokenProxy,
 ) -> None:
