@@ -71,7 +71,7 @@ class ApplicantItem(Applicant):
         description="A link to an applicant’s photo",
         example="https://hh.resume/12341234",
     )
-    birthday: Optional[date] = Field(None, description="Date of birth", example="2020-01-01")
+    birthday: Optional[date] = Field(None, description="Date of birth")
     created: Optional[datetime] = Field(
         ...,
         description="Date and time of adding an applicant",
@@ -104,7 +104,7 @@ class ApplicantCreateResponse(Applicant):
         ...,
         description="Date and time of adding an applicant",
     )
-    birthday: Optional[date] = Field(None, description="Date of birth", example="2020-01-01")
+    birthday: Optional[date] = Field(None, description="Date of birth")
     files: Optional[List[PositiveInt]] = Field(
         None,
         description="Upload files<br>The list of file's ID attached to the applicant",

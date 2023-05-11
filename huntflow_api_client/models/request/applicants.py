@@ -50,7 +50,7 @@ class ApplicantSocial(BaseModel):
 
 
 class ApplicantCreateRequest(Applicant, JsonRequestModel):
-    birthday: Optional[date] = Field(None, description="Date of birth", example="2000-01-01")
+    birthday: Optional[date] = Field(None, description="Date of birth")
     externals: Optional[List[ApplicantResumeCreate]] = Field(
         None,
         max_items=1,
@@ -64,7 +64,7 @@ class ApplicantCreateRequest(Applicant, JsonRequestModel):
 
 
 class ApplicantUpdateRequest(Applicant, JsonRequestModel):
-    birthday: Optional[date] = Field(None, description="Date of birth", example="2000-01-01")
+    birthday: Optional[date] = Field(None, description="Date of birth")
     social: Optional[List[ApplicantSocial]] = Field(
         None,
         max_items=1,
