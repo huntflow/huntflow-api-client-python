@@ -1,5 +1,5 @@
 import json
-from datetime import date
+from datetime import date, datetime
 from typing import AbstractSet, Any, Callable, Dict, Mapping, Optional, Union
 
 from pydantic import AnyHttpUrl, BaseModel, EmailStr, Field, PositiveInt
@@ -126,3 +126,39 @@ class Applicant(BaseModel):
         example="Google Inc.",
     )
     photo: Optional[int] = Field(None, description="Applicant’s photo ID", example=1)
+
+
+class VacancyQuotaBase(BaseModel):
+    id: PositiveInt = Field(..., description="Fill quota ID")
+    vacancy_frame: PositiveInt = Field(..., description="Vacancy frame ID")
+    vacancy_request: Optional[PositiveInt] = Field(None, description="Vacancy request ID")
+    created: datetime = Field(..., description="Date and time of creating a vacancy quota")
+    changed: Optional[datetime] = Field(
+        None,
+        description="Date and time of updating a vacancy quota",
+    )
+    applicants_to_hire: PositiveInt = Field(
+        ...,
+        description="Number of applicants should be hired on the quota",
+    )
+    already_hired: int = Field(..., description="Number of applicants already hired on the quota")
+    deadline: Optional[date] = Field(None, description="Date when the quota should be filled")
+    closed: Optional[datetime] = Field(None, description="Date and time when the quota was closed")
+    work_days_in_work: Optional[int] = Field(
+        None,
+        description="How many working days the vacancy is in work",
+    )
+    work_days_after_deadline: Optional[int] = Field(
+        None,
+        description="How many working days the vacancy is in work after deadline",
+    )
+
+
+class AccountInfo(BaseModel):
+    id: PositiveInt = Field(..., description="ID of the user who opened the quota")
+    name: str = Field(..., description="Name of the user who opened the quota")
+    email: Optional[EmailStr] = Field(None, description="Email of the user who opened the quota")
+
+
+class VacancyQuotaItem(VacancyQuotaBase):
+    account_info: AccountInfo
