@@ -2,8 +2,7 @@ import json
 from datetime import date
 from typing import AbstractSet, Any, Callable, Dict, Mapping, Optional, Union
 
-from pydantic import EmailStr
-from pydantic import AnyHttpUrl, BaseModel, Field, PositiveInt
+from pydantic import AnyHttpUrl, BaseModel, EmailStr, Field, PositiveInt
 
 from huntflow_api_client.models.consts import VacancyState
 
