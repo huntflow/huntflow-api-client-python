@@ -110,7 +110,9 @@ class Applicant(BaseModel):
     money: Optional[str] = Field(None, description="Salary expectation", example="$100000")
     phone: Optional[str] = Field(None, description="Phone number", example="89999999999")
     email: Optional[EmailStr] = Field(
-        None, description="Email address", example="mail@some.domain.com",
+        None,
+        description="Email address",
+        example="mail@some.domain.com",
     )
     skype: Optional[str] = Field(None, description="Skype login", example="my_skype")
     position: Optional[str] = Field(
