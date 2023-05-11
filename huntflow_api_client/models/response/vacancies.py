@@ -3,8 +3,8 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Extra, Field, PositiveInt, root_validator
 
-from huntflow_api_client.models.common import PaginatedResponse, Vacancy
-from huntflow_api_client.models.fields import FieldType, File
+from huntflow_api_client.models.common import File, PaginatedResponse, Vacancy
+from huntflow_api_client.models.consts import FieldType
 
 
 class AccountVacancyRequestSchemaField(BaseModel):

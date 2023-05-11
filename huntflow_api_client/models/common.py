@@ -2,7 +2,7 @@ import json
 from datetime import date
 from typing import AbstractSet, Any, Callable, Dict, Mapping, Optional, Union
 
-from pydantic import BaseModel, Field, PositiveInt
+from pydantic import AnyHttpUrl, BaseModel, Field, PositiveInt
 
 from huntflow_api_client.models.consts import VacancyState
 
@@ -94,3 +94,10 @@ class FillQuota(BaseModel):
 
 class EditedFillQuota(FillQuota):
     id: Optional[PositiveInt] = Field(None, description="Fill quota ID", example=15)
+
+
+class File(BaseModel):
+    id: PositiveInt = Field(..., description="File ID", example=19)
+    url: AnyHttpUrl = Field(..., description="File URL")
+    content_type: str = Field(..., description="MIME type of file", example="application/pdf")
+    name: str = Field(..., description="File name", example="Resume.pdf")

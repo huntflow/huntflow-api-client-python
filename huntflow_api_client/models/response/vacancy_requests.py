@@ -6,8 +6,7 @@ from enum import Enum
 
 from pydantic import BaseModel, EmailStr, Field, PositiveInt
 
-from huntflow_api_client.models.common import PaginatedResponse
-from huntflow_api_client.models.fields import File
+from huntflow_api_client.models.common import File, PaginatedResponse
 
 
 class VacancyRequestStatus(str, Enum):
