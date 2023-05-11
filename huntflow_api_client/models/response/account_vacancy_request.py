@@ -52,4 +52,4 @@ class AccountVacancyRequestResponse(BaseModel):
 
 
 class AccountVacancyRequestsListResponse(BaseModel):
-    items: list[AccountVacancyRequestResponse]
+    items: t.List[AccountVacancyRequestResponse]

@@ -105,9 +105,9 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
         return AccountVacancyRequestsListResponse.parse_obj(response.json())
 
     async def get_schema(
-            self,
-            account_id: int,
-            account_vacancy_request_id: int,
+        self,
+        account_id: int,
+        account_vacancy_request_id: int,
     ) -> AccountVacancyRequestResponse:
         """
         API method reference:
