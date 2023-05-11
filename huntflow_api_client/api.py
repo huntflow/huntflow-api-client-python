@@ -3,11 +3,8 @@ from typing import Optional
 
 import httpx
 
-from huntflow_api_client.errors import (
-    InvalidAccessTokenError,
-    InvalidRefreshTokenError,
-    TokenExpiredError,
-)
+from huntflow_api_client.errors.errors import InvalidAccessTokenError, TokenExpiredError
+from huntflow_api_client.errors.response_hooks import raise_for_status
 from huntflow_api_client.tokens.proxy import AbstractTokenProxy, DummyHuntflowTokenProxy
 from huntflow_api_client.tokens.token import ApiToken
 
@@ -49,6 +46,7 @@ class HuntflowAPI:
     @property
     def http_client(self) -> httpx.AsyncClient:
         http_client = httpx.AsyncClient(base_url=self.base_url)
+        http_client.event_hooks["response"] = [raise_for_status]
         return http_client
 
     async def request(  # type: ignore[no-untyped-def]
@@ -110,23 +108,8 @@ class HuntflowAPI:
                 headers=headers,
                 timeout=timeout,
             )
-            await self._raise_token_expired(response)
-        return response
 
-    async def _raise_token_expired(self, response: httpx.Response) -> None:
-        if response.status_code != 401:
-            return
-        if not hasattr(response, "_content"):
-            await response.aread()
-        data = response.json()
-        try:
-            msg = data["errors"][0]["detail"]
-        except KeyError:
-            msg = None
-        if msg == "token_expired":
-            raise TokenExpiredError()
-        if msg == "Invalid access token":
-            raise InvalidAccessTokenError()
+        return response
 
     async def _run_token_refresh(self) -> None:
         # Why do we have to check if token was changed?
@@ -150,14 +133,7 @@ class HuntflowAPI:
         try:
             refresh_data = await self._token_proxy.get_refresh_data()
             async with self.http_client as client:
-                response = await client.post(
-                    "/token/refresh",
-                    json=refresh_data,
-                )
-                if response.status_code == 404:
-                    raise InvalidRefreshTokenError()
-
-                response.raise_for_status()
+                response = await client.post("/token/refresh", json=refresh_data)
             await self._token_proxy.update(response.json())
         finally:
             await self._token_proxy.release_lock()

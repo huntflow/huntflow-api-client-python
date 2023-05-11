@@ -18,7 +18,7 @@ from huntflow_api_client.models.response.production_calendars import (
 
 
 class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
-    async def list(self) -> CalendarListResponse:  # noqa: A003
+    async def list(self) -> CalendarListResponse:
         """
         API method reference https://api.huntflow.ai/v2/docs#get-/production_calendars
 

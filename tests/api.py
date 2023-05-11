@@ -95,7 +95,17 @@ class FakeAPIServer:
         request_data = json.loads(request.content)
         refresh_token = request_data["refresh_token"]
         if refresh_token != self.token_pair.refresh_token:
-            return httpx.Response(404)
+            return httpx.Response(
+                404,
+                json={
+                    "errors": [
+                        {
+                            "type": "not_found",
+                            "title": "error.robot_token.not_found",
+                        },
+                    ],
+                },
+            )
 
         self.token_pair = TokenPair()
         self.is_expired_token = False
