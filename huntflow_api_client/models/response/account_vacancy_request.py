@@ -1,6 +1,6 @@
 import typing as t
 
-from pydantic import BaseModel, Field, Extra, root_validator, PositiveInt
+from pydantic import BaseModel, Extra, Field, PositiveInt
 
 from huntflow_api_client.models.utils.fields import FieldType
 
@@ -18,45 +18,12 @@ class AccountVacancyRequestSchemaField(BaseModel):
     )
     value: t.Optional[str] = Field(None, description="Default value", example="New position")
     fields: t.Optional[t.Dict[str, "AccountVacancyRequestSchemaField"]] = Field(
-        None, description="Nested fields",
+        None,
+        description="Nested fields",
     )
 
     class Config:
         extra = Extra.allow
-
-
-class AccountVacancyRequestSchema(BaseModel):
-    _root_example = {
-        "position": {
-            "id": 130,
-            "type": "string",
-            "title": "Position",
-            "required": True,
-            "order": 1,
-            "value": None,
-            "pass_to_report": True,
-            "account": 11,
-            "key": "position",
-        },
-        "category": {
-            "id": 132,
-            "type": "dictionary",
-            "title": "Category",
-            "required": True,
-            "order": 3,
-            "value": None,
-            "pass_to_report": True,
-            "account": 11,
-            "dictionary": "category",
-            "vacancy_field": "category",
-            "key": None,
-        },
-    }
-    __root__: t.Dict[str, AccountVacancyRequestSchemaField] = Field(..., example=_root_example)
-
-    @root_validator(pre=True)
-    def prepare_data(cls, values: t.Dict) -> t.Dict[str, t.Dict[str, t.Any]]:
-        return {"__root__": values}
 
 
 class AccountVacancyRequestResponse(BaseModel):
@@ -72,11 +39,15 @@ class AccountVacancyRequestResponse(BaseModel):
         ),
     )
     attendee_hint: str = Field(
-        "", description="Hint under the field 'Send for approval'", example="Send for approval",
+        "",
+        description="Hint under the field 'Send for approval'",
+        example="Send for approval",
     )
     active: bool = Field(..., description="Schema activity flag")
-    schema_: t.Optional[AccountVacancyRequestSchema] = Field(
-        None, alias="schema", description="Description of schema fields",
+    schema_: t.Optional[t.Dict[str, AccountVacancyRequestSchemaField]] = Field(
+        None,
+        alias="schema",
+        description="Description of schema fields",
     )
 
 
