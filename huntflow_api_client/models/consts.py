@@ -15,6 +15,37 @@ class MemberType(str, Enum):
     watcher = "watcher"
 
 
+class VacancyState(str, Enum):
+    OPEN = "OPEN"
+    CLOSED = "CLOSED"
+    HOLD = "HOLD"
+    REOPEN = "REOPEN"
+    VACANCY_REQUEST_ATTACH = "VACANCY_REQUEST_ATTACH"
+    RESUME = "RESUME"
+    CREATED = "CREATED"
+
+
+class FieldType(str, Enum):
+    string = "string"
+    integer = "integer"
+    text = "text"
+    date = "date"
+    select = "select"
+    complex = "complex"
+    contract = "contract"
+    reason = "reason"
+    stoplist = "stoplist"
+    compensation = "compensation"
+    dictionary = "dictionary"
+    income = "income"
+    position_status = "position_status"
+    division = "division"
+    region = "region"
+    url = "url"
+    hidden = "hidden"
+    html = "html"
+
+
 class AgreementState(str, Enum):
     not_sent = "not_sent"
     sent = "sent"
