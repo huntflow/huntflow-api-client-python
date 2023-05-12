@@ -1,8 +1,10 @@
 from typing import Any, Dict, List, Optional, Union
 
 from huntflow_api_client.entities.base import BaseEntity, CRUDEntityMixin
+from huntflow_api_client.models.common import StatusResponse
 from huntflow_api_client.models.request.vacancies import (
     VacancyCreateRequest,
+    VacancyMemberCreateRequest,
     VacancyUpdatePartialRequest,
     VacancyUpdateRequest,
 )
@@ -144,3 +146,46 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             json=data.jsonable_dict(exclude_none=True),
         )
         return VacancyResponse(**response.json())
+
+    async def assign_coworker(
+        self,
+        account_id: int,
+        vacancy_id: int,
+        account_member_id: int,
+        data: VacancyMemberCreateRequest,
+    ) -> StatusResponse:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#put-/accounts/-account_id-/vacancies/-vacancy_id-/members/-account_member_id-
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        :param account_member_id: Coworker ID
+        :param data: List of permissions
+        :return: Status true or false
+        """
+        response = await self._api.request(
+            "PUT",
+            f"/accounts/{account_id}/vacancies/{vacancy_id}/members/{account_member_id}",
+            json=data.jsonable_dict(exclude_none=True),
+        )
+        return StatusResponse(**response.json())
+
+    async def remove_coworker(
+        self,
+        account_id: int,
+        vacancy_id: int,
+        account_member_id: int,
+    ) -> None:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#delete-/accounts/-account_id-/vacancies/-vacancy_id-/members/-account_member_id-
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        :param account_member_id: Coworker ID
+        """
+        await self._api.request(
+            "DELETE",
+            f"/accounts/{account_id}/vacancies/{vacancy_id}/members/{account_member_id}",
+        )

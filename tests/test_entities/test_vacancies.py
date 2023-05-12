@@ -5,10 +5,11 @@ from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.vacancies import Vacancy
-from huntflow_api_client.models.common import EditedFillQuota, FillQuota
+from huntflow_api_client.models.common import EditedFillQuota, FillQuota, StatusResponse
 from huntflow_api_client.models.request.vacancies import (
     VacancyCreateRequest,
     VacancyListState,
+    VacancyMemberCreateRequest,
     VacancyUpdatePartialRequest,
     VacancyUpdateRequest,
 )
@@ -23,6 +24,7 @@ from tests.api import BASE_URL
 
 ACCOUNT_ID = 1
 VACANCY_ID = 2
+COWORKER_ID = 3
 
 GET_ORG_ADD_FIELDS_SCHEMA_RESPONSE: Dict[str, Any] = {
     "responsible_recruiter": {
@@ -185,6 +187,13 @@ UPDATE_VACANCY_RESPONSE: Dict[str, Any] = {
     "multiple": False,
     "vacancy_request": None,
 }
+ASSIGN_COWORKER_RESPONSE: Dict[str, Any] = {"status": True}
+ASSIGN_COWORKER_REQUEST: Dict[str, Any] = {
+    "permissions": [
+        {"permission": "status", "value": 1},
+        {"permission": "status", "value": 2},
+    ],
+}
 
 
 async def test_get_get_org_vacancy_additional_fields_schema(
@@ -308,3 +317,33 @@ async def test_patch_vacancy(
     )
     response = await vacancies.patch(ACCOUNT_ID, VACANCY_ID, data)
     assert response == VacancyResponse(**PATCH_VACANCY_RESPONSE)
+
+
+async def test_assign_coworker(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/members/{COWORKER_ID}",
+        json=ASSIGN_COWORKER_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    vacancies = Vacancy(api_client)
+    data = VacancyMemberCreateRequest(**ASSIGN_COWORKER_REQUEST)
+
+    response = await vacancies.assign_coworker(ACCOUNT_ID, VACANCY_ID, COWORKER_ID, data)
+    assert response == StatusResponse(**ASSIGN_COWORKER_RESPONSE)
+
+
+async def test_remove_coworker(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/members/{COWORKER_ID}",
+        status_code=204,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    vacancies = Vacancy(api_client)
+
+    await vacancies.remove_coworker(ACCOUNT_ID, VACANCY_ID, COWORKER_ID)

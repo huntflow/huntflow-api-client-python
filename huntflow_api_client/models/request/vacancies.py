@@ -1,7 +1,7 @@
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Union
 
-from pydantic import Field, PositiveInt
+from pydantic import BaseModel, Field, PositiveInt
 
 from huntflow_api_client.models.common import EditedFillQuota, FillQuota, JsonRequestModel, Vacancy
 
@@ -104,4 +104,15 @@ class VacancyUpdatePartialRequest(VacancyUpdateRequest):
         None,
         description="The name of the vacancy (occupation)",
         example="Developer",
+    )
+
+
+class VacancyMemberPermission(BaseModel):
+    permission: str = Field(..., description="Permission ID")
+    value: Optional[Union[PositiveInt, str]] = Field(None, description="Vacancy status ID")
+
+
+class VacancyMemberCreateRequest(JsonRequestModel):
+    permissions: Optional[List[VacancyMemberPermission]] = Field(
+        description="List of permissions (if member type is `watcher`)",
     )

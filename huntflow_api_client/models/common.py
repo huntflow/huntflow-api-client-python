@@ -126,3 +126,7 @@ class Applicant(BaseModel):
         example="Google Inc.",
     )
     photo: Optional[int] = Field(None, description="Applicant’s photo ID", example=1)
+
+
+class StatusResponse(BaseModel):
+    status: bool = Field(True)
