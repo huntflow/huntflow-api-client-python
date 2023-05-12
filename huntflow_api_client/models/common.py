@@ -128,6 +128,10 @@ class Applicant(BaseModel):
     photo: Optional[int] = Field(None, description="Applicant’s photo ID", example=1)
 
 
+class StatusResponse(BaseModel):
+    status: bool = Field(True)
+
+
 class VacancyQuotaBase(BaseModel):
     id: PositiveInt = Field(..., description="Fill quota ID")
     vacancy_frame: PositiveInt = Field(..., description="Vacancy frame ID")
