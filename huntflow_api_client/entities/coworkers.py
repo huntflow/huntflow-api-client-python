@@ -9,7 +9,7 @@ class Coworker(BaseEntity, ListEntityMixin, GetEntityMixin):
     async def list(
         self,
         account_id: int,
-        type: Optional[MemberType] = None,  # noqa A002
+        type_: Optional[MemberType] = None,
         fetch_permissions: Optional[bool] = None,
         vacancy_id: Optional[Union[int, List[int]]] = None,
         count: Optional[int] = 30,
@@ -19,7 +19,7 @@ class Coworker(BaseEntity, ListEntityMixin, GetEntityMixin):
         API method reference https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/coworkers
 
         :param account_id: Organization ID
-        :param type: Coworker type. Used to filter coworkers by their type (role).
+        :param type_: Coworker type. Used to filter coworkers by their type (role).
             If not supplied, then coworkers of all types will be returned.
         :param fetch_permissions: Flag for returning coworker's permissions.
             If supplied, then all coworkers will contain a list of their permissions.
@@ -32,8 +32,8 @@ class Coworker(BaseEntity, ListEntityMixin, GetEntityMixin):
             "count": count,
             "page": page,
         }
-        if type:
-            params["type"] = type
+        if type_:
+            params["type"] = type_
         if fetch_permissions:
             params["fetch_permissions"] = fetch_permissions
         if vacancy_id:
