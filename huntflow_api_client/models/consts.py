@@ -44,3 +44,10 @@ class FieldType(str, Enum):
     url = "url"
     hidden = "hidden"
     html = "html"
+
+
+class AgreementState(str, Enum):
+    not_sent = "not_sent"
+    sent = "sent"
+    accepted = "accepted"
+    declined = "declined"
