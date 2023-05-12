@@ -101,3 +101,7 @@ class File(BaseModel):
     url: AnyHttpUrl = Field(..., description="File URL")
     content_type: str = Field(..., description="MIME type of file", example="application/pdf")
     name: str = Field(..., description="File name", example="Resume.pdf")
+
+
+class StatusResponse(BaseModel):
+    status: bool = Field(True)

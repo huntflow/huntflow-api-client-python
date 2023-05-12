@@ -1,15 +1,15 @@
 from typing import Any, Dict, List, Optional, Union
 
 from huntflow_api_client.entities.base import BaseEntity, CRUDEntityMixin
+from huntflow_api_client.models.common import StatusResponse
 from huntflow_api_client.models.request.vacancies import (
-    AssignCoworkerRequest,
     VacancyCreateRequest,
+    VacancyMemberCreateRequest,
     VacancyUpdatePartialRequest,
     VacancyUpdateRequest,
 )
 from huntflow_api_client.models.response.vacancies import (
     AdditionalFieldsSchemaResponse,
-    AssignCoworkerResponse,
     VacancyCreateResponse,
     VacancyListResponse,
     VacancyResponse,
@@ -152,8 +152,8 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         account_id: int,
         vacancy_id: int,
         account_member_id: int,
-        data: AssignCoworkerRequest,
-    ) -> AssignCoworkerResponse:
+        data: VacancyMemberCreateRequest,
+    ) -> StatusResponse:
         """
         API method reference
             https://api.huntflow.ai/v2/docs#put-/accounts/-account_id-/vacancies/-vacancy_id-/members/-account_member_id-
@@ -169,7 +169,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             f"/accounts/{account_id}/vacancies/{vacancy_id}/members/{account_member_id}",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return AssignCoworkerResponse(**response.json())
+        return StatusResponse(**response.json())
 
     async def remove_coworker(
         self,

@@ -5,17 +5,16 @@ from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.vacancies import Vacancy
-from huntflow_api_client.models.common import EditedFillQuota, FillQuota
+from huntflow_api_client.models.common import EditedFillQuota, FillQuota, StatusResponse
 from huntflow_api_client.models.request.vacancies import (
-    AssignCoworkerRequest,
     VacancyCreateRequest,
     VacancyListState,
+    VacancyMemberCreateRequest,
     VacancyUpdatePartialRequest,
     VacancyUpdateRequest,
 )
 from huntflow_api_client.models.response.vacancies import (
     AdditionalFieldsSchemaResponse,
-    AssignCoworkerResponse,
     VacancyCreateResponse,
     VacancyListResponse,
     VacancyResponse,
@@ -330,10 +329,10 @@ async def test_assign_coworker(
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
-    data = AssignCoworkerRequest(**ASSIGN_COWORKER_REQUEST)
+    data = VacancyMemberCreateRequest(**ASSIGN_COWORKER_REQUEST)
 
     response = await vacancies.assign_coworker(ACCOUNT_ID, VACANCY_ID, COWORKER_ID, data)
-    assert response == AssignCoworkerResponse(**ASSIGN_COWORKER_RESPONSE)
+    assert response == StatusResponse(**ASSIGN_COWORKER_RESPONSE)
 
 
 async def test_remove_coworker(

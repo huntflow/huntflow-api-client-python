@@ -9,7 +9,7 @@ class Coworker(BaseEntity, ListEntityMixin, GetEntityMixin):
     async def list(
         self,
         account_id: int,
-        type: Optional[MemberType] = None,
+        type: Optional[MemberType] = None,  # noqa A002
         fetch_permissions: Optional[bool] = None,
         vacancy_id: Optional[Union[int, List[int]]] = None,
         count: Optional[int] = 30,
