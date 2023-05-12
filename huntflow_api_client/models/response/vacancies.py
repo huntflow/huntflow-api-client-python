@@ -209,7 +209,7 @@ class VacancyFrame(LastVacancyFrameResponse):
 
 
 class VacancyQuotaList(PaginatedResponse):
-    total_items: Optional[int] = Field(None, description="Total number of items", example=50)
+    total_items: Optional[int] = Field(None, description="Total number of items")
     items: List[VacancyQuotaItem]
 
 
