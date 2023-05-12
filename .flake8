@@ -3,4 +3,4 @@ exclude = build,dist,.git,.tox,.env,.venv,.github,env,venv,__pycache__
 max-line-length = 100
 max-complexity = 8
 inline-quotes = double
-ignore = A002, A003, VNE003
+ignore = A003, VNE003
