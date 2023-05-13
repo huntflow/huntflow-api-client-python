@@ -5,21 +5,19 @@ from pydantic import BaseModel, Field
 
 
 class Division(BaseModel):
-    id: int = Field(..., description="Division ID", example=2)
-    name: str = Field(..., description="Division name", example="IT Department")
-    order: int = Field(..., description="Order number", example=1)
+    id: int = Field(..., description="Division ID")
+    name: str = Field(..., description="Division name")
+    order: int = Field(..., description="Order number")
     active: bool = Field(..., description="Activity flag")
-    parent: Optional[int] = Field(None, description="Parent division ID", example=1)
+    parent: Optional[int] = Field(None, description="Parent division ID")
     deep: int = Field(..., description="Depth level")
     foreign: Optional[str] = Field(
         None,
         description="The unique identifier in the customer's internal system",
-        example="it_department",
     )
     meta: Optional[dict] = Field(
         None,
         description="Additional meta information",
-        example={"lead": "test@example.com"},
     )
 
 
@@ -27,7 +25,6 @@ class Meta(BaseModel):
     levels: int = Field(
         ...,
         description="The number of levels of nesting in the structure",
-        example=1,
     )
     has_inactive: bool = Field(
         ...,
@@ -46,10 +43,10 @@ class BatchDivisionsPayload(BaseModel):
 
 class BatchDivisionsMeta(BaseModel):
     data: dict = Field(..., description="Request body content")
-    account_id: int = Field(..., description="Organization ID", example=11)
+    account_id: int = Field(..., description="Organization ID")
 
 
 class BatchDivisionsResponse(BaseModel):
-    status: str = Field(..., description="Operation status", example="ok")
+    status: str = Field(..., description="Operation status")
     payload: BatchDivisionsPayload
     meta: BatchDivisionsMeta

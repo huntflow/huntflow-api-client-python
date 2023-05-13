@@ -109,7 +109,7 @@ class Applicant(BaseModel):
     middle_name: Optional[str] = Field(None, description="Middle name", example="Michael")
     money: Optional[str] = Field(None, description="Salary expectation", example="$100000")
     phone: Optional[str] = Field(None, description="Phone number", example="89999999999")
-    email: Optional[EmailStr] = Field(
+    email: Union[EmailStr, str, None] = Field(
         None,
         description="Email address",
         example="mail@some.domain.com",

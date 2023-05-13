@@ -26,7 +26,6 @@ class VacancyCreateRequest(Vacancy, JsonRequestModel):
     account_applicant_offer: Optional[PositiveInt] = Field(
         None,
         description="Organization offer ID",
-        example=10,
     )
     state: VacancyCreateState = Field(  # type: ignore
         VacancyCreateState.OPEN,
@@ -35,27 +34,22 @@ class VacancyCreateRequest(Vacancy, JsonRequestModel):
     coworkers: Optional[List[PositiveInt]] = Field(
         None,
         description="List of coworkers working with a vacancy",
-        example=[1, 2],
     )
     body: Optional[str] = Field(
         None,
         description="The responsibilities for a vacancy in HTML format",
-        example="<p>Test body</p>",
     )
     requirements: Optional[str] = Field(
         None,
         description="The requirements for a vacancy in HTML format",
-        example="<p>Test requirements</p>",
     )
     conditions: Optional[str] = Field(
         None,
         description="The conditions for a vacancy in HTML format",
-        example="<p>Test conditions</p>",
     )
     files: Optional[List[PositiveInt]] = Field(
         None,
         description="List of file IDs attached to a vacancy.",
-        example=[1, 2, 3],
     )
     fill_quotas: List[FillQuota] = Field(..., max_items=1, description="Fill quota ID")
 
@@ -67,17 +61,14 @@ class VacancyUpdateRequest(Vacancy, JsonRequestModel):
     body: Optional[str] = Field(
         None,
         description="The responsibilities for a vacancy in HTML format",
-        example="<p>Test body</p>",
     )
     requirements: Optional[str] = Field(
         None,
         description="The requirements for a vacancy in HTML format",
-        example="<p>Test requirements</p>",
     )
     conditions: Optional[str] = Field(
         None,
         description="The conditions for a vacancy in HTML format",
-        example="<p>Test conditions</p>",
     )
     files: Optional[List[PositiveInt]] = Field(
         None,
@@ -87,12 +78,10 @@ class VacancyUpdateRequest(Vacancy, JsonRequestModel):
     account_vacancy_hold_reason: Optional[PositiveInt] = Field(
         None,
         description="Vacancy hold reason ID",
-        example=12,
     )
     account_vacancy_close_reason: Optional[PositiveInt] = Field(
         None,
         description="Vacancy close reason ID",
-        example=15,
     )
 
     class Config:
@@ -103,7 +92,6 @@ class VacancyUpdatePartialRequest(VacancyUpdateRequest):
     position: Optional[str] = Field(  # type: ignore
         None,
         description="The name of the vacancy (occupation)",
-        example="Developer",
     )
 
 

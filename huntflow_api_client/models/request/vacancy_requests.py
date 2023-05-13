@@ -10,7 +10,6 @@ class VacancyRequestAttendee(BaseModel):
     name: t.Optional[str] = Field(
         None,
         description="Attendee name",
-        example="John Doe",
     )
 
 
@@ -30,14 +29,12 @@ class CreateVacancyRequestRequest(JsonRequestModel):
     account_vacancy_request: PositiveInt = Field(
         ...,
         description="Account vacancy request ID",
-        example=1,
     )
     position: str = Field(
         ...,
         min_length=1,
         max_length=255,
         description="The name of the vacancy (occupation)",
-        example="Developer",
     )
     money: t.Optional[str] = Field(None, description="Salary", example="$10000")
     attendees: t.Optional[t.List[VacancyRequestAttendee]] = Field(
@@ -47,7 +44,6 @@ class CreateVacancyRequestRequest(JsonRequestModel):
     files: t.Optional[t.List[PositiveInt]] = Field(
         None,
         description="List of file IDs to attach to the vacancy request.",
-        example=[1, 2, 3],
     )
 
     class Config:

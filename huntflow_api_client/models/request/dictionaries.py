@@ -13,11 +13,7 @@ class DictionaryItem(BaseModel):
         min_length=1,
         max_length=1024,
     )
-    meta: Optional[dict] = Field(
-        None,
-        description="Meta information",
-        example={"latitude": 55.5374, "longitude": 60.1408},
-    )
+    meta: Optional[dict] = Field(None, description="Meta information")
     items: Optional[List["DictionaryItem"]] = Field(None, description="Dictionary items")
 
 
