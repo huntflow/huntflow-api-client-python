@@ -86,10 +86,9 @@ class ApplicantItem(Applicant):
         ...,
         description="Date and time of adding an applicant",
     )
-    email: Optional[Union[EmailStr, str]] = Field(
+    email: Union[EmailStr, str, None] = Field(
         None,
         description="Email address",
-        example="mail@some.domain.com",  # type: ignore
     )
     tags: List[ApplicantTag] = Field(..., description="List of tags")
     links: List[ApplicantLink] = Field(..., description="Applicant's vacancies")
@@ -97,7 +96,6 @@ class ApplicantItem(Applicant):
     agreement: Optional[AgreementStateEnum] = Field(
         None,
         description="Agreement's state of applicant to personal data processing",
-        example=AgreementStateEnum.declined,
     )
     doubles: List[ApplicantDouble] = Field(..., description="List of duplicates")
     social: List[ApplicantSocial] = Field(..., description="List of applicant's social accounts")
