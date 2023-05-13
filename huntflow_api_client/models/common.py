@@ -131,6 +131,7 @@ class Applicant(BaseModel):
 class StatusResponse(BaseModel):
     status: bool = Field(True)
 
+
 class VacancyQuotaBase(BaseModel):
     id: PositiveInt = Field(..., description="Fill quota ID")
     vacancy_frame: PositiveInt = Field(..., description="Vacancy frame ID")
