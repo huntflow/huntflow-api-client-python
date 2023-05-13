@@ -562,7 +562,7 @@ async def test_applicant_log_list(
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/1/logs?"
-        f"vacancy=1&&type={ApplicantLogType.ADD}&&page=1&&count=30&&personal=false",
+        f"vacancy=1&&type={ApplicantLogType.ADD.value}&&page=1&&count=30&&personal=false",
         status_code=200,
         json=APPLICANT_LOG_LIST_RESPONSE,
     )

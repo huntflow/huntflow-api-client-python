@@ -258,19 +258,15 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
         :return: List of applicant's worklog
         """
         path = f"/accounts/{account_id}/applicants/{applicant_id}/logs"
-        optional_params = {
-            "type": type_,
-            "vacancy": vacancy,
-        }
-
         params: Dict[str, Any] = {
             "personal": personal,
             "count": count,
             "page": page,
         }
-        for key, value in optional_params.items():
-            if value:
-                params[key] = value
+        if type_:
+            params["type"] = type_.value
+        if vacancy:
+            params["vacancy"] = vacancy
 
         response = await self._api.request("GET", path, params=params)
         return ApplicantLogResponse.parse_obj(response.json())
