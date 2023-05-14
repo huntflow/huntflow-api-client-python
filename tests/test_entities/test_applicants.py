@@ -8,6 +8,7 @@ from huntflow_api_client.models.consts import ApplicantLogType
 from huntflow_api_client.models.request.applicants import (
     ApplicantCreateRequest,
     ApplicantUpdateRequest,
+    CreateApplicantLogRequest,
 )
 from huntflow_api_client.models.response.applicants import (
     ApplicantCreateResponse,
@@ -16,6 +17,7 @@ from huntflow_api_client.models.response.applicants import (
     ApplicantLogResponse,
     ApplicantSearchByCursorResponse,
     ApplicantSearchResponse,
+    CreateApplicantLogResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
@@ -413,6 +415,142 @@ APPLICANT_LOG_LIST_RESPONSE = {
     ],
 }
 
+APPLICANT_CREATE_WORKLOG_NOTE_REQUEST = {
+    "comment": "Example comment",
+    "vacancy": 6,
+    "files": [1, 2, 3],
+    "applicant_offer": {
+        "account_applicant_offer": 10,
+        "values": {"position_name": "IOS developer", "offer_text": "Offer text"},
+    },
+    "email": {
+        "account_email": 12,
+        "files": [1, 2, 3],
+        "followups": [
+            {"id": 2, "account_member_template": 7, "html": "<p>Hello John!</p>", "days": 1},
+        ],
+        "html": "<p>Hello John!</p>",
+        "email": "recipient@example.com",
+        "subject": "Welcome aboard!",
+        "send_at": "2021-05-20T10:00:00",
+        "timezone": "Europe/Moscow",
+        "to": [{"email": "mail@mail.ru", "type": "cc", "displayName": "John Doe"}],
+        "reply": 6,
+    },
+    "calendar_event": {
+        "vacancy": 2,
+        "private": False,
+        "name": "Example event",
+        "reminders": [{"multiplier": "hours", "value": 1, "method": "popup"}],
+        "location": "Washington street 121",
+        "interview_type": 17,
+        "event_type": "interview",
+        "description": "Interview with applicant",
+        "calendar": 4,
+        "attendees": [{"member": 19, "displayName": "John Doe", "email": "test@example.com"}],
+        "start": "2021-05-20T09:00:00",
+        "end": "2021-05-20T10:00:00",
+        "timezone": "Europe/Moscow",
+        "transparency": "busy",
+    },
+    "im": [{"account_im": 8, "receiver": "tg_user", "body": "Hello John!"}],
+    "sms": {"phone": "+79999999999", "body": "Hello John!"},
+    "survey_questionary_id": 0,
+}
+
+APPLICANT_CREATE_WORKLOG_NOTE_RESPONSE = {
+    "id": 14,
+    "applicant": 2,
+    "type": "COMMENT",
+    "vacancy": 4,
+    "status": 8,
+    "rejection_reason": 12,
+    "created": "2020-01-01T00:00:00+03:00",
+    "employment_date": "2020-01-01",
+    "applicant_offer": {
+        "id": 1,
+        "account_applicant_offer": 2,
+        "created": "2020-01-01T00:00:00+03:00",
+    },
+    "comment": "Example comment",
+    "files": [
+        {
+            "id": 19,
+            "url": "http://example.com",
+            "content_type": "application/pdf",
+            "name": "Resume.pdf",
+        },
+    ],
+    "calendar_event": {
+        "id": 1,
+        "name": "Event: Interview John Doe",
+        "all_day": False,
+        "created": "2020-01-01T00:00:00+03:00",
+        "creator": {"displayName": "John Doe", "email": "test@example.com", "self": False},
+        "description": "Interview with John Doe",
+        "timezone": "Europe/Moscow",
+        "start": "2020-01-01T00:00:00+03:00",
+        "end": "2020-01-01T00:00:00+03:00",
+        "etag": "<etag_value>",
+        "event_type": "interview",
+        "interview_type": 17,
+        "calendar": 4,
+        "vacancy": 2,
+        "foreign": "f1",
+        "location": "Washington street 121",
+        "attendees": [
+            {
+                "member": 10,
+                "displayName": "John Doe",
+                "email": "test@example.com",
+                "responseStatus": "confirmed",
+            },
+        ],
+        "reminders": [{"method": "popup", "minutes": 10}],
+        "status": "tentative",
+        "transparency": "busy",
+        "recurrence": [None],
+    },
+    "email": {
+        "id": 1,
+        "created": "2020-01-01T00:00:00+03:00",
+        "subject": "Welcome aboard!",
+        "email_thread": 15,
+        "account_email": 6,
+        "files": [
+            {
+                "id": 19,
+                "url": "http://example.com",
+                "content_type": "application/pdf",
+                "name": "Resume.pdf",
+            },
+        ],
+        "foreign": "f1",
+        "timezone": "Europe/Moscow",
+        "html": "<p>Hello John!</p>",
+        "from_email": "sender@example.com",
+        "from_name": "John Doe",
+        "replyto": ["<CAOFTTcsSJ76SbpbHwDxA8MUrSZjcgb+X39TL_G9n01UEuBDOAA@mail.gmail.com>"],
+        "send_at": "2020-01-01T00:00:00+03:00",
+        "to": [{"type": "cc", "displayName": "John Doe", "email": "email@example.com"}],
+        "state": "QUEUED",
+    },
+    "survey_questionary": {
+        "id": 1,
+        "survey": {
+            "id": 1,
+            "name": "test_survey",
+            "type": "type_a",
+            "active": True,
+            "created": "2020-01-01T00:00:00+03:00",
+            "updated": "2020-01-01T00:00:00+03:00",
+            "title": "Type R title",
+        },
+        "survey_answer_id": 1,
+        "created": "2020-01-01T00:00:00+03:00",
+    },
+}
+
 
 async def test_list_applicant(
     httpx_mock: HTTPXMock,
@@ -576,3 +714,23 @@ async def test_applicant_log_list(
         type_=ApplicantLogType.ADD,
     )
     assert response == ApplicantLogResponse.parse_obj(APPLICANT_LOG_LIST_RESPONSE)
+
+
+async def test_applicant_create_worklog_note(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/1/logs",
+        status_code=200,
+        json=APPLICANT_CREATE_WORKLOG_NOTE_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    applicants = Applicant(api_client)
+    request_data = CreateApplicantLogRequest.parse_obj(APPLICANT_CREATE_WORKLOG_NOTE_REQUEST)
+    response = await applicants.create_worklog_note(
+        account_id=ACCOUNT_ID,
+        applicant_id=1,
+        request_data=request_data,
+    )
+    assert response == CreateApplicantLogResponse.parse_obj(APPLICANT_CREATE_WORKLOG_NOTE_RESPONSE)

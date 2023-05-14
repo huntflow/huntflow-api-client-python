@@ -4,8 +4,12 @@ from typing import List, Literal, Optional
 from pydantic import BaseModel, EmailStr, Extra, Field, PositiveInt
 
 from huntflow_api_client.models.common import Applicant, EmailRecipient, JsonRequestModel
-from huntflow_api_client.models.consts import CalendarEventReminderMethod, EventReminderMultiplier, \
-    CalendarEventType, Transparency
+from huntflow_api_client.models.consts import (
+    CalendarEventReminderMethod,
+    CalendarEventType,
+    EventReminderMultiplier,
+    Transparency,
+)
 
 
 class ApplicantResumeData(BaseModel):
@@ -137,61 +141,74 @@ class ApplicantLogSms(BaseModel):
 
 class CalendarEventAttendee(BaseModel):
     member: Optional[PositiveInt] = Field(
-        None, description="Coworker ID",
+        None,
+        description="Coworker ID",
     )
     name: Optional[str] = Field(
-        None, description="Attendee name",
+        None,
+        description="Attendee name",
     )
     email: EmailStr = Field(..., description="Attendee email")
 
 
 class CalendarEventReminder(BaseModel):
     multiplier: EventReminderMultiplier = Field(
-        ..., description="Reminder period",
+        ...,
+        description="Reminder period",
     )
     value: int = Field(..., gte=0, lt=40320, description="Reminder value")
-    method: CalendarEventReminderMethod = Field(
-        ..., description="Reminder method"
-    )
+    method: CalendarEventReminderMethod = Field(..., description="Reminder method")
 
 
 class ApplicantLogCalendarEvent(BaseModel):
-    vacancy: Optional[PositiveInt] = Field(
-        None, description="Vacancy ID"
-    )
+    vacancy: Optional[PositiveInt] = Field(None, description="Vacancy ID")
     private: bool = Field(True, description="Event private flag")
     name: Optional[str] = Field(None, description="Event name")
-    reminders: List[CalendarEventReminder] = Field(
+    reminders: Optional[List[CalendarEventReminder]] = Field(
         None,
         description="List of reminders <a href=https://tools.ietf.org/html/rfc5545>RFC 5545</a>",
     )
     location: Optional[str] = Field(
-        None, max_length=1024, description="Event location",
+        None,
+        max_length=1024,
+        description="Event location",
     )
     interview_type: Optional[PositiveInt] = Field(
-        None, description="Interview type ID",
+        None,
+        description="Interview type ID",
     )
     event_type: CalendarEventType = Field(
-        ..., description="Calendar event type",
+        ...,
+        description="Calendar event type",
     )
     description: Optional[str] = Field(
-        None, description="Event description (comment)",
+        None,
+        description="Event description (comment)",
     )
     calendar: PositiveInt = Field(..., description="Calendar ID")
     attendees: List[CalendarEventAttendee] = Field(
-        ..., description="Event attendees (participants)",
+        ...,
+        description="Event attendees (participants)",
     )
-    start: datetime = Field(..., description="Event start date",)
-    end: datetime = Field(..., description="Event end date",)
+    start: datetime = Field(
+        ...,
+        description="Event start date",
+    )
+    end: datetime = Field(
+        ...,
+        description="Event end date",
+    )
     timezone: Optional[str] = Field(
-        None, description="Time zone",
+        None,
+        description="Time zone",
     )
     transparency: Transparency = Field(
-        ..., description="Event transparency (availability)",
+        ...,
+        description="Event transparency (availability)",
     )
 
 
-class CreateApplicantLogRequest(BaseModel):
+class CreateApplicantLogRequest(JsonRequestModel):
     comment: Optional[str] = Field(None, description="Comment text")
     vacancy: Optional[PositiveInt] = Field(
         None,

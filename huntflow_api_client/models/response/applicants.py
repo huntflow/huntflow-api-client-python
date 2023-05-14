@@ -355,7 +355,8 @@ class ApplicantOffer(BaseModel):
     id: int = Field(..., description="Applicant's offer ID")
     account_applicant_offer: int = Field(..., description="Organization's offer ID")
     created: datetime = Field(
-        ..., description="Date and time of creating an offer",
+        ...,
+        description="Date and time of creating an offer",
     )
 
 
@@ -364,27 +365,35 @@ class CreateApplicantLogResponse(BaseModel):
     applicant: int = Field(..., description="Applicant ID")
     type: ApplicantLogType = Field(..., description="Log type")
     vacancy: Optional[int] = Field(
-        None, alias="vacancy", description="Vacancy ID",
+        None,
+        alias="vacancy",
+        description="Vacancy ID",
     )
     status: Optional[int] = Field(
-        None, description="Vacancy status ID",
+        None,
+        description="Vacancy status ID",
     )
     rejection_reason: Optional[int] = Field(
-        None, description="Rejection reason ID",
+        None,
+        description="Rejection reason ID",
     )
     created: datetime = Field(
-        ..., description="Date and time of creation of the log",
+        ...,
+        description="Date and time of creation of the log",
     )
     employment_date: Optional[date] = Field(
-        None, description="Employment date",
+        None,
+        description="Employment date",
     )
     applicant_offer: Optional[ApplicantOffer] = Field(..., description="Offer object")
     comment: Optional[str] = Field(None, description="Comment text")
     files: List[File] = Field([], description="List of files attached to the log")
     calendar_event: Optional[ApplicantLogCalendarEvent] = Field(
-        None, description="Calendar event object",
+        None,
+        description="Calendar event object",
     )
     email: Optional[ApplicantLogEmailResponse] = Field(None, description="Email object")
     survey_questionary: Optional[ApplicantLogSurveyQuestionary] = Field(
-        None, description="Survey questionary"
+        None,
+        description="Survey questionary",
     )

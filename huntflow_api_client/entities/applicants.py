@@ -10,6 +10,7 @@ from huntflow_api_client.models.consts import AgreementState, ApplicantLogType, 
 from huntflow_api_client.models.request.applicants import (
     ApplicantCreateRequest,
     ApplicantUpdateRequest,
+    CreateApplicantLogRequest,
 )
 from huntflow_api_client.models.response.applicants import (
     ApplicantCreateResponse,
@@ -18,6 +19,7 @@ from huntflow_api_client.models.response.applicants import (
     ApplicantLogResponse,
     ApplicantSearchByCursorResponse,
     ApplicantSearchResponse,
+    CreateApplicantLogResponse,
 )
 
 
@@ -270,3 +272,27 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
 
         response = await self._api.request("GET", path, params=params)
         return ApplicantLogResponse.parse_obj(response.json())
+
+    async def create_worklog_note(
+        self,
+        account_id: int,
+        applicant_id: int,
+        request_data: CreateApplicantLogRequest,
+    ) -> CreateApplicantLogResponse:
+        """
+        API method reference:
+            https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/applicants/-applicant_id-/logs
+
+        :param account_id: Organization ID
+        :param applicant_id: Applicant ID
+        :param request_data: Request body
+
+        :return: Created log data
+        """
+        path = f"/accounts/{account_id}/applicants/{applicant_id}/logs"
+        response = await self._api.request(
+            "POST",
+            path,
+            json=request_data.jsonable_dict(exclude_none=True),
+        )
+        return CreateApplicantLogResponse.parse_obj(response.json())
