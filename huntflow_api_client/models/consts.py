@@ -87,6 +87,13 @@ class CalendarEventStatus(str, Enum):
     needs_action = "needsAction"
 
 
+class EventReminderMultiplier(str, Enum):
+    minutes = "minutes"
+    hours = "hours"
+    days = "days"
+    weeks = "weeks"
+
+
 class CalendarEventReminderMethod(str, Enum):
     popup = "popup"
     email = "email"

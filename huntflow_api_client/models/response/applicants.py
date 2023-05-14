@@ -3,14 +3,19 @@ from typing import List, Optional, Union
 
 from pydantic import BaseModel, EmailStr, Field, PositiveInt
 
-from huntflow_api_client.models.common import Applicant, File, PaginatedResponse, VacancyQuotaItem
+from huntflow_api_client.models.common import (
+    Applicant,
+    EmailRecipient,
+    File,
+    PaginatedResponse,
+    VacancyQuotaItem,
+)
 from huntflow_api_client.models.consts import AgreementState as AgreementStateEnum
 from huntflow_api_client.models.consts import (
     ApplicantLogType,
     CalendarEventReminderMethod,
     CalendarEventStatus,
     CalendarEventType,
-    EmailContactType,
     Transparency,
 )
 from huntflow_api_client.models.response.offers import ApplicantVacancyOffer
@@ -157,15 +162,6 @@ class ApplicantSearchResponse(PaginatedResponse):
 class ApplicantSearchByCursorResponse(BaseModel):
     items: List[ApplicantSearchItem] = Field(..., description="List of applicants")
     next_page_cursor: Optional[str] = Field(None, description="Next page cursor")
-
-
-class EmailRecipient(BaseModel):
-    type: Optional[EmailContactType] = Field(None, description="Type of the email contact")
-    name: Optional[str] = Field(
-        None,
-        description="Name of email recipient",
-    )
-    email: str = Field(..., description="Email address")
 
 
 class ApplicantLogEmailResponse(BaseModel):
@@ -353,3 +349,42 @@ class ApplicantLogItem(BaseModel):
 
 class ApplicantLogResponse(PaginatedResponse):
     items: List[ApplicantLogItem] = Field(..., description="List of applicant's logs")
+
+
+class ApplicantOffer(BaseModel):
+    id: int = Field(..., description="Applicant's offer ID")
+    account_applicant_offer: int = Field(..., description="Organization's offer ID")
+    created: datetime = Field(
+        ..., description="Date and time of creating an offer",
+    )
+
+
+class CreateApplicantLogResponse(BaseModel):
+    id: int = Field(..., description="Log ID")
+    applicant: int = Field(..., description="Applicant ID")
+    type: ApplicantLogType = Field(..., description="Log type")
+    vacancy: Optional[int] = Field(
+        None, alias="vacancy", description="Vacancy ID",
+    )
+    status: Optional[int] = Field(
+        None, description="Vacancy status ID",
+    )
+    rejection_reason: Optional[int] = Field(
+        None, description="Rejection reason ID",
+    )
+    created: datetime = Field(
+        ..., description="Date and time of creation of the log",
+    )
+    employment_date: Optional[date] = Field(
+        None, description="Employment date",
+    )
+    applicant_offer: Optional[ApplicantOffer] = Field(..., description="Offer object")
+    comment: Optional[str] = Field(None, description="Comment text")
+    files: List[File] = Field([], description="List of files attached to the log")
+    calendar_event: Optional[ApplicantLogCalendarEvent] = Field(
+        None, description="Calendar event object",
+    )
+    email: Optional[ApplicantLogEmailResponse] = Field(None, description="Email object")
+    survey_questionary: Optional[ApplicantLogSurveyQuestionary] = Field(
+        None, description="Survey questionary"
+    )
