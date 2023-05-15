@@ -7,10 +7,6 @@ from huntflow_api_client.entities.base import (
     ListEntityMixin,
 )
 from huntflow_api_client.models.request.vacancy_requests import CreateVacancyRequestRequest
-from huntflow_api_client.models.response.account_vacancy_request import (
-    AccountVacancyRequestResponse,
-    AccountVacancyRequestsListResponse,
-)
 from huntflow_api_client.models.response.vacancy_requests import (
     VacancyRequestListResponse,
     VacancyRequestResponse,
@@ -83,40 +79,3 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
             json=request_data.jsonable_dict(exclude_none=True),
         )
         return VacancyRequestResponse.parse_obj(response.json())
-
-    async def list_schemas(
-        self,
-        account_id: int,
-        only_active: bool = True,
-    ) -> AccountVacancyRequestsListResponse:
-        """
-        API method reference:
-            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/account_vacancy_requests
-        :param account_id: Organization ID
-        :param only_active: Show only active schemas flag, default = True
-
-        :return: List of vacancy request schemas
-        """
-        path = f"/accounts/{account_id}/account_vacancy_requests"
-        params = {
-            "only_active": only_active,
-        }
-        response = await self._api.request("GET", path, params=params)
-        return AccountVacancyRequestsListResponse.parse_obj(response.json())
-
-    async def get_schema(
-        self,
-        account_id: int,
-        account_vacancy_request_id: int,
-    ) -> AccountVacancyRequestResponse:
-        """
-        API method reference:
-            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/account_vacancy_requests/-account_vacancy_request_id-
-        :param account_id: Organization ID
-        :param account_vacancy_request_id: Vacancy request schema ID
-
-        :return: Specified vacancy request schema
-        """
-        path = f"/accounts/{account_id}/account_vacancy_requests/{account_vacancy_request_id}"
-        response = await self._api.request("GET", path)
-        return AccountVacancyRequestResponse.parse_obj(response.json())

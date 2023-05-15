@@ -2,7 +2,7 @@ import typing as t
 
 from pydantic import BaseModel, Extra, Field, PositiveInt
 
-from huntflow_api_client.models.utils.fields import FieldType
+from huntflow_api_client.models.consts import FieldType
 
 
 class AccountVacancyRequestSchemaField(BaseModel):
