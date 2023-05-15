@@ -19,6 +19,7 @@ class HuntflowAPI:
         token: Optional[ApiToken] = None,
         token_proxy: Optional[AbstractTokenProxy] = None,
         auto_refresh_tokens: bool = False,
+        logger_: Optional[logging.Logger] = None,
     ):
         """API client.
         :param base_url: Base url for API (including schema and version prefix),
@@ -42,6 +43,7 @@ class HuntflowAPI:
         self.base_url = base_url
 
         self._autorefresh_tokens = auto_refresh_tokens
+        self.logger_ = logger_
 
     @property
     def http_client(self) -> httpx.AsyncClient:
@@ -97,6 +99,8 @@ class HuntflowAPI:
     ) -> httpx.Response:
         headers = headers or {}
         headers.update(await self._token_proxy.get_auth_header())
+        if self.logger_:
+            self.logger_.info("Sending request '%s' to %s", method, self.base_url + path)
         async with self.http_client as client:
             response = await client.request(
                 method,
@@ -108,7 +112,8 @@ class HuntflowAPI:
                 headers=headers,
                 timeout=timeout,
             )
-
+        if self.logger_:
+            self.logger_.info("Response code: %s", response.status_code)
         return response
 
     async def _run_token_refresh(self) -> None:
@@ -132,9 +137,13 @@ class HuntflowAPI:
             return
         try:
             refresh_data = await self._token_proxy.get_refresh_data()
+            if self.logger_:
+                self.logger_.info("Trying to refresh token")
             async with self.http_client as client:
                 response = await client.post("/token/refresh", json=refresh_data)
             await self._token_proxy.update(response.json())
+            if self.logger_:
+                self.logger_.info("Refresh token response: %s", response.status_code)
         finally:
             await self._token_proxy.release_lock()
 
