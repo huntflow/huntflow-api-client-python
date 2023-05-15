@@ -57,9 +57,9 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
             https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/divisions/batch
 
         :param account_id: Organization ID
-        :param divisions: BatchDivisionsRequest
+        :param divisions: Request body structure
 
-        :return: An object that contains the task ID of the delayed background update task
+        :return: An object that contains the task ID of the background update task
         """
         response = await self._api.request(
             "POST",
