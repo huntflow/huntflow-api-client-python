@@ -4,7 +4,7 @@ from typing import AbstractSet, Any, Callable, Dict, Mapping, Optional, Union
 
 from pydantic import AnyHttpUrl, BaseModel, EmailStr, Field, PositiveInt
 
-from huntflow_api_client.models.consts import VacancyState
+from huntflow_api_client.models.consts import EmailContactType, VacancyState
 
 IntStr = Union[int, str]
 AbstractSetIntStr = AbstractSet[IntStr]
@@ -130,3 +130,12 @@ class Applicant(BaseModel):
 
 class StatusResponse(BaseModel):
     status: bool = Field(True)
+
+
+class EmailRecipient(BaseModel):
+    type: Optional[EmailContactType] = Field(None, description="Type of the email contact")
+    name: Optional[str] = Field(
+        None,
+        description="Name of email recipient",
+    )
+    email: str = Field(..., description="Email address")
