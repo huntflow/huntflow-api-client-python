@@ -34,6 +34,7 @@ class HuntflowAPI:
             Also see usage example at `examples.api_client_with_simple_locks`.
         :param auto_refresh_tokens: If True then the client will handle token expiration.
             "Handle" means: catch token expiration errors and run token refresh request.
+        :param logger_: If specified, then requests and responses will be logged with level INFO
         """
         if token_proxy is None:
             if token is None:
