@@ -109,7 +109,9 @@ async def test_attach_applicant_to_vacancy(
     applicant_statuses = ApplicantOnVacancy(api_client)
 
     response = await applicant_statuses.attach_applicant_to_vacancy(
-        ACCOUNT_ID, APPLICANT_ID, api_request,
+        ACCOUNT_ID,
+        APPLICANT_ID,
+        api_request,
     )
 
     assert response == AddApplicantToVacancyResponse(**ATTACH_APPLICANT_TO_VAC_RESPONSE)
@@ -129,7 +131,9 @@ async def test_update_vacancy_status_for_applicant(
     applicant_statuses = ApplicantOnVacancy(api_client)
 
     response = await applicant_statuses.update_vacancy_status_for_applicant(
-        ACCOUNT_ID, APPLICANT_ID, api_request,
+        ACCOUNT_ID,
+        APPLICANT_ID,
+        api_request,
     )
 
     assert response == AddApplicantToVacancyResponse(**UPDATE_STATUS_RESPONSE)
@@ -149,7 +153,9 @@ async def test_move_applicant_to_child_vacancy(
     applicant_statuses = ApplicantOnVacancy(api_client)
 
     response = await applicant_statuses.move_applicant_to_child_vacancy(
-        ACCOUNT_ID, VACANCY_ID, api_request,
+        ACCOUNT_ID,
+        VACANCY_ID,
+        api_request,
     )
 
     assert response == ApplicantVacancySplitResponse(**MOVE_APPLICANT_RESPONSE)
