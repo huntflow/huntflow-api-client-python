@@ -15,19 +15,18 @@ class DictionaryTaskResponseMeta(BaseModel):
 
 
 class DictionaryTaskResponse(BaseModel):
-    status: str = Field(..., description="Operation status", example="ok")
+    status: str = Field(..., description="Operation status")
     payload: DictionaryTaskResponsePayload
     meta: DictionaryTaskResponseMeta
 
 
 class DictionaryItem(BaseModel):
-    id: PositiveInt = Field(..., description="Dictionary ID", example=7)
-    code: str = Field(..., description="Dictionary code", example="citizenship")
-    name: str = Field(..., description="Dictionary name", example="Citizenship")
+    id: PositiveInt = Field(..., description="Dictionary ID")
+    code: str = Field(..., description="Dictionary code")
+    name: str = Field(..., description="Dictionary name")
     foreign: Optional[str] = Field(
         None,
         description="The unique identifier in the customer's internal system",
-        example="d_ctz",
     )
     created: datetime = Field(..., description="Date and time of creating a dictionary")
 
@@ -50,7 +49,6 @@ class DictionaryField(BaseModel):
     meta: Optional[dict] = Field(
         None,
         description="Meta information",
-        example={"latitude": 55.5374, "longitude": 60.1408},
     )
 
 

@@ -23,7 +23,6 @@ class UserInfo(BaseModel):
     name: str = Field(
         ...,
         description="Name of coworker who create the vacancy request",
-        example="John Doe",
     )
     email: EmailStr = Field(..., description="Email of coworker who create the vacancy request")
 
@@ -39,9 +38,8 @@ class VacancyRequestApprovalState(BaseModel):
     reason: t.Optional[str] = Field(
         None,
         description="Rejection reason",
-        example="Inappropriate qualifications",
     )
-    order: t.Optional[int] = Field(None, description="Approval order number", example=2)
+    order: t.Optional[int] = Field(None, description="Approval order number")
     changed: t.Optional[datetime.datetime] = Field(
         None,
         description="Date and time of the last approval change",
@@ -53,7 +51,6 @@ class VacancyRequest(BaseModel):
     position: str = Field(
         ...,
         description="The name of the vacancy (occupation)",
-        example="Developer",
     )
     status: VacancyRequestStatus = Field(..., description="Vacancy request status")
     account_vacancy_request: PositiveInt = Field(
@@ -79,12 +76,11 @@ class VacancyRequest(BaseModel):
     values: t.Optional[t.Dict] = Field(
         None,
         description="Vacancy request values, depends on account_vacancy_request",
-        example={"position": "Developer", "account_division": 1844, "category": 687},
     )
 
 
 class VacancyRequestListResponse(PaginatedResponse):
-    total_items: t.Optional[int] = Field(..., description="Total number of items", example=50)
+    total_items: t.Optional[int] = Field(..., description="Total number of items")
     items: t.List[VacancyRequest]
 
 

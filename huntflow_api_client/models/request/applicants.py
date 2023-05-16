@@ -7,46 +7,39 @@ from huntflow_api_client.models.common import Applicant, JsonRequestModel
 
 
 class ApplicantResumeData(BaseModel):
-    body: Optional[str] = Field(None, description="Resume text", example="Resume text for example")
+    body: Optional[str] = Field(None, description="Resume text")
 
 
 class ApplicantResumeCreate(BaseModel):
-    auth_type: Optional[str] = Field(None, description="Auth type", example="NATIVE")
-    account_source: Optional[PositiveInt] = Field(None, description="Resume source ID", example=5)
-    data: Optional[ApplicantResumeData] = Field(
-        None,
-        description="Resume data",
-        example={"body": "Resume text"},
-    )
+    auth_type: Optional[str] = Field(None, description="Auth type")
+    account_source: Optional[PositiveInt] = Field(None, description="Resume source ID")
+    data: Optional[ApplicantResumeData] = Field(None, description="Resume data")
     files: Optional[List[PositiveInt]] = Field(
         None,
-        description=("Upload files<br>" "List of file's ID attached to the applicant resume"),
-        example=[1, 2, 3],
+        description="Upload files<br>" "List of file's ID attached to the applicant resume",
     )
 
 
 class ApplicantResumeUpdateData(BaseModel):
-    body: Optional[str] = Field(..., description="Resume text", example="Resume text for example")
+    body: Optional[str] = Field(..., description="Resume text")
 
 
 class ApplicantResumeUpdateRequest(BaseModel):
-    account_source: Optional[PositiveInt] = Field(..., description="Resume source ID", example=5)
+    account_source: Optional[PositiveInt] = Field(..., description="Resume source ID")
     data: Optional[ApplicantResumeUpdateData] = Field(
         ...,
         description="Resume data",
-        example={"body": "Resume text"},
     )
     files: Optional[List[PositiveInt]] = Field(
         [],
         max_items=1,
-        description=("Upload files<br>" "List of file's ID attached to the applicant resume"),
-        example=[1],
+        description="Upload files<br>" "List of file's ID attached to the applicant resume",
     )
 
 
 class ApplicantSocial(BaseModel):
-    social_type: Literal["TELEGRAM"] = Field(..., description="Type", example="TELEGRAM")
-    value: str = Field(..., description="Value", example="TelegramUsername")
+    social_type: Literal["TELEGRAM"] = Field(..., description="Type")
+    value: str = Field(..., description="Value")
 
 
 class ApplicantCreateRequest(Applicant, JsonRequestModel):
