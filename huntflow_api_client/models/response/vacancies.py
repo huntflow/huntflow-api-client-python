@@ -3,7 +3,7 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Extra, Field, PositiveInt, root_validator
 
-from huntflow_api_client.models.common import File, PaginatedResponse, Vacancy
+from huntflow_api_client.models.common import File, PaginatedResponse, Vacancy, VacancyQuotaItem
 from huntflow_api_client.models.consts import FieldType
 
 
@@ -186,3 +186,37 @@ class VacancyCreateResponse(Vacancy):
 
     class Config:
         extra = "ignore"
+
+
+class LastVacancyFrameResponse(BaseModel):
+    id: PositiveInt = Field(..., description="Vacancy frame ID")
+    frame_begin: datetime = Field(..., description="Date and time of creating a frame")
+    frame_end: Optional[datetime] = Field(None, description="Date and time of closing a frame")
+    vacancy: PositiveInt = Field(..., description="Vacancy ID")
+    hired_applicants: Optional[List[int]] = Field(None, description="Hired Applicant IDs")
+    workdays_in_work: int = Field(..., description="How many working days the vacancy is in work")
+    workdays_before_deadline: Optional[int] = Field(
+        None,
+        description="How many working days before deadline",
+    )
+
+
+class VacancyFrame(LastVacancyFrameResponse):
+    next_id: Optional[int] = Field(None, description="The next frame ID")
+
+
+class VacancyQuotaList(PaginatedResponse):
+    total_items: Optional[int] = Field(None, description="Total number of items")
+    items: List[VacancyQuotaItem]
+
+
+class VacancyFramesListResponse(BaseModel):
+    items: List[VacancyFrame]
+
+
+class VacancyFrameQuotasResponse(BaseModel):
+    items: List[VacancyQuotaItem]
+
+
+class VacancyQuotasResponse(BaseModel):
+    __root__: Dict[str, VacancyQuotaList] = Field(..., descriptions="Vacancy quotas")

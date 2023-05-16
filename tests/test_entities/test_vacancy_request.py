@@ -63,6 +63,7 @@ VACANCY_REQUEST_LIST_WITH_VALUES = {
     "total_items": 1,
     "items": [],
 }
+
 VACANCY_REQUEST_LIST_WITH_VALUES["items"].append(VACANCY_REQUEST_RESPONSE)  # type: ignore
 
 VACANCY_REQUEST_CREATE_REQUEST = {
