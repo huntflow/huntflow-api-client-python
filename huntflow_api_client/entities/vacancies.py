@@ -224,7 +224,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
 
         :param account_id: Organization ID
         :param vacancy_id: Vacancy ID
-        :return: List of vacancy frames
+        :return: The last frame of a vacancy
         """
         response = await self._api.request(
             "GET",
