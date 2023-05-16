@@ -245,7 +245,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         :param account_id: Organization ID
         :param vacancy_id: Vacancy ID
         :param frame_id: Vacancy frame ID
-        :return: List of vacancy frames
+        :return: List of quotas for vacancy frame
         """
         response = await self._api.request(
             "GET",
