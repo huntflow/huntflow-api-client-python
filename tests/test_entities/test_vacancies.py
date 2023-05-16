@@ -240,7 +240,7 @@ VACANCY_QUOTAS_IN_FRAME_RESPONSE: Dict[str, Any] = {
         },
     ],
 }
-VACANCY_QUOTA_LIST_RESPONSE: Dict[int, Any] = {
+VACANCY_QUOTAS_RESPONSE: Dict[int, Any] = {
     VACANCY_ID: {
         "page": 1,
         "count": 30,
@@ -464,10 +464,10 @@ async def test_get_vacancy_quota_list(
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/quotas?count=2&page=1",
-        json=VACANCY_QUOTA_LIST_RESPONSE,
+        json=VACANCY_QUOTAS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
     response = await vacancies.get_quotas(ACCOUNT_ID, VACANCY_ID, FRAME_ID)
-    assert response == VacancyQuotasResponse.parse_obj(VACANCY_QUOTA_LIST_RESPONSE)
+    assert response == VacancyQuotasResponse.parse_obj(VACANCY_QUOTAS_RESPONSE)
