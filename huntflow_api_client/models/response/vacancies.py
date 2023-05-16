@@ -219,4 +219,4 @@ class VacancyFrameQuotasResponse(BaseModel):
 
 
 class VacancyQuotasResponse(BaseModel):
-    __root__: Dict[str, VacancyQuotaList] = Field(..., descriptions="List of vacancy quotas")
+    __root__: Dict[str, VacancyQuotaList] = Field(..., descriptions="Vacancy quotas")
