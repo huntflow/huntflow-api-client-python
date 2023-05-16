@@ -232,7 +232,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         )
         return LastVacancyFrameResponse(**response.json())
 
-    async def get_vacancy_quotas_in_frame(
+    async def get_frame_quotas(
         self,
         account_id: int,
         vacancy_id: int,

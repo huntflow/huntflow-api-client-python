@@ -454,7 +454,7 @@ async def test_get_vacancy_quotas_in_frame(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    response = await vacancies.get_vacancy_quotas_in_frame(ACCOUNT_ID, VACANCY_ID, FRAME_ID)
+    response = await vacancies.get_frame_quotas(ACCOUNT_ID, VACANCY_ID, FRAME_ID)
     assert response == VacancyFrameQuotasResponse(**VACANCY_QUOTAS_IN_FRAME_RESPONSE)
 
 
