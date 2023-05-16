@@ -439,7 +439,7 @@ async def test_get_last_vacancy_frame(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    response = await vacancies.get_last_vacancy_frame(ACCOUNT_ID, VACANCY_ID)
+    response = await vacancies.get_last_frame(ACCOUNT_ID, VACANCY_ID)
     assert response == LastVacancyFrameResponse(**LAST_VACANCY_FRAME_RESPONSE)
 
 
