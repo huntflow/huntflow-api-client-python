@@ -15,8 +15,12 @@ from huntflow_api_client.models.request.vacancies import (
 )
 from huntflow_api_client.models.response.vacancies import (
     AdditionalFieldsSchemaResponse,
+    LastVacancyFrameResponse,
     VacancyCreateResponse,
+    VacancyFrameQuotasResponse,
+    VacancyFramesListResponse,
     VacancyListResponse,
+    VacancyQuotasResponse,
     VacancyResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
@@ -25,6 +29,7 @@ from tests.api import BASE_URL
 ACCOUNT_ID = 1
 VACANCY_ID = 2
 COWORKER_ID = 3
+FRAME_ID = 2
 
 GET_ORG_ADD_FIELDS_SCHEMA_RESPONSE: Dict[str, Any] = {
     "responsible_recruiter": {
@@ -194,6 +199,65 @@ ASSIGN_COWORKER_REQUEST: Dict[str, Any] = {
         {"permission": "status", "value": 2},
     ],
 }
+VACANCY_FRAME_LIST_RESPONSE: Dict[str, Any] = {
+    "items": [
+        {
+            "id": 3,
+            "frame_begin": "2020-01-01T00:00:00+03:00",
+            "frame_end": "2020-01-01T00:00:00+03:00",
+            "vacancy": VACANCY_ID,
+            "hired_applicants": [1, 2, 45],
+            "workdays_in_work": 10,
+            "workdays_before_deadline": 12,
+            "next_id": 4,
+        },
+    ],
+}
+LAST_VACANCY_FRAME_RESPONSE: Dict[str, Any] = {
+    "id": 3,
+    "frame_begin": "2020-01-01T00:00:00+03:00",
+    "frame_end": "2020-01-01T00:00:00+03:00",
+    "vacancy": 85,
+    "hired_applicants": [1, 2, 45],
+    "workdays_in_work": 10,
+    "workdays_before_deadline": 12,
+}
+VACANCY_QUOTAS_IN_FRAME_RESPONSE: Dict[str, Any] = {
+    "items": [
+        {
+            "id": 2,
+            "vacancy_frame": FRAME_ID,
+            "vacancy_request": 3,
+            "created": "2020-01-01T00:00:00+03:00",
+            "changed": "2020-01-01T00:00:00+03:00",
+            "applicants_to_hire": 10,
+            "already_hired": 8,
+            "deadline": "1970-01-01",
+            "closed": "2020-01-01T00:00:00+03:00",
+            "work_days_in_work": 5,
+            "work_days_after_deadline": 4,
+            "account_info": {"id": 11, "name": "John Joe", "email": "test@example.com"},
+        },
+    ],
+}
+VACANCY_QUOTAS_RESPONSE: Dict[int, Any] = {
+    VACANCY_ID: {
+        "page": 1,
+        "count": 30,
+        "total_pages": 1,
+        "items": [
+            {
+                "id": 3,
+                "vacancy_frame": FRAME_ID,
+                "created": "2021-12-22T13:07:19+03:00",
+                "changed": "2021-12-22T13:07:19+03:00",
+                "applicants_to_hire": 1,
+                "already_hired": 0,
+                "account_info": {"id": 1, "name": "test@example.com", "email": "test@example.com"},
+            },
+        ],
+    },
+}
 
 
 async def test_get_get_org_vacancy_additional_fields_schema(
@@ -347,3 +411,63 @@ async def test_remove_coworker(
     vacancies = Vacancy(api_client)
 
     await vacancies.remove_coworker(ACCOUNT_ID, VACANCY_ID, COWORKER_ID)
+
+
+async def test_vacancy_frames_list(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/frames",
+        json=VACANCY_FRAME_LIST_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    vacancies = Vacancy(api_client)
+
+    response = await vacancies.get_frames(ACCOUNT_ID, VACANCY_ID)
+    assert response == VacancyFramesListResponse(**VACANCY_FRAME_LIST_RESPONSE)
+
+
+async def test_get_last_vacancy_frame(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/frame",
+        json=LAST_VACANCY_FRAME_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    vacancies = Vacancy(api_client)
+
+    response = await vacancies.get_last_frame(ACCOUNT_ID, VACANCY_ID)
+    assert response == LastVacancyFrameResponse(**LAST_VACANCY_FRAME_RESPONSE)
+
+
+async def test_get_vacancy_quotas_in_frame(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/frames/{FRAME_ID}/quotas",
+        json=VACANCY_QUOTAS_IN_FRAME_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    vacancies = Vacancy(api_client)
+
+    response = await vacancies.get_frame_quotas(ACCOUNT_ID, VACANCY_ID, FRAME_ID)
+    assert response == VacancyFrameQuotasResponse(**VACANCY_QUOTAS_IN_FRAME_RESPONSE)
+
+
+async def test_get_vacancy_quota_list(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/quotas?count=2&page=1",
+        json=VACANCY_QUOTAS_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    vacancies = Vacancy(api_client)
+
+    response = await vacancies.get_quotas(ACCOUNT_ID, VACANCY_ID, FRAME_ID)
+    assert response == VacancyQuotasResponse.parse_obj(VACANCY_QUOTAS_RESPONSE)
