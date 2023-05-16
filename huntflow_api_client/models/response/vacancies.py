@@ -202,10 +202,7 @@ class LastVacancyFrameResponse(BaseModel):
 
 
 class VacancyFrame(LastVacancyFrameResponse):
-    next: Optional[int] = Field(None, alias="next_id", description="The next frame ID")
-
-    class Config:
-        allow_population_by_field_name = True
+    next_id: Optional[int] = Field(None, description="The next frame ID")
 
 
 class VacancyQuotaList(PaginatedResponse):
