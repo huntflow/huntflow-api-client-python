@@ -9,12 +9,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: PyPI Poetry Publish
-        uses: code-specialist/pypi-poetry-publish@v1.2
+        uses: JRubics/poetry-publish@v1.16
         with:
           PYTHON_VERSION: "3.8.9"
-          BRANCH: "master"
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: "dev"
           POETRY_VERSION: "1.4.2"
-          PUBLISH_REGISTRY_USERNAME: "__token__"
-          PUBLISH_REGISTRY_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-          PACKAGE_DIRECTORY: "./huntflow_api_client/"
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
