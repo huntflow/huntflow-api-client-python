@@ -469,5 +469,5 @@ async def test_get_vacancy_quota_list(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    response = await vacancies.get_vacancy_quota_list(ACCOUNT_ID, VACANCY_ID, FRAME_ID)
+    response = await vacancies.get_quotas(ACCOUNT_ID, VACANCY_ID, FRAME_ID)
     assert response == VacancyQuotasResponse.parse_obj(VACANCY_QUOTA_LIST_RESPONSE)

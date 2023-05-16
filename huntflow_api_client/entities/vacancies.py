@@ -253,7 +253,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         )
         return VacancyFrameQuotasResponse(**response.json())
 
-    async def get_vacancy_quota_list(
+    async def get_quotas(
         self,
         account_id: int,
         vacancy_id: int,
