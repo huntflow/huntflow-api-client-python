@@ -268,7 +268,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         :param vacancy_id: Vacancy ID
         :param count: Number of items per page
         :param page: Page number
-        :return: List of vacancy frames
+        :return: Quotas for a vacancy
         """
         params: Dict[str, Any] = {"count": count, "page": page}
         response = await self._api.request(
