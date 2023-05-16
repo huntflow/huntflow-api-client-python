@@ -424,7 +424,7 @@ async def test_vacancy_frames_list(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    response = await vacancies.vacancy_frames_list(ACCOUNT_ID, VACANCY_ID)
+    response = await vacancies.get_frames(ACCOUNT_ID, VACANCY_ID)
     assert response == VacancyFramesListResponse(**VACANCY_FRAME_LIST_RESPONSE)
 
 

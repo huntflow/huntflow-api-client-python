@@ -194,7 +194,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             f"/accounts/{account_id}/vacancies/{vacancy_id}/members/{account_member_id}",
         )
 
-    async def vacancy_frames_list(
+    async def get_frames(
         self,
         account_id: int,
         vacancy_id: int,
