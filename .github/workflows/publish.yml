@@ -12,7 +12,7 @@ jobs:
         uses: JRubics/poetry-publish@v1.16
         with:
           PYTHON_VERSION: "3.8.9"
-          BRANCH: "master"
+          BRANCH: "dev"
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           POETRY_VERSION: "1.4.2"
           PUBLISH_REGISTRY_USERNAME: "__token__"
