@@ -181,7 +181,7 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
                 params["q"] = query
 
             if vacancy is not None:
-                params["vacancy"] = vacancy if vacancy else 'null'
+                params["vacancy"] = vacancy if vacancy else "null"
 
         response = await self._api.request("GET", path, params=params)
         return ApplicantSearchByCursorResponse.parse_obj(response.json())
