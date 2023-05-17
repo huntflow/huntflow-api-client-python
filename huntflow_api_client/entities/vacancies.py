@@ -10,8 +10,12 @@ from huntflow_api_client.models.request.vacancies import (
 )
 from huntflow_api_client.models.response.vacancies import (
     AdditionalFieldsSchemaResponse,
+    LastVacancyFrameResponse,
     VacancyCreateResponse,
+    VacancyFrameQuotasResponse,
+    VacancyFramesListResponse,
     VacancyListResponse,
+    VacancyQuotasResponse,
     VacancyResponse,
 )
 
@@ -189,3 +193,87 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             "DELETE",
             f"/accounts/{account_id}/vacancies/{vacancy_id}/members/{account_member_id}",
         )
+
+    async def get_frames(
+        self,
+        account_id: int,
+        vacancy_id: int,
+    ) -> VacancyFramesListResponse:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/vacancies/-vacancy_id-/frames
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        :return: List of vacancy frames
+        """
+        response = await self._api.request(
+            "GET",
+            f"/accounts/{account_id}/vacancies/{vacancy_id}/frames",
+        )
+        return VacancyFramesListResponse(**response.json())
+
+    async def get_last_frame(
+        self,
+        account_id: int,
+        vacancy_id: int,
+    ) -> LastVacancyFrameResponse:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/vacancies/-vacancy_id-/frame
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        :return: The last frame of a vacancy
+        """
+        response = await self._api.request(
+            "GET",
+            f"/accounts/{account_id}/vacancies/{vacancy_id}/frame",
+        )
+        return LastVacancyFrameResponse(**response.json())
+
+    async def get_frame_quotas(
+        self,
+        account_id: int,
+        vacancy_id: int,
+        frame_id: int,
+    ) -> VacancyFrameQuotasResponse:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/vacancies/-vacancy_id-/frames/-frame_id-/quotas
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        :param frame_id: Vacancy frame ID
+        :return: List of quotas for vacancy frame
+        """
+        response = await self._api.request(
+            "GET",
+            f"/accounts/{account_id}/vacancies/{vacancy_id}/frames/{frame_id}/quotas",
+        )
+        return VacancyFrameQuotasResponse(**response.json())
+
+    async def get_quotas(
+        self,
+        account_id: int,
+        vacancy_id: int,
+        count: int = 30,
+        page: int = 1,
+    ) -> VacancyQuotasResponse:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/vacancies/-vacancy_id-/quotas
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        :param count: Number of items per page
+        :param page: Page number
+        :return: Quotas for a vacancy
+        """
+        params: Dict[str, Any] = {"count": count, "page": page}
+        response = await self._api.request(
+            "GET",
+            f"/accounts/{account_id}/vacancies/{vacancy_id}/quotas",
+            params=params,
+        )
+        return VacancyQuotasResponse.parse_obj(response.json())

@@ -1,10 +1,10 @@
 import json
-from datetime import date
+from datetime import date, datetime
 from typing import AbstractSet, Any, Callable, Dict, Mapping, Optional, Union
 
 from pydantic import AnyHttpUrl, BaseModel, EmailStr, Field, PositiveInt
 
-from huntflow_api_client.models.consts import VacancyState
+from huntflow_api_client.models.consts import EmailContactType, VacancyState
 
 IntStr = Union[int, str]
 AbstractSetIntStr = AbstractSet[IntStr]
@@ -109,7 +109,7 @@ class Applicant(BaseModel):
     middle_name: Optional[str] = Field(None, description="Middle name", example="Michael")
     money: Optional[str] = Field(None, description="Salary expectation", example="$100000")
     phone: Optional[str] = Field(None, description="Phone number", example="89999999999")
-    email: Optional[EmailStr] = Field(
+    email: Union[EmailStr, str, None] = Field(
         None,
         description="Email address",
         example="mail@some.domain.com",
@@ -130,3 +130,48 @@ class Applicant(BaseModel):
 
 class StatusResponse(BaseModel):
     status: bool = Field(True)
+
+
+class VacancyQuotaBase(BaseModel):
+    id: PositiveInt = Field(..., description="Fill quota ID")
+    vacancy_frame: PositiveInt = Field(..., description="Vacancy frame ID")
+    vacancy_request: Optional[PositiveInt] = Field(None, description="Vacancy request ID")
+    created: datetime = Field(..., description="Date and time of creating a vacancy quota")
+    changed: Optional[datetime] = Field(
+        None,
+        description="Date and time of updating a vacancy quota",
+    )
+    applicants_to_hire: PositiveInt = Field(
+        ...,
+        description="Number of applicants should be hired on the quota",
+    )
+    already_hired: int = Field(..., description="Number of applicants already hired on the quota")
+    deadline: Optional[date] = Field(None, description="Date when the quota should be filled")
+    closed: Optional[datetime] = Field(None, description="Date and time when the quota was closed")
+    work_days_in_work: Optional[int] = Field(
+        None,
+        description="How many working days the vacancy is in work",
+    )
+    work_days_after_deadline: Optional[int] = Field(
+        None,
+        description="How many working days the vacancy is in work after deadline",
+    )
+
+
+class AccountInfo(BaseModel):
+    id: PositiveInt = Field(..., description="ID of the user who opened the quota")
+    name: str = Field(..., description="Name of the user who opened the quota")
+    email: Optional[EmailStr] = Field(None, description="Email of the user who opened the quota")
+
+
+class VacancyQuotaItem(VacancyQuotaBase):
+    account_info: AccountInfo
+
+
+class EmailRecipient(BaseModel):
+    type: Optional[EmailContactType] = Field(None, description="Type of the email contact")
+    name: Optional[str] = Field(
+        None,
+        description="Name of email recipient",
+    )
+    email: str = Field(..., description="Email address")

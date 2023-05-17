@@ -12,7 +12,11 @@ from tests.api import BASE_URL
 ACCOUNT_ID = 1
 TAG_ID = 2
 
-ACCOUNT_TAG_RESPONSE: Dict[str, Any] = {"color": "00ad3b", "id": 34, "name": "Blacklist"}
+ACCOUNT_TAG_RESPONSE: Dict[str, Any] = {
+    "color": "00ad3b",
+    "id": 34,
+    "name": "Blacklist",
+}
 CREATE_ACCOUNT_TAG_REQUEST: Dict[str, str] = {"color": "000000", "name": "Whitelist"}
 
 

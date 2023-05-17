@@ -51,3 +51,31 @@ class AgreementState(str, Enum):
     sent = "sent"
     accepted = "accepted"
     declined = "declined"
+
+
+class CalendarEventType(str, Enum):
+    interview = "interview"
+    other = "other"
+
+
+class Transparency(str, Enum):
+    busy = "busy"
+    free = "free"
+
+
+class CalendarEventReminderMethod(str, Enum):
+    popup = "popup"
+    email = "email"
+
+
+class EventReminderMultiplier(str, Enum):
+    minutes = "minutes"
+    hours = "hours"
+    days = "days"
+    weeks = "weeks"
+
+
+class EmailContactType(str, Enum):
+    cc = "cc"
+    bcc = "bcc"
+    to = "to"
