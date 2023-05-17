@@ -474,7 +474,7 @@ async def test_applicant_search_by_cursor(
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/search_by_cursor?"
-        "q=1&&status=1&&rejection_reason=1&&rejection_reason=2&&vacancy=1&&account_source=1"
+        "q=1&&status=1&&rejection_reason=1&&rejection_reason=2&&vacancy=null&&account_source=1"
         "&&only_current_status=false&&field=all&&count=30",
         status_code=200,
         json=APPLICANT_SEARCH_BY_CURSOR_RESPONSE,
@@ -487,7 +487,7 @@ async def test_applicant_search_by_cursor(
         query="1",
         status=[1],
         rejection_reason=[1, 2],
-        vacancy=[1],
+        vacancy=[],
         account_source=[1],
     )
     assert response == ApplicantSearchByCursorResponse.parse_obj(

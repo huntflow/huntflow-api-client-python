@@ -134,7 +134,7 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
         tag: Optional[List[int]] = None,
         status: Optional[List[int]] = None,
         rejection_reason: Optional[List[int]] = None,
-        vacancy: Union[List[int], str, None] = None,
+        vacancy: Union[List[int], None] = None,
         only_current_status: bool = False,
         account_source: Optional[List[int]] = None,
         field: ApplicantSearchField = ApplicantSearchField.all,
@@ -172,7 +172,6 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
                 "tag": tag or [],
                 "status": status or [],
                 "rejection_reason": rejection_reason or [],
-                "vacancy": vacancy or [],
                 "only_current_status": only_current_status,
                 "field": field.value,
                 "count": count,
@@ -180,6 +179,9 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
             }
             if query:
                 params["q"] = query
+
+            if vacancy is not None:
+                params["vacancy"] = vacancy if vacancy else 'null'
 
         response = await self._api.request("GET", path, params=params)
         return ApplicantSearchByCursorResponse.parse_obj(response.json())
