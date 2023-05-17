@@ -100,3 +100,10 @@ class CalendarEventType(str, Enum):
 class Transparency(str, Enum):
     busy = "busy"
     free = "free"
+
+
+class EventReminderMultiplier(str, Enum):
+    minutes = "minutes"
+    hours = "hours"
+    days = "days"
+    weeks = "weeks"

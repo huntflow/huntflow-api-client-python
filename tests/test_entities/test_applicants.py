@@ -15,7 +15,6 @@ from huntflow_api_client.models.response.applicants import (
     ApplicantListResponse,
     ApplicantLogResponse,
     ApplicantSearchByCursorResponse,
-    ApplicantSearchResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
@@ -249,31 +248,7 @@ APPLICANT_PATCH_RESPONSE: Dict[str, Any] = {
         },
     ],
 }
-APPLICANT_SEARCH_RESPONSE = {
-    "page": 1,
-    "count": 30,
-    "total_pages": 2,
-    "total_items": 50,
-    "items": [
-        {
-            "id": 1,
-            "first_name": "John",
-            "last_name": "Doe",
-            "middle_name": "Michael",
-            "birthday": "2020-01-01",
-            "phone": "89999999999",
-            "skype": "my_skype",
-            "email": "user@example.com",
-            "money": "$100000",
-            "position": "Front-end developer",
-            "company": "Google Inc.",
-            "photo": 10,
-            "photo_url": "https://hh.resume/12341234",
-            "created": "2020-01-01T00:00:00+03:00",
-            "order": 5,
-        },
-    ],
-}
+
 APPLICANT_SEARCH_BY_CURSOR_RESPONSE = {
     "items": [
         {
@@ -493,31 +468,6 @@ async def test_delete_applicant(
     await applicants.delete(ACCOUNT_ID, APPLICANT_ID)
 
 
-async def test_applicant_search(
-    httpx_mock: HTTPXMock,
-    token_proxy: HuntflowTokenProxy,
-) -> None:
-    httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/search?"
-        "q=1&&status=1&&rejection_reason=1&&rejection_reason=2&&vacancy=1&&account_source=1"
-        "&&only_current_status=false&&field=all&&count=30&&page=1",
-        status_code=200,
-        json=APPLICANT_SEARCH_RESPONSE,
-    )
-    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
-    applicants = Applicant(api_client)
-
-    response = await applicants.search(
-        ACCOUNT_ID,
-        q="1",
-        status=[1],
-        rejection_reason=[1, 2],
-        vacancy=[1],
-        account_source=[1],
-    )
-    assert response == ApplicantSearchResponse.parse_obj(APPLICANT_SEARCH_RESPONSE)
-
-
 async def test_applicant_search_by_cursor(
     httpx_mock: HTTPXMock,
     token_proxy: HuntflowTokenProxy,
@@ -534,7 +484,7 @@ async def test_applicant_search_by_cursor(
 
     response = await applicants.search_by_cursor(
         ACCOUNT_ID,
-        q="1",
+        query="1",
         status=[1],
         rejection_reason=[1, 2],
         vacancy=[1],

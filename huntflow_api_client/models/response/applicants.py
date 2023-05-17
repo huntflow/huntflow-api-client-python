@@ -141,15 +141,6 @@ class ApplicantSearchItem(BaseModel):
     created: datetime = Field(..., description="Date and time of adding a candidate")
 
 
-class ApplicantSearchItemWithOrder(ApplicantSearchItem):
-    order: int = Field(..., description="Order number")
-
-
-class ApplicantSearchResponse(PaginatedResponse):
-    total_items: Optional[int] = Field(..., description="Total number of items")
-    items: List[ApplicantSearchItemWithOrder] = Field(..., description="List of applicants")
-
-
 class ApplicantSearchByCursorResponse(BaseModel):
     items: List[ApplicantSearchItem] = Field(..., description="List of applicants")
     next_page_cursor: Optional[str] = Field(None, description="Next page cursor")

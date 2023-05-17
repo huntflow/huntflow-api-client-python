@@ -17,7 +17,6 @@ from huntflow_api_client.models.response.applicants import (
     ApplicantListResponse,
     ApplicantLogResponse,
     ApplicantSearchByCursorResponse,
-    ApplicantSearchResponse,
 )
 
 
@@ -127,63 +126,11 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
             f"/accounts/{account_id}/applicants" f"/{applicant_id}",
         )
 
-    async def search(
-        self,
-        account_id: int,
-        q: Optional[str] = None,
-        tag: Optional[List[int]] = None,
-        status: Optional[List[int]] = None,
-        rejection_reason: Optional[List[int]] = None,
-        vacancy: Union[List[int], str, None] = None,
-        account_source: Optional[List[int]] = None,
-        only_current_status: bool = False,
-        field: ApplicantSearchField = ApplicantSearchField.all,
-        count: int = 30,
-        page: int = 1,
-    ) -> ApplicantSearchResponse:
-        """
-        API method reference:
-            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/applicants/search
-
-        :param account_id: Organization ID
-        :param q: Search query
-        :param tag: List of tag ID
-        :param status: List of vacancy status ID
-        :param rejection_reason: List of rejection reason ID
-        :param vacancy: List of vacancy ID or 'null', If you pass a 'null' value,
-            then applicants who have not been added to any vacancy will be displayed
-        :param account_source: List of resume source ID
-        :param only_current_status: If the value is set to True,
-            then applicants who are currently at this status will be displayed.
-        :param field: Search field, Allowed: all ┃ education ┃ experience ┃ position
-        :param count: Number of items per page
-        :param page: Page number
-
-        :return: List of found applicants. Limited by 20k items
-        """
-        path = f"/accounts/{account_id}/applicants/search"
-        params = {
-            "tag": tag or [],
-            "status": status or [],
-            "rejection_reason": rejection_reason or [],
-            "vacancy": vacancy or [],
-            "only_current_status": only_current_status,
-            "field": field.value,
-            "count": count,
-            "page": page,
-            "account_source": account_source or [],
-        }
-        if q:
-            params["q"] = q
-
-        response = await self._api.request("GET", path, params=params)
-        return ApplicantSearchResponse.parse_obj(response.json())
-
     async def search_by_cursor(
         self,
         account_id: int,
         next_page_cursor: Optional[str] = None,
-        q: Optional[str] = None,
+        query: Optional[str] = None,
         tag: Optional[List[int]] = None,
         status: Optional[List[int]] = None,
         rejection_reason: Optional[List[int]] = None,
@@ -200,7 +147,7 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
         :param account_id: Organization ID
         :param next_page_cursor: A cursor to the next page,
             if specified, no other params will  be included
-        :param q: Search query
+        :param query: Search query
         :param tag: List of tag ID
         :param status: List of vacancy status ID
         :param rejection_reason: List of rejection reason ID
@@ -214,21 +161,25 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
 
         :return: Returns a list of found applicants and a cursor to the next page
         """
+
         path = f"/accounts/{account_id}/applicants/search_by_cursor"
-        params = {
-            "tag": tag or [],
-            "status": status or [],
-            "rejection_reason": rejection_reason or [],
-            "vacancy": vacancy or [],
-            "only_current_status": only_current_status,
-            "field": field.value,
-            "count": count,
-            "account_source": account_source or [],
-        }
-        if q:
-            params["q"] = q
+
+        params: Dict[str, Any]
         if next_page_cursor is not None:
             params = {"next_page_cursor": next_page_cursor}
+        else:
+            params = {
+                "tag": tag or [],
+                "status": status or [],
+                "rejection_reason": rejection_reason or [],
+                "vacancy": vacancy or [],
+                "only_current_status": only_current_status,
+                "field": field.value,
+                "count": count,
+                "account_source": account_source or [],
+            }
+            if query:
+                params["q"] = query
 
         response = await self._api.request("GET", path, params=params)
         return ApplicantSearchByCursorResponse.parse_obj(response.json())
