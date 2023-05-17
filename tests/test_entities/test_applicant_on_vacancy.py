@@ -81,7 +81,7 @@ async def test_update_vacancy_status_for_applicant(
     api_request = ChangeVacancyApplicantStatusRequest(**UPDATE_STATUS_REQUEST)
     applicant_statuses = ApplicantOnVacancy(api_client)
 
-    response = await applicant_statuses.update_vacancy_status_for_applicant(
+    response = await applicant_statuses.change_vacancy_status_for_applicant(
         ACCOUNT_ID,
         APPLICANT_ID,
         api_request,

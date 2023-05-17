@@ -33,7 +33,7 @@ class ApplicantOnVacancy(BaseEntity):
         )
         return AddApplicantToVacancyResponse.parse_obj(response.json())
 
-    async def update_vacancy_status_for_applicant(
+    async def change_vacancy_status_for_applicant(
         self,
         account_id: int,
         applicant_id: int,
