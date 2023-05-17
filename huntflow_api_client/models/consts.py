@@ -53,6 +53,45 @@ class AgreementState(str, Enum):
     declined = "declined"
 
 
+class ApplicantSearchField(str, Enum):
+    all = "all"
+    education = "education"
+    experience = "experience"
+    position = "position"
+
+
+class ApplicantLogType(str, Enum):
+    ADD = "ADD"
+    UPDATE = "UPDATE"
+    VACANCY_ADD = "VACANCY-ADD"
+    STATUS = "STATUS"
+    COMMENT = "COMMENT"
+    DOUBLE = "DOUBLE"
+    AGREEMENT = "AGREEMENT"
+    MAIL = "MAIL"
+    RESPONSE = "RESPONSE"
+
+
+class EmailContactType(str, Enum):
+    cc = "cc"
+    bcc = "bcc"
+    to = "to"
+
+
+class CalendarEventStatus(str, Enum):
+    accepted = "accepted"
+    declined = "declined"
+    confirmed = "confirmed"
+    tentative = "tentative"
+    cancelled = "cancelled"
+    needs_action = "needsAction"
+
+
+class CalendarEventReminderMethod(str, Enum):
+    popup = "popup"
+    email = "email"
+
+
 class CalendarEventType(str, Enum):
     interview = "interview"
     other = "other"
@@ -63,19 +102,8 @@ class Transparency(str, Enum):
     free = "free"
 
 
-class CalendarEventReminderMethod(str, Enum):
-    popup = "popup"
-    email = "email"
-
-
 class EventReminderMultiplier(str, Enum):
     minutes = "minutes"
     hours = "hours"
     days = "days"
     weeks = "weeks"
-
-
-class EmailContactType(str, Enum):
-    cc = "cc"
-    bcc = "bcc"
-    to = "to"
