@@ -318,10 +318,10 @@ async def test_create_vacancy(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    data = VacancyCreateRequest(  # type: ignore
+    data = VacancyCreateRequest(
         position="Developer",
         fill_quotas=[
-            FillQuota(  # type: ignore
+            FillQuota(
                 deadline=datetime.date(2023, 7, 1),
                 applicants_to_hire=1,
             ),
@@ -342,10 +342,10 @@ async def test_update_vacancy(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    data = VacancyUpdateRequest(  # type: ignore
+    data = VacancyUpdateRequest(
         position="Manager",
         money="99999999",
-        fill_quotas=[EditedFillQuota(id=1)],  # type: ignore
+        fill_quotas=[EditedFillQuota(id=1)],
     )
     response = await vacancies.update(ACCOUNT_ID, VACANCY_ID, data)
     assert response == VacancyResponse(**UPDATE_VACANCY_RESPONSE)
@@ -376,7 +376,7 @@ async def test_patch_vacancy(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    data = VacancyUpdatePartialRequest(  # type: ignore
+    data = VacancyUpdatePartialRequest(
         money="$100000000",
     )
     response = await vacancies.patch(ACCOUNT_ID, VACANCY_ID, data)

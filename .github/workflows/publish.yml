@@ -7,14 +7,12 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
     steps:
-      - name: PyPI Poetry Publish
-        uses: code-specialist/pypi-poetry-publish@v1.2
-        with:
-          PYTHON_VERSION: "3.8.9"
-          BRANCH: "dev"
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          POETRY_VERSION: "1.4.2"
-          PUBLISH_REGISTRY_USERNAME: "__token__"
-          PUBLISH_REGISTRY_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-          PACKAGE_DIRECTORY: "./huntflow_api_client/"
+      - uses: actions/checkout@v3
+      - name: Set up PDM
+        uses: pdm-project/setup-pdm@v3
+
+      - name: Publish package distributions to PyPI
+        run: pdm publish
