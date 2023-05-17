@@ -12,7 +12,6 @@ from huntflow_api_client.models.request.applicant_on_vacancy import (
 from huntflow_api_client.models.response.applicant_on_vacancy import (
     AddApplicantToVacancyResponse,
     ApplicantVacancySplitResponse,
-    RejectionReasonsListResponse,
     VacancyStatusesResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
@@ -33,9 +32,6 @@ APPLICANT_ON_VAC_STATUS_LIST_RESPONSE: Dict[str, Any] = {
             "stay_duration": 10,
         },
     ],
-}
-REJECTION_REASONS_LIST_RESPONSE: Dict[str, Any] = {
-    "items": [{"id": 1, "name": "High demands salary", "order": 1}],
 }
 ATTACH_APPLICANT_TO_VAC_RESPONSE: Dict[str, Any] = {
     "id": ACCOUNT_ID,
@@ -77,22 +73,6 @@ async def test_list(
     response = await applicant_statuses.list(ACCOUNT_ID)
 
     assert response == VacancyStatusesResponse(**APPLICANT_ON_VAC_STATUS_LIST_RESPONSE)
-
-
-async def test_rejection_reasons_list(
-    httpx_mock: HTTPXMock,
-    token_proxy: HuntflowTokenProxy,
-) -> None:
-    httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/rejection_reasons",
-        json=REJECTION_REASONS_LIST_RESPONSE,
-    )
-    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
-    applicant_statuses = ApplicantOnVacancy(api_client)
-
-    response = await applicant_statuses.rejection_reasons_list(ACCOUNT_ID)
-
-    assert response == RejectionReasonsListResponse(**REJECTION_REASONS_LIST_RESPONSE)
 
 
 async def test_attach_applicant_to_vacancy(

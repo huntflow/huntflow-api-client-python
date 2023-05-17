@@ -7,7 +7,6 @@ from huntflow_api_client.models.request.applicant_on_vacancy import (
 from huntflow_api_client.models.response.applicant_on_vacancy import (
     AddApplicantToVacancyResponse,
     ApplicantVacancySplitResponse,
-    RejectionReasonsListResponse,
     VacancyStatusesResponse,
 )
 
@@ -23,17 +22,6 @@ class ApplicantOnVacancy(BaseEntity, ListEntityMixin):
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/vacancies/statuses")
         return VacancyStatusesResponse.parse_obj(response.json())
-
-    async def rejection_reasons_list(self, account_id: int) -> RejectionReasonsListResponse:
-        """
-        API method reference
-            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/rejection_reasons
-
-        :param account_id: Organization ID
-        :return: List of applicant on vacancy rejection reasons
-        """
-        response = await self._api.request("GET", f"/accounts/{account_id}/rejection_reasons")
-        return RejectionReasonsListResponse.parse_obj(response.json())
 
     async def attach_applicant_to_vacancy(
         self,
