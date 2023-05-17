@@ -1,5 +1,5 @@
 from huntflow_api_client.entities.base import BaseEntity, ListEntityMixin
-from huntflow_api_client.models.response.rejection_reasons import RejectionReasonsListResponse
+from huntflow_api_client.models.response.rejection_reason import RejectionReasonsListResponse
 
 
 class RejectionReason(BaseEntity, ListEntityMixin):

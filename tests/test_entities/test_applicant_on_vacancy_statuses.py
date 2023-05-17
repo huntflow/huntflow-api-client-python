@@ -3,10 +3,8 @@ from typing import Any, Dict
 from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
-from huntflow_api_client.entities.applicant_on_vacancy_statuses import ApplicantOnVacancyStatus
-from huntflow_api_client.models.response.applicant_on_vacancy_statuses import (
-    VacancyStatusesResponse,
-)
+from huntflow_api_client.entities.applicant_on_vacancy_status import ApplicantOnVacancyStatus
+from huntflow_api_client.models.response.applicant_on_vacancy_status import VacancyStatusesResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
 

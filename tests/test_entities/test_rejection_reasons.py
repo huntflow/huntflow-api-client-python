@@ -3,8 +3,8 @@ from typing import Any, Dict
 from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
-from huntflow_api_client.entities.rejection_reasons import RejectionReason
-from huntflow_api_client.models.response.rejection_reasons import RejectionReasonsListResponse
+from huntflow_api_client.entities.rejection_reason import RejectionReason
+from huntflow_api_client.models.response.rejection_reason import RejectionReasonsListResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
 
