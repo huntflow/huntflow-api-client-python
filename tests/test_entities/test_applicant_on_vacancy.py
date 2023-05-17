@@ -12,7 +12,6 @@ from huntflow_api_client.models.request.applicant_on_vacancy import (
 from huntflow_api_client.models.response.applicant_on_vacancy import (
     AddApplicantToVacancyResponse,
     ApplicantVacancySplitResponse,
-    VacancyStatusesResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
@@ -21,18 +20,6 @@ ACCOUNT_ID = 1
 APPLICANT_ID = 1
 VACANCY_ID = 3
 STATUS_ID = 4
-APPLICANT_ON_VAC_STATUS_LIST_RESPONSE: Dict[str, Any] = {
-    "items": [
-        {
-            "id": 1,
-            "type": "user",
-            "name": "New Lead",
-            "removed": "2020-01-01T00:00:00+03:00",
-            "order": 0,
-            "stay_duration": 10,
-        },
-    ],
-}
 ATTACH_APPLICANT_TO_VAC_RESPONSE: Dict[str, Any] = {
     "id": ACCOUNT_ID,
     "changed": "2020-01-01T00:00:00+03:00",
@@ -57,22 +44,6 @@ MOVE_APPLICANT_RESPONSE: Dict[str, Any] = {
     "vacancy": VACANCY_ID,
     "vacancy_parent": 9,
 }
-
-
-async def test_list(
-    httpx_mock: HTTPXMock,
-    token_proxy: HuntflowTokenProxy,
-) -> None:
-    httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/statuses",
-        json=APPLICANT_ON_VAC_STATUS_LIST_RESPONSE,
-    )
-    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
-    applicant_statuses = ApplicantOnVacancy(api_client)
-
-    response = await applicant_statuses.list(ACCOUNT_ID)
-
-    assert response == VacancyStatusesResponse(**APPLICANT_ON_VAC_STATUS_LIST_RESPONSE)
 
 
 async def test_attach_applicant_to_vacancy(
