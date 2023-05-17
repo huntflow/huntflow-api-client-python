@@ -27,7 +27,11 @@ VACANCY_REQUEST_LIST_WITHOUT_VALUES = {
             "updated": "2023-05-03T12:02:03+03:00",
             "changed": None,
             "vacancy": None,
-            "creator": {"id": 1, "name": "test@example.com", "email": "test@example.com"},
+            "creator": {
+                "id": 1,
+                "name": "test@example.com",
+                "email": "test@example.com",
+            },
             "states": [],
         },
     ],
