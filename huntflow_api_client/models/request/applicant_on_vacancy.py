@@ -62,7 +62,6 @@ class ChangeVacancyApplicantStatusRequest(JsonRequestModel):
         None,
         max_items=15,
         description="Upload files. The list of file's ID attached to the log",
-        example=[1, 2, 3],
     )
     applicant_offer: Optional[ApplicantOffer] = Field(None, description="Applicant's offer")
     calendar_event: Optional[ApplicantEvent] = Field(None, description="Calendar event object")

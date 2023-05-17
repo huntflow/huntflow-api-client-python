@@ -1,5 +1,5 @@
 from huntflow_api_client.entities.base import BaseEntity, ListEntityMixin
-from huntflow_api_client.models.response.applicant_on_vacancy_statuses import (
+from huntflow_api_client.models.response.applicant_on_vacancy_status import (
     VacancyStatusesResponse,
 )
 

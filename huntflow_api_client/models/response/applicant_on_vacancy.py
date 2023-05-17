@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 
 class AddApplicantToVacancyResponse(BaseModel):
-    id: int = Field(..., description="Binding ID", example=9)
+    id: int = Field(..., description="Binding ID")
     changed: datetime = Field(..., description="The date of recruitment stage change")
     vacancy_id: int = Field(..., alias="vacancy", description="Vacancy ID")
     status: int = Field(..., description="Vacancy status ID")

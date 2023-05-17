@@ -119,7 +119,7 @@ class ApplicantLogEmail(BaseModel):
     )
     html: str = Field(..., description="Email content (HTML)")
     email: EmailStr = Field(..., description="Recipient email address")
-    subject: str = Field(..., description="Email subject", example="Welcome aboard!")
+    subject: str = Field(..., description="Email subject")
     send_at: Optional[datetime] = Field(
         None,
         description="Date and time to send email. If not supplied, email will be sent immediately",
@@ -159,11 +159,7 @@ class ApplicantEvent(BaseModel):
     location: Optional[str] = Field(None, max_length=1024, description="Event location")
     interview_type: Optional[PositiveInt] = Field(None, description="Interview type ID", example=17)
     event_type: CalendarEventType = Field(..., description="Calendar event type")
-    description: Optional[str] = Field(
-        None,
-        description="Event description (comment)",
-        example="Interview with applicant",
-    )
+    description: Optional[str] = Field(None, description="Event description (comment)")
     calendar: PositiveInt = Field(..., description="Calendar ID")
     attendees: List[CalendarEventAttendee] = Field(
         ...,
