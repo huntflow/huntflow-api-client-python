@@ -151,8 +151,10 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
         :param tag: List of tag ID
         :param status: List of vacancy status ID
         :param rejection_reason: List of rejection reason ID
-        :param vacancy: List of vacancy ID or 'null', If you pass a 'null' value,
-            then applicants who have not been added to any vacancy will be displayed
+        :param vacancy: List of vacancy ID's or None
+            - None - no filter for vacancies
+            - [] - empty list means applicant is not assigned to any vacancy
+            - [1, 2, 3] - applicants assigned to specified vacancies
         :param only_current_status: If the value is set to True,
             then applicants who are currently at this status will be displayed.
         :param account_source: List of resume source ID
