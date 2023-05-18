@@ -11,7 +11,9 @@ class TaskLog(BaseModel):
     state: TaskState = Field(..., description="Task status")
     timestamp: float = Field(..., description="Unix timestamp of the task state change")
     datetime_: dt.datetime = Field(
-        ..., description="Date and time of the task state change (ISO 8601)", alias="datetime",
+        ...,
+        description="Date and time of the task state change (ISO 8601)",
+        alias="datetime",
     )
     comment: t.Optional[str] = Field(None, description="Comment text")
 
