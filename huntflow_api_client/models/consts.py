@@ -107,3 +107,10 @@ class EventReminderMultiplier(str, Enum):
     hours = "hours"
     days = "days"
     weeks = "weeks"
+
+
+class TaskState(str, Enum):
+    enqueued = "enqueued"
+    inprogress = "inprogress"
+    success = "success"
+    failed = "failed"
