@@ -54,8 +54,8 @@ class InvalidAccessTokenError(AuthorizationError):
     pass
 
 
-class InvalidRefreshTokenError(NotFoundError):
-    pass
+class InvalidRefreshTokenError(ApiError):
+    code = 404
 
 
 class TooManyRequestsError(ApiError):
