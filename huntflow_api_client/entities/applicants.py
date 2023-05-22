@@ -210,9 +210,14 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
         :param count: Number of items per page
         :param page: Page number
 
+        :raises ValueError: Only one parameter from vacancy and personal must be specified
+
         :return: List of applicant's worklog
         """
         path = f"/accounts/{account_id}/applicants/{applicant_id}/logs"
+        if vacancy is not None and personal:
+            raise ValueError("Only one parameter from vacancy and personal must be specified")
+
         params: Dict[str, Any] = {
             "personal": personal,
             "count": count,
