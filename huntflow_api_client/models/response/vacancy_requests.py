@@ -2,17 +2,11 @@ from __future__ import annotations
 
 import datetime
 import typing as t
-from enum import Enum
 
 from pydantic import BaseModel, EmailStr, Field, PositiveInt
 
 from huntflow_api_client.models.common import File, PaginatedResponse
-
-
-class VacancyRequestStatus(str, Enum):
-    pending = "pending"
-    approved = "approved"
-    rejected = "rejected"
+from huntflow_api_client.models.consts import VacancyRequestStatus
 
 
 class UserInfo(BaseModel):

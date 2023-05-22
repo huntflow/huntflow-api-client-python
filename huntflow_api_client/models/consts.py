@@ -102,6 +102,12 @@ class Transparency(str, Enum):
     free = "free"
 
 
+class VacancyRequestStatus(str, Enum):
+    pending = "pending"
+    approved = "approved"
+    rejected = "rejected"
+
+
 class EventReminderMultiplier(str, Enum):
     minutes = "minutes"
     hours = "hours"
