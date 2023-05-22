@@ -1,5 +1,6 @@
 from typing import Any, Dict
 
+import pytest
 from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
@@ -526,3 +527,11 @@ async def test_applicant_log_list(
         type_=ApplicantLogType.ADD,
     )
     assert response == ApplicantLogResponse.parse_obj(APPLICANT_LOG_LIST_RESPONSE)
+
+    with pytest.raises(ValueError):
+        await applicants.log_list(
+            account_id=ACCOUNT_ID,
+            applicant_id=1,
+            vacancy=1,
+            personal=True,
+        )

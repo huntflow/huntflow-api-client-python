@@ -25,7 +25,8 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
         :param only_available:	If True,
             then only divisions available to the current user will be returned
 
-        :raises ValueError: Only one parameter from coworker_id and only_available must be specified
+        :raises ValueError:
+            Only one parameter from `coworker_id` and `only_available` must be specified
 
         :return: List of company divisions.
         """
