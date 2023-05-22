@@ -210,7 +210,7 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
         :param count: Number of items per page
         :param page: Page number
 
-        :raises ValueError: Only one parameter from vacancy and personal must be specified
+        :raises ValueError: Only one parameter from `vacancy` and `personal` must be specified
 
         :return: List of applicant's worklog
         """
