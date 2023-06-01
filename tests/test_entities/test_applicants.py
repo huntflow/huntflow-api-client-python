@@ -93,7 +93,7 @@ APPLICANT_LIST_RESPONSE: Dict[str, Any] = {
                     "updated": "2023-05-10T10:46:39+03:00",
                 },
             ],
-            "agreement": None,
+            "agreement": {"state": None, "decision_date": None},
             "doubles": [],
             "social": [],
         },
@@ -133,7 +133,7 @@ APPLICANT_GET_RESPONSE: Dict[str, Any] = {
             "updated": "2020-01-01T00:00:00+03:00",
         },
     ],
-    "agreement": "declined",
+    "agreement": {"state": None, "decision_date": None},
     "doubles": [{"double": 8}],
     "social": [
         {
@@ -183,7 +183,7 @@ APPLICANT_CREATE_RESPONSE: Dict[str, Any] = {
     "birthday": "2020-01-01",
     "files": [1, 2, 3],
     "doubles": [{"double": 8}],
-    "agreement": "sent",
+    "agreement": {"state": None, "decision_date": None},
     "external": [
         {
             "id": 1,
@@ -237,7 +237,7 @@ APPLICANT_PATCH_RESPONSE: Dict[str, Any] = {
             "updated": "2020-01-01T00:00:00+03:00",
         },
     ],
-    "agreement": "declined",
+    "agreement": {"state": None, "decision_date": None},
     "doubles": [{"double": 8}],
     "social": [
         {

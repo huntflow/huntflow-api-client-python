@@ -91,7 +91,7 @@ class ApplicantItem(Applicant):
     tags: List[ApplicantTag] = Field(..., description="List of tags")
     links: List[ApplicantLink] = Field(..., description="Applicant's vacancies")
     external: Optional[List[ApplicantResume]] = Field(None, description="Applicant's resume")
-    agreement: Optional[AgreementStateEnum] = Field(
+    agreement: Optional[ApplicantAgreement] = Field(
         None,
         description="Agreement's state of applicant to personal data processing",
     )
@@ -116,7 +116,7 @@ class ApplicantCreateResponse(Applicant):
         description="Upload files<br>The list of file's ID attached to the applicant",
     )
     doubles: List[ApplicantDouble] = Field(..., description="List of duplicates")
-    agreement: Optional[AgreementStateEnum] = Field(
+    agreement: Optional[ApplicantAgreement] = Field(
         None,
         description="Agreement's state of applicant to personal data processing",
     )
