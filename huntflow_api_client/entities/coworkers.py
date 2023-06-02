@@ -33,7 +33,7 @@ class Coworker(BaseEntity, ListEntityMixin, GetEntityMixin):
             "page": page,
         }
         if type_:
-            params["type"] = type_
+            params["type"] = type_.value
         if fetch_permissions:
             params["fetch_permissions"] = fetch_permissions
         if vacancy_id:

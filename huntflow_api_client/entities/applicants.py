@@ -49,7 +49,7 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
         if vacancy_id:
             params["vacancy_id"] = vacancy_id
         if agreement_state:
-            params["agreement_state"] = agreement_state
+            params["agreement_state"] = agreement_state.value
         response = await self._api.request(
             "GET",
             f"/accounts/{account_id}/applicants",
