@@ -343,7 +343,8 @@ async def test_update(
     resume = Resume(api_client)
 
     data = ApplicantResumeUpdateRequest(
-        account_source=10, data=ApplicantResumeUpdateData(body="My resume"),
+        account_source=10,
+        data=ApplicantResumeUpdateData(body="My resume"),
     )
 
     response = await resume.update(ACCOUNT_ID, APPLICANT_ID, EXTERNAL_ID, data)
