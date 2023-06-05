@@ -22,10 +22,12 @@ class QuestionaryField(BaseModel):
         alias="fields",
     )
     show_in_profile: t.Optional[bool] = Field(
-        None, description="Display field value in applicant's profile",
+        None,
+        description="Display field value in applicant's profile",
     )
     dictionary: t.Optional[str] = Field(
-        None, description="Organization dictionary name (for type=dictionary)",
+        None,
+        description="Organization dictionary name (for type=dictionary)",
     )
 
     class Config:

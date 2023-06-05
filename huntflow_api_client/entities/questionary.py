@@ -20,7 +20,10 @@ class ApplicantsQuestionary(BaseEntity, GetEntityMixin, CreateEntityMixin):
         return QuestionarySchemaResponse.parse_obj(response.json())
 
     async def create(
-        self, account_id: int, applicant_id: int, data: QuestionaryRequest,
+        self,
+        account_id: int,
+        applicant_id: int,
+        data: QuestionaryRequest,
     ) -> QuestionaryResponse:
         """
         API method reference
@@ -50,12 +53,16 @@ class ApplicantsQuestionary(BaseEntity, GetEntityMixin, CreateEntityMixin):
         :return: A questionary for the specified applicant
         """
         response = await self._api.request(
-            "GET", f"/accounts/{account_id}/applicants/{applicant_id}/questionary",
+            "GET",
+            f"/accounts/{account_id}/applicants/{applicant_id}/questionary",
         )
         return QuestionaryResponse.parse_obj(response.json())
 
     async def patch(
-        self, account_id: int, applicant_id: int, data: QuestionaryRequest,
+        self,
+        account_id: int,
+        applicant_id: int,
+        data: QuestionaryRequest,
     ) -> QuestionaryResponse:
         """
         API method reference
