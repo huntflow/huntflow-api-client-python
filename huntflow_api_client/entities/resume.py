@@ -57,7 +57,8 @@ class Resume(BaseEntity, GetEntityMixin, DeleteEntityMixin, UpdateEntityMixin):
         :param external_id: External ID
         """
         await self._api.request(
-            "DELETE", f"/accounts/{account_id}/applicants/{applicant_id}/externals/{external_id}",
+            "DELETE",
+            f"/accounts/{account_id}/applicants/{applicant_id}/externals/{external_id}",
         )
 
     async def update(
