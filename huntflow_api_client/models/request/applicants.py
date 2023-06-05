@@ -30,7 +30,7 @@ class ApplicantResumeUpdateData(BaseModel):
     body: Optional[str] = Field(..., description="Resume text")
 
 
-class ApplicantResumeUpdateRequest(BaseModel):
+class ApplicantResumeUpdateRequest(JsonRequestModel):
     account_source: Optional[PositiveInt] = Field(..., description="Resume source ID")
     data: Optional[ApplicantResumeUpdateData] = Field(
         ...,
