@@ -350,4 +350,4 @@ class ApplicantSource(BaseModel):
 
 
 class ApplicantSourcesResponse(BaseModel):
-    items: list[ApplicantSource] = Field(..., description="List of applicant's sources")
+    items: List[ApplicantSource] = Field(..., description="List of applicant's sources")
