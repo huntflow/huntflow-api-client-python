@@ -50,15 +50,6 @@ class ExternalEntity(BaseModel):
     external_id: t.Optional[str] = Field(None, description="Entity external ID")
     name: t.Optional[str] = Field(None, description="Entity name")
 
-    class Config:
-        schema_extra = {
-            "example": {
-                "id": 14,
-                "external_id": "100",
-                "name": "Entity",
-            },
-        }
-
 
 class Area(BaseModel):
     country: t.Optional[ExternalEntity] = Field(None, description="Country")
