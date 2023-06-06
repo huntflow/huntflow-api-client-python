@@ -4,9 +4,11 @@ from huntflow_api_client.entities.base import (
     GetEntityMixin,
     UpdateEntityMixin,
 )
-from huntflow_api_client.models.request.applicants import ApplicantResumeUpdateRequest
-from huntflow_api_client.models.response.applicants import ApplicantSourcesResponse
-from huntflow_api_client.models.response.resume import ApplicantResumeResponse
+from huntflow_api_client.models.request.resume import ApplicantResumeUpdateRequest
+from huntflow_api_client.models.response.resume import (
+    ApplicantResumeResponse,
+    ApplicantSourcesResponse,
+)
 
 
 class Resume(BaseEntity, GetEntityMixin, DeleteEntityMixin, UpdateEntityMixin):
@@ -22,7 +24,7 @@ class Resume(BaseEntity, GetEntityMixin, DeleteEntityMixin, UpdateEntityMixin):
 
         :param account_id: Organization ID
         :param applicant_id: Applicant ID
-        :param external_id: External ID
+        :param external_id: Resume ID
         :return: An applicant resume
         """
         response = await self._api.request(
@@ -31,7 +33,7 @@ class Resume(BaseEntity, GetEntityMixin, DeleteEntityMixin, UpdateEntityMixin):
         )
         return ApplicantResumeResponse.parse_obj(response.json())
 
-    async def get_resume_sources(self, account_id: int) -> ApplicantSourcesResponse:
+    async def get_sources(self, account_id: int) -> ApplicantSourcesResponse:
         """
         API method reference
             https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/applicants/sources
@@ -54,7 +56,7 @@ class Resume(BaseEntity, GetEntityMixin, DeleteEntityMixin, UpdateEntityMixin):
 
         :param account_id: Organization ID
         :param applicant_id: Applicant ID
-        :param external_id: External ID
+        :param external_id: Resume ID
         """
         await self._api.request(
             "DELETE",
@@ -74,7 +76,7 @@ class Resume(BaseEntity, GetEntityMixin, DeleteEntityMixin, UpdateEntityMixin):
 
         :param account_id: Organization ID
         :param applicant_id: Applicant ID
-        :param external_id: External ID
+        :param external_id: Resume ID
         :param data: Data for updating  specified applicant's resume.
         :return: An applicant resume
         """

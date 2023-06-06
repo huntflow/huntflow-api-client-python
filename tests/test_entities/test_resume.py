@@ -4,12 +4,14 @@ from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities import Resume
-from huntflow_api_client.models.request.applicants import (
+from huntflow_api_client.models.request.resume import (
     ApplicantResumeUpdateData,
     ApplicantResumeUpdateRequest,
 )
-from huntflow_api_client.models.response.applicants import ApplicantSourcesResponse
-from huntflow_api_client.models.response.resume import ApplicantResumeResponse
+from huntflow_api_client.models.response.resume import (
+    ApplicantResumeResponse,
+    ApplicantSourcesResponse,
+)
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
 
@@ -298,7 +300,7 @@ async def test_get_resume_sources(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     resume = Resume(api_client)
 
-    response = await resume.get_resume_sources(ACCOUNT_ID)
+    response = await resume.get_sources(ACCOUNT_ID)
     assert response == ApplicantSourcesResponse(**RESUME_SOURCES_RESPONSE)
 
 

@@ -293,3 +293,14 @@ class ApplicantResumeResponse(ApplicantResume):
         description="Raw resume data (format depends on auth_type)",
     )
     resume: t.Optional[Resume] = Field(None, description="Resume data in unified format")
+
+
+class ApplicantSource(BaseModel):
+    id: int = Field(..., description="Applicant source ID")
+    foreign: t.Optional[str] = Field(None, description="Applicant source foreign")
+    name: str = Field(..., description="Applicant source name")
+    type: str = Field(..., description="Applicant source type")
+
+
+class ApplicantSourcesResponse(BaseModel):
+    items: t.List[ApplicantSource] = Field(..., description="List of applicant's sources")

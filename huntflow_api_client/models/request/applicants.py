@@ -26,23 +26,6 @@ class ApplicantResumeCreate(BaseModel):
     )
 
 
-class ApplicantResumeUpdateData(BaseModel):
-    body: Optional[str] = Field(..., description="Resume text")
-
-
-class ApplicantResumeUpdateRequest(JsonRequestModel):
-    account_source: Optional[PositiveInt] = Field(..., description="Resume source ID")
-    data: Optional[ApplicantResumeUpdateData] = Field(
-        ...,
-        description="Resume data",
-    )
-    files: Optional[List[PositiveInt]] = Field(
-        [],
-        max_items=1,
-        description="Upload files<br>" "List of file's ID attached to the applicant resume",
-    )
-
-
 class ApplicantSocial(BaseModel):
     social_type: Literal["TELEGRAM"] = Field(..., description="Type")
     value: str = Field(..., description="Value")
