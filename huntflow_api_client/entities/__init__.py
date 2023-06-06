@@ -8,7 +8,9 @@ from huntflow_api_client.entities.delayed_tasks import DelayedTask
 from huntflow_api_client.entities.dictionaries import Dictionary
 from huntflow_api_client.entities.divisions import AccountDivision
 from huntflow_api_client.entities.production_calendars import ProductionCalendar
+from huntflow_api_client.entities.questionary import ApplicantsQuestionary
 from huntflow_api_client.entities.rejection_reason import RejectionReason
+from huntflow_api_client.entities.resume import Resume
 from huntflow_api_client.entities.tags import AccountTag
 from huntflow_api_client.entities.users import User
 from huntflow_api_client.entities.vacancies import Vacancy
@@ -16,20 +18,22 @@ from huntflow_api_client.entities.vacancy_requests import VacancyRequest
 from huntflow_api_client.entities.webhooks import Webhook
 
 __all__ = (
-    "AccountVacancyRequest",
     "Account",
+    "AccountDivision",
+    "AccountTag",
+    "AccountVacancyRequest",
     "Applicant",
     "ApplicantOnVacancy",
     "ApplicantOnVacancyStatus",
+    "ApplicantsQuestionary",
     "Coworker",
+    "DelayedTask",
     "Dictionary",
-    "AccountDivision",
     "ProductionCalendar",
     "RejectionReason",
-    "AccountTag",
+    "Resume",
+    "Vacancy",
     "VacancyRequest",
     "Webhook",
-    "DelayedTask",
-    "Vacancy",
     "User",
 )

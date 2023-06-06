@@ -120,3 +120,9 @@ class TaskState(str, Enum):
     inprogress = "inprogress"
     success = "success"
     failed = "failed"
+
+
+class PrecisionTypes(str, Enum):
+    year = "year"
+    month = "month"
+    day = "day"
