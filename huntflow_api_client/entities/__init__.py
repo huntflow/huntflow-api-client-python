@@ -10,6 +10,7 @@ from huntflow_api_client.entities.divisions import AccountDivision
 from huntflow_api_client.entities.production_calendars import ProductionCalendar
 from huntflow_api_client.entities.questionary import ApplicantsQuestionary
 from huntflow_api_client.entities.rejection_reason import RejectionReason
+from huntflow_api_client.entities.resume import Resume
 from huntflow_api_client.entities.tags import AccountTag
 from huntflow_api_client.entities.vacancies import Vacancy
 from huntflow_api_client.entities.vacancy_requests import VacancyRequest
@@ -26,6 +27,7 @@ __all__ = (
     "AccountDivision",
     "ProductionCalendar",
     "RejectionReason",
+    "Resume",
     "AccountTag",
     "VacancyRequest",
     "Webhook",
