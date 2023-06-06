@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Any, Dict
 
 from huntflow_api_client.entities.base import (
     BaseEntity,
@@ -26,8 +26,8 @@ class ApplicantsQuestionary(BaseEntity, GetEntityMixin, CreateEntityMixin, Updat
         self,
         account_id: int,
         applicant_id: int,
-        data: Dict,
-    ) -> Dict:
+        data: Dict[str, Any],
+    ) -> Dict[str, Any]:
         """
         The successful response depends on the questionary schema
 
@@ -47,7 +47,7 @@ class ApplicantsQuestionary(BaseEntity, GetEntityMixin, CreateEntityMixin, Updat
         )
         return response.json()
 
-    async def get(self, account_id: int, applicant_id: int) -> Dict:
+    async def get(self, account_id: int, applicant_id: int) -> Dict[str, Any]:
         """
         API method reference
             https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/applicants/-applicant_id-/questionary
@@ -67,8 +67,8 @@ class ApplicantsQuestionary(BaseEntity, GetEntityMixin, CreateEntityMixin, Updat
         self,
         account_id: int,
         applicant_id: int,
-        data: Dict,
-    ) -> Dict:
+        data: Dict[str, Any],
+    ) -> Dict[str, Any]:
         """
         The successful response depends on the questionary schema
 
