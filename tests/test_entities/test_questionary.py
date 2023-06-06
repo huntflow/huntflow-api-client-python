@@ -4,18 +4,14 @@ from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities import ApplicantsQuestionary
-from huntflow_api_client.models.request.questionary import QuestionaryRequest
-from huntflow_api_client.models.response.questionary import (
-    QuestionaryResponse,
-    QuestionarySchemaResponse,
-)
+from huntflow_api_client.models.response.questionary import QuestionarySchemaResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
 
 ACCOUNT_ID = 1
 APPLICANT_ID = 2
 
-ORG_QUESTIONARY_RESPONSE: Dict[str, Any] = {
+QUESTIONARY_SCHEMA_RESPONSE: Dict[str, Any] = {
     "citizenship": {
         "type": "dictionary",
         "id": 1,
@@ -30,6 +26,19 @@ ORG_QUESTIONARY_RESPONSE: Dict[str, Any] = {
         "account": ACCOUNT_ID,
         "search_field": "multi_field_1",
     },
+    "english": {
+        "type": "dictionary",
+        "id": 2,
+        "title": "English",
+        "required": False,
+        "order": 2,
+        "value": None,
+        "show_in_profile": True,
+        "dictionary": "english",
+        "search_filter": True,
+        "account": ACCOUNT_ID,
+        "search_field": "multi_field_2"
+    },
 }
 QUESTIONARY_RESPONSE: Dict[str, Any] = {
     "citizenship": None,
@@ -37,19 +46,19 @@ QUESTIONARY_RESPONSE: Dict[str, Any] = {
 }
 
 
-async def test_get_organization_questionary(
+async def test_get_schema(
     httpx_mock: HTTPXMock,
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/questionary",
-        json=ORG_QUESTIONARY_RESPONSE,
+        json=QUESTIONARY_SCHEMA_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     questionary = ApplicantsQuestionary(api_client)
 
-    response = await questionary.get_organization_questionary(ACCOUNT_ID)
-    assert response == QuestionarySchemaResponse.parse_obj(ORG_QUESTIONARY_RESPONSE)
+    response = await questionary.get_schema(ACCOUNT_ID)
+    assert response == QuestionarySchemaResponse.parse_obj(QUESTIONARY_SCHEMA_RESPONSE)
 
 
 async def test_create_questionary(
@@ -62,10 +71,10 @@ async def test_create_questionary(
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     questionary = ApplicantsQuestionary(api_client)
-    data = QuestionaryRequest.parse_obj({"english": 1})
+    data = {"english": 1}
 
     response = await questionary.create(ACCOUNT_ID, APPLICANT_ID, data)
-    assert response == QuestionaryResponse.parse_obj(QUESTIONARY_RESPONSE)
+    assert response == QUESTIONARY_RESPONSE
 
 
 async def test_get_applicants_questionary(
@@ -80,10 +89,10 @@ async def test_get_applicants_questionary(
     questionary = ApplicantsQuestionary(api_client)
 
     response = await questionary.get(ACCOUNT_ID, APPLICANT_ID)
-    assert response == QuestionaryResponse.parse_obj(QUESTIONARY_RESPONSE)
+    assert response == QUESTIONARY_RESPONSE
 
 
-async def test_patch_questionary(
+async def test_update_questionary(
     httpx_mock: HTTPXMock,
     token_proxy: HuntflowTokenProxy,
 ) -> None:
@@ -93,7 +102,7 @@ async def test_patch_questionary(
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     questionary = ApplicantsQuestionary(api_client)
-    data = QuestionaryRequest.parse_obj({"english": 1})
+    data = {"english": 1}
 
-    response = await questionary.patch(ACCOUNT_ID, APPLICANT_ID, data)
-    assert response == QuestionaryResponse.parse_obj(QUESTIONARY_RESPONSE)
+    response = await questionary.update(ACCOUNT_ID, APPLICANT_ID, data)
+    assert response == QUESTIONARY_RESPONSE

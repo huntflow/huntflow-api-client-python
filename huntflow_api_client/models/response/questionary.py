@@ -39,9 +39,3 @@ class QuestionarySchemaResponse(BaseModel):
         ...,
         description="Mapping of fields in the questionary and objects with their values",
     )
-
-
-class QuestionaryResponse(BaseModel):
-    __root__: dict = Field(
-        ...,
-    )

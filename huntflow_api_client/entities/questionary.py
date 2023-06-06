@@ -1,13 +1,16 @@
-from huntflow_api_client.entities.base import BaseEntity, CreateEntityMixin, GetEntityMixin
-from huntflow_api_client.models.request.questionary import QuestionaryRequest
-from huntflow_api_client.models.response.questionary import (
-    QuestionaryResponse,
-    QuestionarySchemaResponse,
+from typing import Dict
+
+from huntflow_api_client.entities.base import (
+    BaseEntity,
+    CreateEntityMixin,
+    GetEntityMixin,
+    UpdateEntityMixin,
 )
+from huntflow_api_client.models.response.questionary import QuestionarySchemaResponse
 
 
-class ApplicantsQuestionary(BaseEntity, GetEntityMixin, CreateEntityMixin):
-    async def get_organization_questionary(self, account_id: int) -> QuestionarySchemaResponse:
+class ApplicantsQuestionary(BaseEntity, GetEntityMixin, CreateEntityMixin, UpdateEntityMixin):
+    async def get_schema(self, account_id: int) -> QuestionarySchemaResponse:
         """
         API method reference
             https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/applicants/questionary
@@ -23,9 +26,11 @@ class ApplicantsQuestionary(BaseEntity, GetEntityMixin, CreateEntityMixin):
         self,
         account_id: int,
         applicant_id: int,
-        data: QuestionaryRequest,
-    ) -> QuestionaryResponse:
+        data: Dict,
+    ) -> Dict:
         """
+        The successful response depends on the questionary schema
+
         API method reference
             https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/applicants/-applicant_id-/questionary
 
@@ -38,11 +43,11 @@ class ApplicantsQuestionary(BaseEntity, GetEntityMixin, CreateEntityMixin):
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/applicants/{applicant_id}/questionary",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data,
         )
-        return QuestionaryResponse.parse_obj(response.json())
+        return response.json()
 
-    async def get(self, account_id: int, applicant_id: int) -> QuestionaryResponse:
+    async def get(self, account_id: int, applicant_id: int) -> Dict:
         """
         API method reference
             https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/applicants/-applicant_id-/questionary
@@ -56,15 +61,17 @@ class ApplicantsQuestionary(BaseEntity, GetEntityMixin, CreateEntityMixin):
             "GET",
             f"/accounts/{account_id}/applicants/{applicant_id}/questionary",
         )
-        return QuestionaryResponse.parse_obj(response.json())
+        return response.json()
 
-    async def patch(
+    async def update(
         self,
         account_id: int,
         applicant_id: int,
-        data: QuestionaryRequest,
-    ) -> QuestionaryResponse:
+        data: Dict,
+    ) -> Dict:
         """
+        The successful response depends on the questionary schema
+
         API method reference
             https://api.huntflow.ai/v2/docs#patch-/accounts/-account_id-/applicants/-applicant_id-/questionary
 
@@ -77,6 +84,6 @@ class ApplicantsQuestionary(BaseEntity, GetEntityMixin, CreateEntityMixin):
         response = await self._api.request(
             "PATCH",
             f"/accounts/{account_id}/applicants/{applicant_id}/questionary",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data,
         )
-        return QuestionaryResponse.parse_obj(response.json())
+        return response.json()
