@@ -17,21 +17,21 @@ from huntflow_api_client.entities.vacancy_requests import VacancyRequest
 from huntflow_api_client.entities.webhooks import Webhook
 
 __all__ = (
-    "AccountVacancyRequest",
     "Account",
+    "AccountDivision",
+    "AccountTag",
+    "AccountVacancyRequest",
     "Applicant",
     "ApplicantOnVacancy",
     "ApplicantOnVacancyStatus",
+    "ApplicantsQuestionary",
     "Coworker",
+    "DelayedTask",
     "Dictionary",
-    "AccountDivision",
     "ProductionCalendar",
     "RejectionReason",
     "Resume",
-    "AccountTag",
+    "Vacancy",
     "VacancyRequest",
     "Webhook",
-    "DelayedTask",
-    "Vacancy",
-    "ApplicantsQuestionary",
 )
