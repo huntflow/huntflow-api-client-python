@@ -32,8 +32,8 @@ __all__ = (
     "ProductionCalendar",
     "RejectionReason",
     "Resume",
+    "User",
     "Vacancy",
     "VacancyRequest",
     "Webhook",
-    "User",
 )
