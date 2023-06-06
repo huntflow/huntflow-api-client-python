@@ -13,6 +13,7 @@ from huntflow_api_client.entities.questionary import ApplicantsQuestionary
 from huntflow_api_client.entities.rejection_reason import RejectionReason
 from huntflow_api_client.entities.resume import Resume
 from huntflow_api_client.entities.tags import AccountTag
+from huntflow_api_client.entities.users import User
 from huntflow_api_client.entities.vacancies import Vacancy
 from huntflow_api_client.entities.vacancy_requests import VacancyRequest
 from huntflow_api_client.entities.webhooks import Webhook
@@ -33,6 +34,7 @@ __all__ = (
     "ProductionCalendar",
     "RejectionReason",
     "Resume",
+    "User",
     "Vacancy",
     "VacancyRequest",
     "Webhook",
