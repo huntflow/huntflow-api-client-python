@@ -37,7 +37,7 @@ QUESTIONARY_SCHEMA_RESPONSE: Dict[str, Any] = {
         "dictionary": "english",
         "search_filter": True,
         "account": ACCOUNT_ID,
-        "search_field": "multi_field_2"
+        "search_field": "multi_field_2",
     },
 }
 QUESTIONARY_RESPONSE: Dict[str, Any] = {
