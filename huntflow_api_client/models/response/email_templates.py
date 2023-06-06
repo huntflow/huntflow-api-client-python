@@ -2,8 +2,7 @@ import typing as t
 
 from pydantic import BaseModel, EmailStr, Field, PositiveInt
 
-from huntflow_api_client.models.common import File
-from huntflow_api_client.models.request.applicants import EmailFollowup
+from huntflow_api_client.models.common import EmailFollowup, File
 
 
 class MailTemplateAttendee(BaseModel):

@@ -175,3 +175,14 @@ class EmailRecipient(BaseModel):
         description="Name of email recipient",
     )
     email: str = Field(..., description="Email address")
+
+
+class EmailFollowup(BaseModel):
+    id: PositiveInt = Field(..., description="Followup ID")
+    account_member_template: int = Field(..., description="Email template ID")
+    html: str = Field(..., description="Email content (HTML)")
+    days: int = Field(
+        ...,
+        gte=1,
+        description="The number of days after which to send a followup if there is no response",
+    )
