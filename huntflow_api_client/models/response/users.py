@@ -1,12 +1,12 @@
 from typing import List, Optional
 
-from pydantic import EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field
 
-from huntflow_api_client.models.common import UserId
 from huntflow_api_client.models.response.coworkers import Permission
 
 
-class UserResponse(UserId):
+class UserResponse(BaseModel):
+    id: int = Field(..., description="User ID")
     name: Optional[str] = Field(None, description="User name")
     member_type: str = Field(..., alias="type", description="User type (role)")
     head: Optional[int] = Field(None, description="Head user ID")
