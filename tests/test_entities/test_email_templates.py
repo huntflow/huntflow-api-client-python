@@ -50,7 +50,7 @@ async def test_list_templates(
         json=TEMPLATE_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
-    resume = MailTemplate(api_client)
+    templates = MailTemplate(api_client)
 
-    response = await resume.list(ACCOUNT_ID)
+    response = await templates.list(ACCOUNT_ID)
     assert response == MailTemplatesResponse(**TEMPLATE_LIST_RESPONSE)
