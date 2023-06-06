@@ -175,3 +175,7 @@ class EmailRecipient(BaseModel):
         description="Name of email recipient",
     )
     email: str = Field(..., description="Email address")
+
+
+class UserId(BaseModel):
+    id: int = Field(..., description="User ID")
