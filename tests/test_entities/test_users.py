@@ -31,7 +31,7 @@ async def test_get_user(
         json=GET_USER_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
-    accounts = User(api_client)
+    users = User(api_client)
 
-    response = await accounts.get(ACCOUNT_ID, USER_ID)
+    response = await users.get(ACCOUNT_ID, USER_ID)
     assert response == UserResponse(**GET_USER_RESPONSE)
