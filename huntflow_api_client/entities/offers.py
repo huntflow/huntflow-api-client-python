@@ -20,7 +20,7 @@ class Offer(BaseEntity, UpdateEntityMixin):
         return AccountOffersListResponse.parse_obj(response.json())
 
     async def get_account_offers_with_schema(
-        self, account_id: int, offer_id: int
+        self, account_id: int, offer_id: int,
     ) -> AccountOfferResponse:
         """
         API method reference:
@@ -46,12 +46,12 @@ class Offer(BaseEntity, UpdateEntityMixin):
         :return: An applicant offer in bytes.
         """
         response = await self._api.request(
-            "GET", f"/accounts/{account_id}/applicants/{applicant_id}/offers/{offer_id}/pdf"
+            "GET", f"/accounts/{account_id}/applicants/{applicant_id}/offers/{offer_id}/pdf",
         )
         return response.content
 
     async def update(
-        self, account_id: int, applicant_id: int, offer_id: int, data: ApplicantOfferUpdate
+        self, account_id: int, applicant_id: int, offer_id: int, data: ApplicantOfferUpdate,
     ) -> ApplicantVacancyOfferResponse:
         """
         API method reference:
@@ -72,7 +72,7 @@ class Offer(BaseEntity, UpdateEntityMixin):
         return ApplicantVacancyOfferResponse.parse_obj(response.json())
 
     async def get_applicant_on_vacancy_offer(
-        self, account_id: int, applicant_id: int, vacancy_frame_id: int
+        self, account_id: int, applicant_id: int, vacancy_frame_id: int,
     ) -> ApplicantVacancyOfferResponse:
         """
         API method reference:
