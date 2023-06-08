@@ -1,5 +1,4 @@
-from typing import Dict
-from typing import Any
+from typing import Any, Dict
 
 from pytest_httpx import HTTPXMock
 
@@ -7,8 +6,8 @@ from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.offers import Offer
 from huntflow_api_client.models.request.offers import ApplicantOfferUpdate
 from huntflow_api_client.models.response.offers import (
-    AccountOffersListResponse,
     AccountOfferResponse,
+    AccountOffersListResponse,
     ApplicantVacancyOfferResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
