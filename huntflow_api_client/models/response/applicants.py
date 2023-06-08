@@ -13,7 +13,7 @@ from huntflow_api_client.models.consts import (
     EmailContactType,
     Transparency,
 )
-from huntflow_api_client.models.response.account_offers import ApplicantVacancyOffer
+from huntflow_api_client.models.response.applicant_offers import ApplicantVacancyOffer
 from huntflow_api_client.models.response.survey import SurveySchemaTypeQLogResponse
 
 
