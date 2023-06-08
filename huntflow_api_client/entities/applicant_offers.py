@@ -1,41 +1,9 @@
-from huntflow_api_client.entities.base import BaseEntity, UpdateEntityMixin
-from huntflow_api_client.models.request.offers import ApplicantOfferUpdate
-from huntflow_api_client.models.response.offers import (
-    AccountOfferResponse,
-    AccountOffersListResponse,
-    ApplicantVacancyOfferResponse,
-)
+from huntflow_api_client.entities.base import BaseEntity, GetEntityMixin, UpdateEntityMixin
+from huntflow_api_client.models.request.applicant_offers import ApplicantOfferUpdate
+from huntflow_api_client.models.response.applicant_offers import ApplicantVacancyOfferResponse
 
 
-class Offer(BaseEntity, UpdateEntityMixin):
-    async def list(self, account_id: int) -> AccountOffersListResponse:
-        """
-        API method reference: https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/offers
-
-        :param account_id: Organization ID
-
-        :return: List of organization's offers
-        """
-        response = await self._api.request("GET", f"/accounts/{account_id}/offers")
-        return AccountOffersListResponse.parse_obj(response.json())
-
-    async def get(
-        self,
-        account_id: int,
-        offer_id: int,
-    ) -> AccountOfferResponse:
-        """
-        API method reference:
-            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/offers/-offer_id-
-
-        :param account_id: Organization ID
-        :param offer_id: Offer ID
-
-        :return: Organization's offer with a schema of values
-        """
-        response = await self._api.request("GET", f"/accounts/{account_id}/offers/{offer_id}")
-        return AccountOfferResponse.parse_obj(response.json())
-
+class ApplicantOffer(BaseEntity, UpdateEntityMixin, GetEntityMixin):
     async def get_offer_pdf(self, account_id: int, applicant_id: int, offer_id: int) -> bytes:
         """
         API method reference:
@@ -78,7 +46,7 @@ class Offer(BaseEntity, UpdateEntityMixin):
         )
         return ApplicantVacancyOfferResponse.parse_obj(response.json())
 
-    async def get_applicant_on_vacancy_offer(
+    async def get(
         self,
         account_id: int,
         applicant_id: int,
