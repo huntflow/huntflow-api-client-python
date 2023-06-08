@@ -17,11 +17,7 @@ class AccountOffer(BaseEntity, GetEntityMixin, ListEntityMixin):
         response = await self._api.request("GET", f"/accounts/{account_id}/offers")
         return AccountOffersListResponse.parse_obj(response.json())
 
-    async def get(
-        self,
-        account_id: int,
-        offer_id: int,
-    ) -> AccountOfferResponse:
+    async def get(self, account_id: int, offer_id: int) -> AccountOfferResponse:
         """
         API method reference:
             https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/offers/-offer_id-
