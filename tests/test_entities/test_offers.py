@@ -131,7 +131,7 @@ OFFER_RESPONSE: Dict[str, Any] = {
 GET_PDF_RESPONSE = bytes("pdf", "UTF-8")
 
 
-async def test_get_current_user(
+async def test_list(
     httpx_mock: HTTPXMock,
     token_proxy: HuntflowTokenProxy,
 ) -> None:
@@ -142,11 +142,11 @@ async def test_get_current_user(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     offers = Offer(api_client)
 
-    response = await offers.get_account_offers(account_id=ACCOUNT_ID)
+    response = await offers.list(account_id=ACCOUNT_ID)
     assert response == AccountOffersListResponse(**GET_ORG_OFFERS_RESPONSE)
 
 
-async def test_get_account_offers_with_schema(
+async def test_get(
     httpx_mock: HTTPXMock,
     token_proxy: HuntflowTokenProxy,
 ) -> None:
@@ -157,7 +157,7 @@ async def test_get_account_offers_with_schema(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     offers = Offer(api_client)
 
-    response = await offers.get_account_offers_with_schema(account_id=ACCOUNT_ID, offer_id=OFFER_ID)
+    response = await offers.get(account_id=ACCOUNT_ID, offer_id=OFFER_ID)
     assert response == AccountOfferResponse(**GET_ORG_OFFERS_WITH_SCHEMA_RESPONSE)
 
 
@@ -210,7 +210,7 @@ async def test_get_applicant_on_vacancy_offer(
     assert response == ApplicantVacancyOfferResponse(**OFFER_RESPONSE)
 
 
-async def test_get_pdf(
+async def test_get_offer_pdf(
     httpx_mock: HTTPXMock,
     token_proxy: HuntflowTokenProxy,
 ) -> None:
@@ -221,7 +221,7 @@ async def test_get_pdf(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     offers = Offer(api_client)
 
-    response = await offers.get_pdf(
+    response = await offers.get_offer_pdf(
         account_id=ACCOUNT_ID,
         applicant_id=APPLICANT_ID,
         offer_id=OFFER_ID,

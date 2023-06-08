@@ -8,7 +8,7 @@ from huntflow_api_client.models.response.offers import (
 
 
 class Offer(BaseEntity, UpdateEntityMixin):
-    async def get_account_offers(self, account_id: int) -> AccountOffersListResponse:
+    async def list(self, account_id: int) -> AccountOffersListResponse:
         """
         API method reference: https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/offers
 
@@ -19,7 +19,7 @@ class Offer(BaseEntity, UpdateEntityMixin):
         response = await self._api.request("GET", f"/accounts/{account_id}/offers")
         return AccountOffersListResponse.parse_obj(response.json())
 
-    async def get_account_offers_with_schema(
+    async def get(
         self,
         account_id: int,
         offer_id: int,
@@ -36,7 +36,7 @@ class Offer(BaseEntity, UpdateEntityMixin):
         response = await self._api.request("GET", f"/accounts/{account_id}/offers/{offer_id}")
         return AccountOfferResponse.parse_obj(response.json())
 
-    async def get_pdf(self, account_id: int, applicant_id: int, offer_id: int) -> bytes:
+    async def get_offer_pdf(self, account_id: int, applicant_id: int, offer_id: int) -> bytes:
         """
         API method reference:
             https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/applicants/-applicant_id-/offers/-offer_id-/pdf
