@@ -45,8 +45,8 @@ GET_ORG_OFFERS_RESPONSE: Dict[str, Any] = {
             "{{ data.manager.position }}<br>\n            "
             "{% endif %}\n        </div>\n    "
             "</div>\n</div>\n</body>\n</html>\n",
-        }
-    ]
+        },
+    ],
 }
 GET_ORG_OFFERS_WITH_SCHEMA_RESPONSE: Dict[str, Any] = {
     "id": OFFER_ID,
@@ -204,7 +204,7 @@ async def test_get_applicant_on_vacancy_offer(
     offers = Offer(api_client)
 
     response = await offers.get_applicant_on_vacancy_offer(
-        account_id=ACCOUNT_ID, applicant_id=APPLICANT_ID, vacancy_frame_id=VACANCY_FRAME_ID
+        account_id=ACCOUNT_ID, applicant_id=APPLICANT_ID, vacancy_frame_id=VACANCY_FRAME_ID,
     )
     assert response == ApplicantVacancyOfferResponse(**OFFER_RESPONSE)
 
@@ -221,6 +221,6 @@ async def test_get_pdf(
     offers = Offer(api_client)
 
     response = await offers.get_pdf(
-        account_id=ACCOUNT_ID, applicant_id=APPLICANT_ID, offer_id=OFFER_ID
+        account_id=ACCOUNT_ID, applicant_id=APPLICANT_ID, offer_id=OFFER_ID,
     )
     assert response == GET_PDF_RESPONSE
