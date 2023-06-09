@@ -16,7 +16,6 @@ from huntflow_api_client.models.consts import (
     CalendarEventStatus,
     CalendarEventType,
     EmailContactType,
-    EventReminderMultiplier,
     SurveyTypesEnum,
     Transparency,
 )
@@ -47,21 +46,6 @@ class ApplicantLogSurveyQuestionary(BaseModel):
         ...,
         description="Date and time of creating an survey questionary",
     )
-
-
-# class CalendarEventReminder(BaseModel):
-#     multiplier: EventReminderMultiplier = Field(..., description="Reminder period")
-#     value: int = Field(..., gte=0, lt=40320, description="Reminder value")
-#     method: CalendarEventReminderMethod = Field(..., description="Reminder method")
-#
-#
-# class CalendarEventAttendee(BaseModel):
-#     member: Optional[PositiveInt] = Field(None, description="Coworker ID")
-#     name: Optional[str] = Field(None, description="Attendee name", alias="displayName")
-#     email: EmailStr = Field(..., description="Attendee email")
-#
-#     class Config:
-#         allow_population_by_field_name = True
 
 
 class EmailRecipient(BaseModel):
