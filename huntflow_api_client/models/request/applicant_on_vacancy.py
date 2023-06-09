@@ -3,14 +3,14 @@ from typing import List, Optional
 
 from pydantic import Field, PositiveInt
 
-from huntflow_api_client.models.common import JsonRequestModel
-from huntflow_api_client.models.request.applicants import (
-    ApplicantEvent,
+from huntflow_api_client.models.common import (
     ApplicantLogEmail,
     ApplicantLogIm,
     ApplicantLogSms,
     ApplicantOffer,
+    JsonRequestModel,
 )
+from huntflow_api_client.models.request.applicants import ApplicantEvent
 
 
 class AddApplicantToVacancyRequest(JsonRequestModel):

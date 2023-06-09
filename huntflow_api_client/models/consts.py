@@ -126,3 +126,8 @@ class PrecisionTypes(str, Enum):
     year = "year"
     month = "month"
     day = "day"
+
+
+class SurveyType(str, Enum):
+    TYPE_A = "type_a"
+    TYPE_Q = "type_q"

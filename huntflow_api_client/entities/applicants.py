@@ -6,7 +6,7 @@ from huntflow_api_client.entities.base import (
     GetEntityMixin,
     ListEntityMixin,
 )
-from huntflow_api_client.models.consts import AgreementState, ApplicantLogType, ApplicantSearchField
+from huntflow_api_client.models.consts import AgreementState, ApplicantSearchField
 from huntflow_api_client.models.request.applicants import (
     ApplicantCreateRequest,
     ApplicantUpdateRequest,
@@ -15,7 +15,6 @@ from huntflow_api_client.models.response.applicants import (
     ApplicantCreateResponse,
     ApplicantItem,
     ApplicantListResponse,
-    ApplicantLogResponse,
     ApplicantSearchByCursorResponse,
 )
 
@@ -187,46 +186,3 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
 
         response = await self._api.request("GET", path, params=params)
         return ApplicantSearchByCursorResponse.parse_obj(response.json())
-
-    async def log_list(
-        self,
-        account_id: int,
-        applicant_id: int,
-        type_: Optional[ApplicantLogType] = None,
-        vacancy: Optional[int] = None,
-        personal: bool = False,
-        count: int = 30,
-        page: int = 1,
-    ) -> ApplicantLogResponse:
-        """
-        API method reference:
-            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/applicants/-applicant_id-/logs
-
-        :param account_id: Organization ID
-        :param applicant_id: Applicant ID
-        :param type_: Log type
-        :param vacancy: If supplied, only logs related to the specified vacancy will be returned
-        :param personal: If supplied, only logs not related to any vacancy will be returned
-        :param count: Number of items per page
-        :param page: Page number
-
-        :raises ValueError: Only one parameter from `vacancy` and `personal` must be specified
-
-        :return: List of applicant's worklog
-        """
-        path = f"/accounts/{account_id}/applicants/{applicant_id}/logs"
-        if vacancy is not None and personal:
-            raise ValueError("Only one parameter from vacancy and personal must be specified")
-
-        params: Dict[str, Any] = {
-            "personal": personal,
-            "count": count,
-            "page": page,
-        }
-        if type_:
-            params["type"] = type_.value
-        if vacancy:
-            params["vacancy"] = vacancy
-
-        response = await self._api.request("GET", path, params=params)
-        return ApplicantLogResponse.parse_obj(response.json())
