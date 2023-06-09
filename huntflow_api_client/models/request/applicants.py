@@ -177,7 +177,7 @@ class CreateApplicantLogRequest(JsonRequestModel):
         None,
         description="Calendar event object",
     )
-    im: Optional[list[ApplicantLogIm]] = Field(None, max_items=1, description="Telegram message")
+    im: Optional[List[ApplicantLogIm]] = Field(None, max_items=1, description="Telegram message")
     sms: Optional[ApplicantLogSms] = Field(None, description="SMS message")
     survey_questionary_id: Optional[int] = Field(None, description="Survey questionary ID")
 
