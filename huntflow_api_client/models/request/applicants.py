@@ -166,11 +166,11 @@ class CreateApplicantLogRequest(JsonRequestModel):
     vacancy: Optional[PositiveInt] = Field(
         None,
         description=(
-            f"Vacancy ID"
-            f"If this field is not set then the log will be added to `personal notes` block"
+            "Vacancy ID"
+            "If this field is not set then the log will be added to `personal notes` block"
         ),
     )
-    files: Optional[List[PositiveInt]] = Field(None, description=f"List of uploaded files ID")
+    files: Optional[List[PositiveInt]] = Field(None, description="List of uploaded files ID")
     applicant_offer: Optional[ApplicantOffer] = Field(None, description="Applicant's offer")
     email: Optional[ApplicantLogEmail] = Field(None, description="Email object")
     calendar_event: Optional[ApplicantLogCalendarEvent] = Field(

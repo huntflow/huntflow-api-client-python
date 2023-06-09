@@ -234,7 +234,7 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
         return ApplicantLogResponse.parse_obj(response.json())
 
     async def create_log(
-        self, account_id: int, applicant_id: int, data: CreateApplicantLogRequest
+        self, account_id: int, applicant_id: int, data: CreateApplicantLogRequest,
     ) -> CreateApplicantLogResponse:
         """
         API method reference:
