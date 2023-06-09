@@ -9,6 +9,7 @@ from huntflow_api_client.models.consts import ApplicantLogType
 from huntflow_api_client.models.request.applicants import (
     ApplicantCreateRequest,
     ApplicantUpdateRequest,
+    CreateApplicantLogRequest,
 )
 from huntflow_api_client.models.response.applicants import (
     ApplicantCreateResponse,
@@ -16,6 +17,7 @@ from huntflow_api_client.models.response.applicants import (
     ApplicantListResponse,
     ApplicantLogResponse,
     ApplicantSearchByCursorResponse,
+    CreateApplicantLogResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
@@ -388,6 +390,38 @@ APPLICANT_LOG_LIST_RESPONSE = {
         },
     ],
 }
+APPLICANT_CREATE_LOG_RESPONSE: Dict[str, Any] = {
+    "id": 1,
+    "applicant": APPLICANT_ID,
+    "type": "COMMENT",
+    "vacancy": None,
+    "status": None,
+    "rejection_reason": None,
+    "created": "2023-06-09T11:41:10+03:00",
+    "employment_date": None,
+    "applicant_offer": None,
+    "comment": "Example comment",
+    "files": [],
+    "calendar_event": None,
+    "email": None,
+    "survey_questionary": None,
+    "survey_answer_of_type_a": None,
+    "data": None,
+    "source": None,
+    "workdays_after_deadline_for_employment_date": None,
+    "group_action": None,
+    "vacancy_frame": None,
+    "removed": None,
+    "work_days_in_work": None,
+    "recruitment_evaluation": None,
+    "work_days_after_deadline": None,
+    "sms": None,
+    "account": ACCOUNT_ID,
+    "phone_call": None,
+    "im": [],
+    "hired_in_fill_quota": None,
+    "workdays_until_employment_date": None,
+}
 
 
 async def test_list_applicant(
@@ -535,3 +569,21 @@ async def test_applicant_log_list(
             vacancy=1,
             personal=True,
         )
+
+
+async def test_create_log(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/logs",
+        status_code=200,
+        json=APPLICANT_CREATE_LOG_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    applicants = Applicant(api_client)
+    data = CreateApplicantLogRequest(comment="Example comment")
+    response = await applicants.create_log(
+        account_id=ACCOUNT_ID, applicant_id=APPLICANT_ID, data=data,
+    )
+    assert response == CreateApplicantLogResponse.parse_obj(APPLICANT_CREATE_LOG_RESPONSE)
