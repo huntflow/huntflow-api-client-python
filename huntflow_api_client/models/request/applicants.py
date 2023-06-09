@@ -145,7 +145,7 @@ class ApplicantLogCalendarEvent(BaseModel):
     vacancy: Optional[PositiveInt] = Field(None, description="Vacancy ID")
     private: bool = Field(True, description="Event private flag")
     name: Optional[str] = Field(None, description="Event name")
-    reminders: List[CalendarEventReminder] = Field(None, description="List of reminders")
+    reminders: Optional[List[CalendarEventReminder]] = Field(None, description="List of reminders")
     location: Optional[str] = Field(None, max_length=1024, description="Event location")
     interview_type: Optional[PositiveInt] = Field(None, description="Interview type ID")
     event_type: CalendarEventType = Field(..., description="Calendar event type")
