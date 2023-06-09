@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import List, Literal, Optional
 
-from pydantic import BaseModel, EmailStr, Extra, Field, PositiveInt
+from pydantic import BaseModel, EmailStr, Field, PositiveInt
 
 from huntflow_api_client.models.common import (
     Applicant,

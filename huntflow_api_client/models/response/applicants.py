@@ -1,19 +1,17 @@
 from datetime import date, datetime
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, EmailStr, Extra, Field, PositiveInt
+from pydantic import BaseModel, EmailStr, Field, PositiveInt
 
-from huntflow_api_client.models.common import Applicant, File, PaginatedResponse, VacancyQuotaItem
+from huntflow_api_client.models.common import Applicant, File, PaginatedResponse
 from huntflow_api_client.models.consts import AgreementState as AgreementStateEnum
 from huntflow_api_client.models.consts import (
-    ApplicantLogType,
     CalendarEventReminderMethod,
     CalendarEventStatus,
     CalendarEventType,
     EmailContactType,
     Transparency,
 )
-from huntflow_api_client.models.response.applicant_offers import ApplicantVacancyOffer
 from huntflow_api_client.models.response.survey import SurveySchemaTypeQLogResponse
 
 
