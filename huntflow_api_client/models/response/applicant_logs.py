@@ -16,7 +16,7 @@ from huntflow_api_client.models.consts import (
     CalendarEventStatus,
     CalendarEventType,
     EmailContactType,
-    SurveyTypesEnum,
+    SurveyType,
     Transparency,
 )
 from huntflow_api_client.models.response.applicant_offers import ApplicantVacancyOffer
@@ -25,7 +25,7 @@ from huntflow_api_client.models.response.applicant_offers import ApplicantVacanc
 class BaseSurveySchemaType(BaseModel):
     id: int = Field(..., description="Survey ID")
     name: str = Field(..., description="Survey name")
-    type: SurveyTypesEnum = Field(..., description="Survey type")
+    type: SurveyType = Field(..., description="Survey type")
     active: bool = Field(..., description="Is survey active?")
     created: datetime = Field(..., description="Date and time of creating a survey")
     updated: datetime = Field(..., description="Date and time of the last update of the survey")
@@ -219,7 +219,7 @@ class CreateApplicantLogResponse(BaseModel):
     id: int = Field(..., description="Log ID")
     applicant: int = Field(..., description="Applicant ID")
     type: ApplicantLogType = Field(..., description="Log type")
-    vacancy_id: Optional[int] = Field(None, alias="vacancy", description="Vacancy ID")
+    vacancy: Optional[int] = Field(None, description="Vacancy ID")
     status: Optional[int] = Field(None, description="Vacancy status ID")
     rejection_reason: Optional[int] = Field(None, description="Rejection reason ID")
     created: datetime = Field(..., description="Date and time of creation of the log")
@@ -239,4 +239,3 @@ class CreateApplicantLogResponse(BaseModel):
 
     class Config:
         extra = Extra.allow
-        allow_population_by_field_name = True

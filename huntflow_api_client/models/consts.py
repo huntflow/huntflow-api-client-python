@@ -128,6 +128,6 @@ class PrecisionTypes(str, Enum):
     day = "day"
 
 
-class SurveyTypesEnum(str, Enum):
+class SurveyType(str, Enum):
     TYPE_A = "type_a"
     TYPE_Q = "type_q"

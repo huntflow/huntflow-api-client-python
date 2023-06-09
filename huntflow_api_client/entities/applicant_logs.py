@@ -38,7 +38,10 @@ class ApplicantLog(BaseEntity, ListEntityMixin, CreateEntityMixin):
         """
         path = f"/accounts/{account_id}/applicants/{applicant_id}/logs"
         if vacancy is not None and personal:
-            raise ValueError("Only one parameter from vacancy and personal must be specified")
+            raise ValueError(
+                "Arguments `vacancy` and `personal` are mutually exclusive. "
+                "You must provide only one of them, not both"
+            )
 
         params: Dict[str, Any] = {
             "personal": personal,
