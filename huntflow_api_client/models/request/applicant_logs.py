@@ -3,16 +3,16 @@ from typing import List, Optional
 
 from pydantic import BaseModel, Extra, Field, PositiveInt
 
-from huntflow_api_client.models.common import JsonRequestModel
-from huntflow_api_client.models.consts import CalendarEventType, Transparency
-from huntflow_api_client.models.request.applicants import (
+from huntflow_api_client.models.common import (
     ApplicantLogEmail,
     ApplicantLogIm,
     ApplicantLogSms,
     ApplicantOffer,
     CalendarEventAttendee,
     CalendarEventReminder,
+    JsonRequestModel,
 )
+from huntflow_api_client.models.consts import CalendarEventType, Transparency
 
 
 class ApplicantLogCalendarEvent(BaseModel):

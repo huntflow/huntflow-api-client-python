@@ -3,15 +3,17 @@ from typing import List, Optional
 
 from pydantic import BaseModel, Extra, Field
 
-from huntflow_api_client.models.common import File, PaginatedResponse, VacancyQuotaItem
-from huntflow_api_client.models.consts import ApplicantLogType
-from huntflow_api_client.models.response.applicant_offers import ApplicantVacancyOffer
-from huntflow_api_client.models.response.applicants import (
+from huntflow_api_client.models.common import (
     ApplicantLogAccountInfo,
     ApplicantLogCalendarEvent,
     ApplicantLogEmailResponse,
     ApplicantLogSurveyQuestionary,
+    File,
+    PaginatedResponse,
+    VacancyQuotaItem,
 )
+from huntflow_api_client.models.consts import ApplicantLogType
+from huntflow_api_client.models.response.applicant_offers import ApplicantVacancyOffer
 
 
 class ApplicantLogItem(BaseModel):
