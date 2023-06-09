@@ -584,6 +584,8 @@ async def test_create_log(
     applicants = Applicant(api_client)
     data = CreateApplicantLogRequest(comment="Example comment")
     response = await applicants.create_log(
-        account_id=ACCOUNT_ID, applicant_id=APPLICANT_ID, data=data,
+        account_id=ACCOUNT_ID,
+        applicant_id=APPLICANT_ID,
+        data=data,
     )
     assert response == CreateApplicantLogResponse.parse_obj(APPLICANT_CREATE_LOG_RESPONSE)
