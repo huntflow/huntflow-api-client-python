@@ -4,7 +4,7 @@ from huntflow_api_client.models.response.applicant_offers import ApplicantVacanc
 
 
 class ApplicantOffer(BaseEntity, UpdateEntityMixin, GetEntityMixin):
-    async def get_offer_pdf(self, account_id: int, applicant_id: int, offer_id: int) -> bytes:
+    async def get_pdf(self, account_id: int, applicant_id: int, offer_id: int) -> bytes:
         """
         API method reference:
             https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/applicants/-applicant_id-/offers/-offer_id-/pdf
@@ -13,7 +13,7 @@ class ApplicantOffer(BaseEntity, UpdateEntityMixin, GetEntityMixin):
         :param applicant_id: Applicant ID
         :param offer_id: Offer ID
 
-        :return: An applicant offer in bytes.
+        :return: An applicant offer in PDF format
         """
         response = await self._api.request(
             "GET",

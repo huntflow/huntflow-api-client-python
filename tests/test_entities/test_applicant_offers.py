@@ -89,7 +89,7 @@ async def test_get_offer_pdf(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     offers = ApplicantOffer(api_client)
 
-    response = await offers.get_offer_pdf(
+    response = await offers.get_pdf(
         account_id=ACCOUNT_ID,
         applicant_id=APPLICANT_ID,
         offer_id=OFFER_ID,

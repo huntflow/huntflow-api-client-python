@@ -7,4 +7,4 @@ from huntflow_api_client.models.common import JsonRequestModel
 
 class ApplicantOfferUpdate(JsonRequestModel):
     account_applicant_offer: PositiveInt = Field(..., description="Organization offer ID")
-    values: Dict = Field(..., description="Organization offer schema")
+    values: Dict = Field(..., description="Offer values")
