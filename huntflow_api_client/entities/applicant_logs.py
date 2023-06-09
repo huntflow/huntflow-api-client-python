@@ -40,7 +40,7 @@ class ApplicantLog(BaseEntity, ListEntityMixin, CreateEntityMixin):
         if vacancy is not None and personal:
             raise ValueError(
                 "Arguments `vacancy` and `personal` are mutually exclusive. "
-                "You must provide only one of them, not both"
+                "You must provide only one of them, not both",
             )
 
         params: Dict[str, Any] = {
