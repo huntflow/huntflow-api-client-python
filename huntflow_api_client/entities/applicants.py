@@ -10,6 +10,7 @@ from huntflow_api_client.models.consts import AgreementState, ApplicantLogType, 
 from huntflow_api_client.models.request.applicants import (
     ApplicantCreateRequest,
     ApplicantUpdateRequest,
+    CreateApplicantLogRequest,
 )
 from huntflow_api_client.models.response.applicants import (
     ApplicantCreateResponse,
@@ -17,6 +18,7 @@ from huntflow_api_client.models.response.applicants import (
     ApplicantListResponse,
     ApplicantLogResponse,
     ApplicantSearchByCursorResponse,
+    CreateApplicantLogResponse,
 )
 
 
@@ -230,3 +232,24 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
 
         response = await self._api.request("GET", path, params=params)
         return ApplicantLogResponse.parse_obj(response.json())
+
+    async def create_log(
+        self, account_id: int, applicant_id: int, data: CreateApplicantLogRequest
+    ) -> CreateApplicantLogResponse:
+        """
+        API method reference:
+            https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/applicants/-applicant_id-/logs
+
+        :param account_id: Organization ID
+        :param applicant_id: Applicant ID
+        :param data: Data for creating worklog
+
+        :return: Created applicant's worklog
+        """
+
+        response = await self._api.request(
+            "POST",
+            f"/accounts/{account_id}/applicants/{applicant_id}/logs",
+            json=data.jsonable_dict(exclude_none=True),
+        )
+        return CreateApplicantLogResponse.parse_obj(response.json())
