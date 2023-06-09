@@ -5,7 +5,6 @@ from pydantic import BaseModel, EmailStr, Field, PositiveInt
 
 from huntflow_api_client.models.common import Applicant, PaginatedResponse
 from huntflow_api_client.models.consts import AgreementState as AgreementStateEnum
-from huntflow_api_client.models.consts import CalendarEventReminderMethod, CalendarEventStatus
 
 
 class ApplicantTag(BaseModel):
@@ -135,27 +134,3 @@ class ApplicantSearchItem(BaseModel):
 class ApplicantSearchByCursorResponse(BaseModel):
     items: List[ApplicantSearchItem] = Field(..., description="List of applicants")
     next_page_cursor: Optional[str] = Field(None, description="Next page cursor")
-
-
-class CalendarEventAttendee(BaseModel):
-    member: Optional[int] = Field(None, description="Coworker ID")
-    name: Optional[str] = Field(
-        None,
-        description="Attendee name",
-    )
-    email: str = Field(
-        ...,
-        description="Attendee email",
-    )
-    status: Optional[CalendarEventStatus] = Field(
-        None,
-        description="Attendee response status",
-    )
-
-
-class CalendarEventReminder(BaseModel):
-    method: CalendarEventReminderMethod = Field(
-        ...,
-        description="Reminder method",
-    )
-    minutes: int = Field(..., description="How many minutes in advance to remind about the event")

@@ -12,7 +12,7 @@ from huntflow_api_client.models.common import (
     PaginatedResponse,
     VacancyQuotaItem,
 )
-from huntflow_api_client.models.consts import ApplicantLogType
+from huntflow_api_client.models.consts import ApplicantLogType, CalendarEventReminderMethod
 from huntflow_api_client.models.response.applicant_offers import ApplicantVacancyOffer
 
 

@@ -273,6 +273,14 @@ class CalendarEventCreator(BaseModel):
     )
 
 
+class CalendarEventReminderResponse(BaseModel):
+    method: CalendarEventReminderMethod = Field(
+        ...,
+        description="Reminder method",
+    )
+    minutes: int = Field(..., description="How many minutes in advance to remind about the event")
+
+
 class ApplicantLogCalendarEvent(BaseModel):
     id: PositiveInt = Field(..., description="Calendar event ID")
     name: Optional[str] = Field(
@@ -307,7 +315,7 @@ class ApplicantLogCalendarEvent(BaseModel):
         [],
         description="Event attendees (participants)",
     )
-    reminders: List[CalendarEventReminder] = Field(
+    reminders: List[CalendarEventReminderResponse] = Field(
         [],
         description="List of reminders <a href=https://tools.ietf.org/html/rfc5545>RFC 5545</a>",
     )
