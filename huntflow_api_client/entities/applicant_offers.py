@@ -47,7 +47,11 @@ class ApplicantOffer(BaseEntity, UpdateEntityMixin, GetEntityMixin):
         return ApplicantVacancyOfferResponse.parse_obj(response.json())
 
     async def get(
-        self, account_id: int, applicant_id: int, vacancy_frame_id: int, normalize: bool = False,
+        self,
+        account_id: int,
+        applicant_id: int,
+        vacancy_frame_id: int,
+        normalize: bool = False,
     ) -> ApplicantVacancyOfferResponse:
         """
         API method reference:
