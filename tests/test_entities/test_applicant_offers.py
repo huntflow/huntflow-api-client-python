@@ -64,7 +64,7 @@ async def test_get_applicant_on_vacancy_offer(
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}"
-        f"/vacancy_frames/{VACANCY_FRAME_ID}/offer",
+        f"/vacancy_frames/{VACANCY_FRAME_ID}/offer?normalize=false",
         json=OFFER_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

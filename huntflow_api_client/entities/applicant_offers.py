@@ -51,6 +51,7 @@ class ApplicantOffer(BaseEntity, UpdateEntityMixin, GetEntityMixin):
         account_id: int,
         applicant_id: int,
         vacancy_frame_id: int,
+        normalize: bool = False,
     ) -> ApplicantVacancyOfferResponse:
         """
         API method reference:
@@ -59,6 +60,7 @@ class ApplicantOffer(BaseEntity, UpdateEntityMixin, GetEntityMixin):
         :param account_id: Organization ID
         :param applicant_id: Applicant ID
         :param vacancy_frame_id: Vacancy frame ID
+        :param normalize: Expand dictionary values to objects
 
         :return: Applicant's offer for vacancy with its values.
                 The composition of the values depends on the organization's offer settings.
@@ -67,5 +69,6 @@ class ApplicantOffer(BaseEntity, UpdateEntityMixin, GetEntityMixin):
             "GET",
             f"/accounts/{account_id}/applicants/{applicant_id}"
             f"/vacancy_frames/{vacancy_frame_id}/offer",
+            params={"normalize": normalize},
         )
         return ApplicantVacancyOfferResponse.parse_obj(response.json())
