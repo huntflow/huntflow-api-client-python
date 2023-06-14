@@ -173,9 +173,8 @@ class ApplicantLogItem(BaseModel):
         None,
         description="Log type",
     )
-    vacancy_id: Optional[int] = Field(
+    vacancy: Optional[int] = Field(
         None,
-        alias="vacancy",
         description="Vacancy ID",
     )
     status: Optional[int] = Field(
