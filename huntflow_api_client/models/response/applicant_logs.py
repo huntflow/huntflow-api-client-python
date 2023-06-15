@@ -127,77 +127,38 @@ class ApplicantLogCalendarEvent(BaseModel):
 
 class ApplicantLogEmailResponse(BaseModel):
     id: int = Field(..., description="Email ID")
-    created: datetime = Field(
-        ...,
-        description="Date and time of creating email",
-    )
+    created: datetime = Field(..., description="Date and time of creating email")
     subject: Optional[str] = Field(None, description="Email subject")
     email_thread: Optional[int] = Field(None, description="Email thread ID")
-    account_email: Optional[int] = Field(
-        None,
-        description="Email account ID",
-    )
+    account_email: Optional[int] = Field(None, description="Email account ID")
     files: Optional[List[File]] = Field(None, description="List of uploaded files ID")
     foreign: Optional[str] = Field(None, description="Foreign email ID")
-    timezone: str = Field(
-        ...,
-        description="Time zone",
-    )
-    html: Optional[str] = Field(
-        None,
-        description="Email content (HTML)",
-    )
-    from_email: Optional[str] = Field(
-        None,
-        description="Sender email address",
-    )
-    from_name: Optional[str] = Field(
-        None,
-        description="Sender name",
-    )
+    timezone: str = Field(..., description="Time zone")
+    html: Optional[str] = Field(None, description="Email content (HTML)")
+    from_email: Optional[str] = Field(None, description="Sender email address")
+    from_name: Optional[str] = Field(None, description="Sender name")
     replyto: Optional[List[str]] = Field(
         None,
         description="List of email foreign IDs, to which a reply is send",
     )
-    send_at: Optional[datetime] = Field(
-        None,
-        description="Date and time to send email",
-    )
+    send_at: Optional[datetime] = Field(None, description="Date and time to send email")
     to: Optional[List[EmailRecipient]] = Field(None, description="Recipients list")
     state: Optional[str] = Field(None, description="Email state")
 
 
 class ApplicantLogItem(BaseModel):
     id: int = Field(..., description="Log ID")
-    type: Optional[ApplicantLogType] = Field(
-        None,
-        description="Log type",
-    )
-    vacancy: Optional[int] = Field(
-        None,
-        description="Vacancy ID",
-    )
-    status: Optional[int] = Field(
-        None,
-        description="Vacancy status ID",
-    )
+    type: Optional[ApplicantLogType] = Field(None, description="Log type")
+    vacancy: Optional[int] = Field(None, description="Vacancy ID")
+    status: Optional[int] = Field(None, description="Vacancy status ID")
     source: Optional[str] = Field(None, description="Source ID")
-    rejection_reason: Optional[int] = Field(
-        None,
-        description="Rejection reason ID",
-    )
-    created: datetime = Field(
-        ...,
-        description="Date and time of creation of the log",
-    )
+    rejection_reason: Optional[int] = Field(None, description="Rejection reason ID")
+    created: datetime = Field(..., description="Date and time of creation of the log")
     employment_date: Optional[date] = Field(None, description="Employment date")
     account_info: ApplicantLogAccountInfo = Field(..., description="The user who created the log")
     comment: Optional[str] = Field(None, description="Comment text")
     files: List[File] = Field([], description="List of files attached to the log")
-    calendar_event: Optional[ApplicantLogCalendarEvent] = Field(
-        None,
-        description="Calendar event",
-    )
+    calendar_event: Optional[ApplicantLogCalendarEvent] = Field(None, description="Calendar event")
     hired_in_fill_quota: Optional[VacancyQuotaItem] = Field(
         None,
         description="Quota data by which applicant was hired",
