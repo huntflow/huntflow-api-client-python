@@ -9,7 +9,7 @@ class Coworker(BaseEntity, ListEntityMixin, GetEntityMixin):
     async def list(
         self,
         account_id: int,
-        type_: Optional[MemberType] = None,
+        type_: Optional[List[MemberType]] = None,
         fetch_permissions: Optional[bool] = None,
         vacancy_id: Optional[Union[int, List[int]]] = None,
         count: Optional[int] = 30,
@@ -33,7 +33,7 @@ class Coworker(BaseEntity, ListEntityMixin, GetEntityMixin):
             "page": page,
         }
         if type_:
-            params["type"] = type_.value
+            params["type"] = [type_item.value for type_item in type_]
         if fetch_permissions:
             params["fetch_permissions"] = fetch_permissions
         if vacancy_id:
