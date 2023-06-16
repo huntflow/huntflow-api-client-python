@@ -16,7 +16,7 @@ class CoworkerResponse(BaseModel):
     id: int = Field(..., description="Coworker ID")
     member: int = Field(..., description="User ID")
     name: Optional[str] = Field(None, description="Coworker name")
-    member_type: MemberType = Field(..., alias="type", description="Coworker type (role)")
+    type: MemberType = Field(..., description="Coworker type (role)")
     head: Optional[int] = Field(None, description="Head user ID")
     email: Optional[EmailStr] = Field(None, description="Email")
     meta: Optional[dict] = Field(None, description="Additional meta information")
