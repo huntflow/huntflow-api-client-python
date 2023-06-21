@@ -1,5 +1,6 @@
 from typing import Any, Dict
 
+import pytest
 from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
@@ -110,3 +111,30 @@ async def test_move_applicant_to_child_vacancy(
     )
 
     assert response == ApplicantVacancySplitResponse(**MOVE_APPLICANT_RESPONSE)
+
+
+async def test_valid_applicant_id(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    api_request = AddApplicantToVacancyRequest(**ATTACH_APPLICANT_TO_VAC_REQUEST)
+    applicant_statuses = ApplicantOnVacancy(api_client)
+    invalid_applicant_id = "invalid_1"
+    with pytest.raises(ValueError):
+        await applicant_statuses.attach_applicant_to_vacancy(
+            ACCOUNT_ID,
+            invalid_applicant_id,
+            api_request,
+        )
+    valid_applicant_id = "response-1"
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{valid_applicant_id}/vacancy",
+        json=ATTACH_APPLICANT_TO_VAC_RESPONSE,
+    )
+    response = await applicant_statuses.attach_applicant_to_vacancy(
+        ACCOUNT_ID,
+        valid_applicant_id,
+        api_request,
+    )
+    assert response == AddApplicantToVacancyResponse(**ATTACH_APPLICANT_TO_VAC_RESPONSE)

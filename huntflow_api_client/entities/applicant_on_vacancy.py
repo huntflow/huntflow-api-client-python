@@ -1,3 +1,6 @@
+import re
+from typing import Union
+
 from huntflow_api_client.entities.base import BaseEntity
 from huntflow_api_client.models.request.applicant_on_vacancy import (
     AddApplicantToVacancyRequest,
@@ -14,7 +17,7 @@ class ApplicantOnVacancy(BaseEntity):
     async def attach_applicant_to_vacancy(
         self,
         account_id: int,
-        applicant_id: int,
+        applicant_id: Union[str, int],
         data: AddApplicantToVacancyRequest,
     ) -> AddApplicantToVacancyResponse:
         """
@@ -25,7 +28,19 @@ class ApplicantOnVacancy(BaseEntity):
         :param applicant_id: Applicant ID
         :param data: Data for attaching the applicant to the vacancy
         :return: Info about attaching.
+
+        :raises ValueError:
+            Invalid applicant id, parameter must match regexp: ^(?:response-)?[0-9]+$
         """
+
+        valid_applicant_parameter_regexp = r"^(?:response-)?[0-9]+$"
+        applicant_id = str(applicant_id)
+        if not re.match(valid_applicant_parameter_regexp, applicant_id):
+            raise ValueError(
+                f"Invalid applicant id, parameter must match regexp:"
+                f"{valid_applicant_parameter_regexp}",
+            )
+
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/applicants/{applicant_id}/vacancy",
