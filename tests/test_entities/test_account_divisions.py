@@ -82,7 +82,7 @@ async def test_list_account_division(
     assert response == DivisionsListResponse.parse_obj(ACCOUNT_DIVISIONS_LIST_RESPONSE)
 
     httpx_mock.add_response(
-        url=(f"{BASE_URL}/accounts/{ACCOUNT_ID}/coworkers/{COWORKER_ID}" f"/divisions"),
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/coworkers/{COWORKER_ID}/divisions",
         json=ACCOUNT_DIVISIONS_LIST_RESPONSE,
     )
     response = await divisions.list(ACCOUNT_ID, COWORKER_ID)
