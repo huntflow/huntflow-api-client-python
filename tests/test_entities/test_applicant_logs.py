@@ -1,6 +1,5 @@
 from typing import Any, Dict
 
-import pytest
 from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
@@ -175,7 +174,7 @@ async def test_applicant_log_list(
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/logs?"
-        f"vacancy={VACANCY_ID}&&type={ApplicantLogType.ADD.value}"
+        f"vacancy={VACANCY_ID}&&type={ApplicantLogType.ADD.value}&&personal=true"
         f"&&page=1&&count=30&&personal=false",
         status_code=200,
         json=APPLICANT_LOG_LIST_RESPONSE,
@@ -188,16 +187,9 @@ async def test_applicant_log_list(
         applicant_id=APPLICANT_ID,
         vacancy=VACANCY_ID,
         type_=ApplicantLogType.ADD,
+        personal=True,
     )
     assert response == ApplicantLogResponse.parse_obj(APPLICANT_LOG_LIST_RESPONSE)
-
-    with pytest.raises(ValueError):
-        await logs.list(
-            account_id=ACCOUNT_ID,
-            applicant_id=APPLICANT_ID,
-            vacancy=VACANCY_ID,
-            personal=True,
-        )
 
 
 async def test_create_log(

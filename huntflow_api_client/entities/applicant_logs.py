@@ -32,17 +32,9 @@ class ApplicantLog(BaseEntity, ListEntityMixin, CreateEntityMixin):
         :param count: Number of items per page
         :param page: Page number
 
-        :raises ValueError: Only one parameter from `vacancy` and `personal` must be specified
-
         :return: List of applicant's worklog
         """
         path = f"/accounts/{account_id}/applicants/{applicant_id}/logs"
-        if vacancy is not None and personal:
-            raise ValueError(
-                "Arguments `vacancy` and `personal` are mutually exclusive. "
-                "You must provide only one of them, not both",
-            )
-
         params: Dict[str, Any] = {
             "personal": personal,
             "count": count,

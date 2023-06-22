@@ -1,3 +1,5 @@
+from typing import Union
+
 from huntflow_api_client.entities.base import BaseEntity
 from huntflow_api_client.models.request.applicant_on_vacancy import (
     AddApplicantToVacancyRequest,
@@ -14,7 +16,7 @@ class ApplicantOnVacancy(BaseEntity):
     async def attach_applicant_to_vacancy(
         self,
         account_id: int,
-        applicant_id: int,
+        applicant_id: Union[str, int],
         data: AddApplicantToVacancyRequest,
     ) -> AddApplicantToVacancyResponse:
         """
@@ -25,7 +27,9 @@ class ApplicantOnVacancy(BaseEntity):
         :param applicant_id: Applicant ID
         :param data: Data for attaching the applicant to the vacancy
         :return: Info about attaching.
+
         """
+
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/applicants/{applicant_id}/vacancy",
