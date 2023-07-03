@@ -53,9 +53,9 @@ async def test_get_email_accounts(
         json=GET_USER_EMAIL_ACCOUNTS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
-    users = UserSettings(api_client)
+    settings = UserSettings(api_client)
 
-    response = await users.get_email_accounts()
+    response = await settings.get_email_accounts()
     assert response == EmailAccountsListResponse(**GET_USER_EMAIL_ACCOUNTS_RESPONSE)
 
 
@@ -68,7 +68,7 @@ async def test_get_calendar_accounts(
         json=GET_USER_CALENDAR_ACCOUNTS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
-    users = UserSettings(api_client)
+    settings = UserSettings(api_client)
 
-    response = await users.get_calendar_accounts()
+    response = await settings.get_calendar_accounts()
     assert response == CalendarAccountsListResponse(**GET_USER_CALENDAR_ACCOUNTS_RESPONSE)
