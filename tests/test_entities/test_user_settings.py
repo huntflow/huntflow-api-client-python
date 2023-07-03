@@ -5,12 +5,11 @@ from pytest_httpx import HTTPXMock
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.user_settings import UserSettings
 from huntflow_api_client.models.response.user_settings import (
-    EmailAccountsListResponse,
     CalendarAccountsListResponse,
+    EmailAccountsListResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
-
 
 GET_USER_EMAIL_ACCOUNTS_RESPONSE: Dict[str, Any] = {
     "items": [

@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import Optional, List
+from typing import List, Optional
 
-from pydantic import PositiveInt, BaseModel, Field
+from pydantic import BaseModel, Field, PositiveInt
 
 
 class EmailAccount(BaseModel):

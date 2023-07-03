@@ -1,7 +1,7 @@
 from huntflow_api_client.entities.base import BaseEntity
 from huntflow_api_client.models.response.user_settings import (
-    EmailAccountsListResponse,
     CalendarAccountsListResponse,
+    EmailAccountsListResponse,
 )
 
 
