@@ -21,7 +21,7 @@ class Calendar(BaseModel):
     id: PositiveInt = Field(..., description="Calendar ID")
     foreign: Optional[str] = Field(None, description="Foreign value")
     name: str = Field(..., description="Calendar name")
-    access_role: str = Field(..., description="Role", example="owner")
+    access_role: str = Field(..., description="Role")
 
 
 class CalendarAccount(BaseModel):
@@ -30,7 +30,8 @@ class CalendarAccount(BaseModel):
     auth_type: str = Field(..., description="Authentication type")
     freebusy: bool = False
     calendars: List[Calendar] = Field(
-        ..., description="List of calendars associated with the account",
+        ...,
+        description="List of calendars associated with the account",
     )
 
 
