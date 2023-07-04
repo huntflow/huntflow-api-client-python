@@ -3,9 +3,12 @@ from typing import Any, Dict
 from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
-from huntflow_api_client.entities.tags import AccountTag
-from huntflow_api_client.models.request.tags import CreateAccountTagRequest
-from huntflow_api_client.models.response.tags import AccountTagResponse
+from huntflow_api_client.entities.account_tags import AccountTag
+from huntflow_api_client.models.request.account_tags import CreateAccountTagRequest
+from huntflow_api_client.models.response.account_tags import (
+    AccountTagResponse,
+    AccountTagsListResponse,
+)
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
 
@@ -18,6 +21,9 @@ ACCOUNT_TAG_RESPONSE: Dict[str, Any] = {
     "name": "Blacklist",
 }
 CREATE_ACCOUNT_TAG_REQUEST: Dict[str, str] = {"color": "000000", "name": "Whitelist"}
+ACCOUNT_TAGS_LIST_RESPONSE: Dict[str, Any] = {
+    "items": [{"id": 10, "name": "Blacklist", "color": "000000"}],
+}
 
 
 async def test_get_account_tag(
@@ -82,3 +88,18 @@ async def test_delete_tag(
 
     response = await tags.delete(ACCOUNT_ID, TAG_ID)  # type: ignore
     assert response is None
+
+
+async def test_list_account_tag(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags",
+        json=ACCOUNT_TAGS_LIST_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    tags = AccountTag(api_client)
+
+    response = await tags.list(ACCOUNT_ID)
+    assert response == AccountTagsListResponse(**ACCOUNT_TAGS_LIST_RESPONSE)

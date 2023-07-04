@@ -1,9 +1,12 @@
-from huntflow_api_client.entities.base import BaseEntity, CRUDEntityMixin
-from huntflow_api_client.models.request.tags import CreateAccountTagRequest
-from huntflow_api_client.models.response.tags import AccountTagResponse
+from huntflow_api_client.entities.base import BaseEntity, CRUDEntityMixin, ListEntityMixin
+from huntflow_api_client.models.request.account_tags import CreateAccountTagRequest
+from huntflow_api_client.models.response.account_tags import (
+    AccountTagResponse,
+    AccountTagsListResponse,
+)
 
 
-class AccountTag(BaseEntity, CRUDEntityMixin):
+class AccountTag(BaseEntity, CRUDEntityMixin, ListEntityMixin):
     async def get(self, account_id: int, account_tag_id: int) -> AccountTagResponse:
         """
         API method reference
@@ -69,3 +72,13 @@ class AccountTag(BaseEntity, CRUDEntityMixin):
             "DELETE",
             f"/accounts/{account_id}/tags/{account_tag_id}",
         )
+
+    async def list(self, account_id: int) -> AccountTagsListResponse:
+        """
+        API method reference https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/tags
+
+        :param account_id: Organization ID
+        :return: List of tags in the organization.
+        """
+        response = await self._api.request("GET", f"/accounts/{account_id}/tags")
+        return AccountTagsListResponse(**response.json())
