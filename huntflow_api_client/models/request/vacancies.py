@@ -110,6 +110,10 @@ class VacancyMemberCreateRequest(JsonRequestModel):
 class VacancyStateChangeRequestBase(BaseModel):
     date: Optional[datetime.date] = Field(None, description="Action date")
     comment: Optional[str] = Field(None, description="Comment")
+    unpublish_all: Optional[bool] = Field(
+        False,
+        description="Remove a vacancy from all publications",
+    )
 
 
 class VacancyCloseRequest(VacancyStateChangeRequestBase, JsonRequestModel):
@@ -117,18 +121,10 @@ class VacancyCloseRequest(VacancyStateChangeRequestBase, JsonRequestModel):
         None,
         description="Vacancy close reason ID",
     )
-    unpublish_all: Optional[bool] = Field(
-        False,
-        description="Remove a vacancy from all publications",
-    )
 
 
 class VacancyHoldRequest(VacancyStateChangeRequestBase, JsonRequestModel):
     account_vacancy_hold_reason: Optional[PositiveInt] = Field(
         None,
         description="Vacancy hold reason ID",
-    )
-    unpublish_all: Optional[bool] = Field(
-        False,
-        description="Remove a vacancy from all publications",
     )
