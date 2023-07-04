@@ -289,10 +289,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         :param account_id: Organization ID
         :return: List of vacancy status groups.
         """
-        response = await self._api.request(
-            "GET",
-            f"/accounts/{account_id}/vacancies/status_groups",
-        )
+        response = await self._api.request("GET", f"/accounts/{account_id}/vacancies/status_groups")
         return VacancyStatusGroupsResponse.parse_obj(response.json())
 
     async def close_vacancy(
