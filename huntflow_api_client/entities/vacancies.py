@@ -307,7 +307,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
 
         :param account_id: Organization ID
         :param vacancy_id: Vacancy ID
-        :param data: Request data
+        :param data: Additional data for closing a vacancy.
         """
         await self._api.request(
             "POST",
@@ -327,7 +327,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
 
         :param account_id: Organization ID
         :param vacancy_id: Vacancy ID
-        :param data: Request data
+        :param data: Additional data for holding a vacancy.
         """
         await self._api.request(
             "POST",
