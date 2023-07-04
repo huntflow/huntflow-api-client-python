@@ -1,3 +1,4 @@
+import datetime
 from enum import Enum
 from typing import List, Optional, Union
 
@@ -103,4 +104,31 @@ class VacancyMemberPermission(BaseModel):
 class VacancyMemberCreateRequest(JsonRequestModel):
     permissions: Optional[List[VacancyMemberPermission]] = Field(
         description="List of permissions (if member type is `watcher`)",
+    )
+
+
+class VacancyStateChangeRequestBase(BaseModel):
+    date: Optional[datetime.date] = Field(None, description="Action date")
+    comment: Optional[str] = Field(None, description="Comment")
+
+
+class VacancyCloseRequest(VacancyStateChangeRequestBase, JsonRequestModel):
+    account_vacancy_close_reason: Optional[PositiveInt] = Field(
+        None,
+        description="Vacancy close reason ID",
+    )
+    unpublish_all: Optional[bool] = Field(
+        False,
+        description="Remove a vacancy from all publications",
+    )
+
+
+class VacancyHoldRequest(VacancyStateChangeRequestBase, JsonRequestModel):
+    account_vacancy_hold_reason: Optional[PositiveInt] = Field(
+        None,
+        description="Vacancy hold reason ID",
+    )
+    unpublish_all: Optional[bool] = Field(
+        False,
+        description="Remove a vacancy from all publications",
     )

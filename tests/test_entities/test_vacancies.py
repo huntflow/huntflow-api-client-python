@@ -7,7 +7,9 @@ from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.vacancies import Vacancy
 from huntflow_api_client.models.common import EditedFillQuota, FillQuota, StatusResponse
 from huntflow_api_client.models.request.vacancies import (
+    VacancyCloseRequest,
     VacancyCreateRequest,
+    VacancyHoldRequest,
     VacancyListState,
     VacancyMemberCreateRequest,
     VacancyUpdatePartialRequest,
@@ -22,6 +24,7 @@ from huntflow_api_client.models.response.vacancies import (
     VacancyListResponse,
     VacancyQuotasResponse,
     VacancyResponse,
+    VacancyStatusGroupsResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
@@ -258,6 +261,15 @@ VACANCY_QUOTAS_RESPONSE: Dict[int, Any] = {
         ],
     },
 }
+VACANCY_STATUS_GROUPS_RESPONSE: Dict[str, Any] = {
+    "items": [
+        {
+            "id": 1,
+            "name": "Sales Manager",
+            "statuses": [{"id": 10, "account_vacancy_status": 112, "stay_duration": 10}],
+        },
+    ],
+}
 
 
 async def test_get_get_org_vacancy_additional_fields_schema(
@@ -471,3 +483,59 @@ async def test_get_vacancy_quota_list(
 
     response = await vacancies.get_quotas(ACCOUNT_ID, VACANCY_ID, FRAME_ID)
     assert response == VacancyQuotasResponse.parse_obj(VACANCY_QUOTAS_RESPONSE)
+
+
+async def test_get_vacancy_status_groups(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/status_groups",
+        json=VACANCY_STATUS_GROUPS_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    vacancies = Vacancy(api_client)
+
+    response = await vacancies.get_vacancy_status_groups(ACCOUNT_ID)
+    assert response == VacancyStatusGroupsResponse(**VACANCY_STATUS_GROUPS_RESPONSE)
+
+
+async def test_close_vacancy(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/state/close",
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    vacancies = Vacancy(api_client)
+    data = VacancyCloseRequest(comment="Cancelled")
+
+    await vacancies.close_vacancy(ACCOUNT_ID, VACANCY_ID, data)
+
+
+async def test_hold_vacancy(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/state/hold",
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    vacancies = Vacancy(api_client)
+    data = VacancyHoldRequest(comment="Hold")
+
+    await vacancies.hold_vacancy(ACCOUNT_ID, VACANCY_ID, data)
+
+
+async def test_resume_vacancy(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/state/resume",
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    vacancies = Vacancy(api_client)
+
+    await vacancies.resume_vacancy(ACCOUNT_ID, VACANCY_ID)
