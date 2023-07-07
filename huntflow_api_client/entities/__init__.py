@@ -1,12 +1,10 @@
 from huntflow_api_client.entities.account_offers import AccountOffer
-from huntflow_api_client.entities.account_tags import AccountTag
 from huntflow_api_client.entities.account_vacancy_request import AccountVacancyRequest
 from huntflow_api_client.entities.accounts import Account
 from huntflow_api_client.entities.applicant_logs import ApplicantLog
 from huntflow_api_client.entities.applicant_offers import ApplicantOffer
 from huntflow_api_client.entities.applicant_on_vacancy import ApplicantOnVacancy
 from huntflow_api_client.entities.applicant_on_vacancy_status import ApplicantOnVacancyStatus
-from huntflow_api_client.entities.applicant_tags import ApplicantTag
 from huntflow_api_client.entities.applicants import Applicant
 from huntflow_api_client.entities.coworkers import Coworker
 from huntflow_api_client.entities.delayed_tasks import DelayedTask
@@ -17,6 +15,7 @@ from huntflow_api_client.entities.production_calendars import ProductionCalendar
 from huntflow_api_client.entities.questionary import ApplicantsQuestionary
 from huntflow_api_client.entities.rejection_reason import RejectionReason
 from huntflow_api_client.entities.resume import Resume
+from huntflow_api_client.entities.tags import AccountTag, ApplicantTag
 from huntflow_api_client.entities.user_settings import UserSettings
 from huntflow_api_client.entities.users import User
 from huntflow_api_client.entities.vacancies import Vacancy
