@@ -10,5 +10,5 @@ class CreateAccountTagRequest(JsonRequestModel):
     color: str = Field(..., description="Tag color (HEX format)")
 
 
-class ApplicantTagsUpdateRequest(JsonRequestModel):
+class UpdateApplicantTagsRequest(JsonRequestModel):
     tags: List[PositiveInt] = Field(..., description="List of applicant's tags IDs")

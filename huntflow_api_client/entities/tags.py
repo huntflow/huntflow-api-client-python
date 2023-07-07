@@ -5,11 +5,14 @@ from huntflow_api_client.entities.base import (
     UpdateEntityMixin,
 )
 from huntflow_api_client.models.request.tags import (
-    ApplicantTagsUpdateRequest,
     CreateAccountTagRequest,
+    UpdateApplicantTagsRequest,
 )
-from huntflow_api_client.models.response.applicant_tags import ApplicantTagsListResponse
-from huntflow_api_client.models.response.tags import AccountTagResponse, AccountTagsListResponse
+from huntflow_api_client.models.response.tags import (
+    AccountTagResponse,
+    AccountTagsListResponse,
+    ApplicantTagsListResponse,
+)
 
 
 class AccountTag(BaseEntity, CRUDEntityMixin, ListEntityMixin):
@@ -95,7 +98,7 @@ class ApplicantTag(BaseEntity, UpdateEntityMixin, ListEntityMixin):
         self,
         account_id: int,
         applicant_id: int,
-        data: ApplicantTagsUpdateRequest,
+        data: UpdateApplicantTagsRequest,
     ) -> ApplicantTagsListResponse:
         """
         API method reference

@@ -5,11 +5,14 @@ from pytest_httpx import HTTPXMock
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.tags import AccountTag, ApplicantTag
 from huntflow_api_client.models.request.tags import (
-    ApplicantTagsUpdateRequest,
     CreateAccountTagRequest,
+    UpdateApplicantTagsRequest,
 )
-from huntflow_api_client.models.response.applicant_tags import ApplicantTagsListResponse
-from huntflow_api_client.models.response.tags import AccountTagResponse, AccountTagsListResponse
+from huntflow_api_client.models.response.tags import (
+    AccountTagResponse,
+    AccountTagsListResponse,
+    ApplicantTagsListResponse,
+)
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL
 
@@ -136,7 +139,7 @@ async def test_update_applicant_tag(
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     tags = ApplicantTag(api_client)
-    data = ApplicantTagsUpdateRequest(tags=NEW_TAGS)
+    data = UpdateApplicantTagsRequest(tags=NEW_TAGS)
 
     response = await tags.update(ACCOUNT_ID, APPLICANT_ID, data)
     assert response == ApplicantTagsListResponse(**APPLICANT_TAGS_UPDATE_RESPONSE)
