@@ -511,7 +511,7 @@ async def test_close_vacancy(
     vacancies = Vacancy(api_client)
     data = VacancyCloseRequest(comment="Cancelled")
 
-    await vacancies.close_vacancy(ACCOUNT_ID, VACANCY_ID, data)
+    await vacancies.close(ACCOUNT_ID, VACANCY_ID, data)
 
 
 async def test_hold_vacancy(
@@ -525,7 +525,7 @@ async def test_hold_vacancy(
     vacancies = Vacancy(api_client)
     data = VacancyHoldRequest(comment="Hold")
 
-    await vacancies.hold_vacancy(ACCOUNT_ID, VACANCY_ID, data)
+    await vacancies.hold(ACCOUNT_ID, VACANCY_ID, data)
 
 
 async def test_resume_vacancy(
@@ -538,4 +538,4 @@ async def test_resume_vacancy(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    await vacancies.resume_vacancy(ACCOUNT_ID, VACANCY_ID)
+    await vacancies.resume(ACCOUNT_ID, VACANCY_ID)

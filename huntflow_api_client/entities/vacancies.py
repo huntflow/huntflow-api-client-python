@@ -292,12 +292,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         response = await self._api.request("GET", f"/accounts/{account_id}/vacancies/status_groups")
         return VacancyStatusGroupsResponse.parse_obj(response.json())
 
-    async def close_vacancy(
-        self,
-        account_id: int,
-        vacancy_id: int,
-        data: VacancyCloseRequest,
-    ) -> None:
+    async def close(self, account_id: int, vacancy_id: int, data: VacancyCloseRequest) -> None:
         """
         API method reference
             https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/vacancies/-vacancy_id-/state/close
@@ -312,12 +307,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             json=data.jsonable_dict(exclude_none=True),
         )
 
-    async def hold_vacancy(
-        self,
-        account_id: int,
-        vacancy_id: int,
-        data: VacancyHoldRequest,
-    ) -> None:
+    async def hold(self, account_id: int, vacancy_id: int, data: VacancyHoldRequest) -> None:
         """
         API method reference
             https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/vacancies/-vacancy_id-/state/hold
@@ -332,7 +322,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             json=data.jsonable_dict(exclude_none=True),
         )
 
-    async def resume_vacancy(self, account_id: int, vacancy_id: int) -> None:
+    async def resume(self, account_id: int, vacancy_id: int) -> None:
         """
         API method reference
             https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/vacancies/-vacancy_id-/state/resume
