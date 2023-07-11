@@ -11,6 +11,7 @@ from huntflow_api_client.entities.delayed_tasks import DelayedTask
 from huntflow_api_client.entities.dictionaries import Dictionary
 from huntflow_api_client.entities.divisions import AccountDivision
 from huntflow_api_client.entities.email_templates import MailTemplate
+from huntflow_api_client.entities.file import File
 from huntflow_api_client.entities.production_calendars import ProductionCalendar
 from huntflow_api_client.entities.questionary import ApplicantsQuestionary
 from huntflow_api_client.entities.rejection_reason import RejectionReason
@@ -38,6 +39,7 @@ __all__ = (
     "Coworker",
     "DelayedTask",
     "Dictionary",
+    "File",
     "MailTemplate",
     "ProductionCalendar",
     "RejectionReason",
