@@ -58,7 +58,7 @@ class MultiVacancy(BaseEntity, CreateEntityMixin, UpdateEntityMixin):
     ) -> MultiVacancyResponse:
         """
         API method reference
-            https://api.huntflow.ai/v2/docs#put-/accounts/-account_id-/multi-vacancies/-vacancy_id-
+            https://api.huntflow.ai/v2/docs#patch-/accounts/-account_id-/multi-vacancies/-vacancy_id-
 
         :param account_id: Organization ID
         :param vacancy_id: Vacancy ID
