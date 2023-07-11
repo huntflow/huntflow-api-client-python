@@ -11,19 +11,19 @@ class UploadFileHeaders(JsonRequestModel):
         description="File will be processed by the system of field recognition",
         alias="x-file-parse",
     )
-    ignore_lastname: Optional[Union[str, List[str]]] = Field(
+    ignore_lastname: Optional[str] = Field(
         None,
-        description="Lastname",
+        description="Lastnames to ignore",
         alias="x-ignore-lastname",
     )
-    ignore_email: Optional[Union[str, List[str]]] = Field(
+    ignore_email: Optional[str] = Field(
         None,
-        description="Email",
+        description="Emails to ignore",
         alias="x-ignore-email",
     )
-    ignore_phone: Optional[Union[str, List[str]]] = Field(
+    ignore_phone: Optional[str] = Field(
         None,
-        description="Phone",
+        description="Phones to ignore",
         alias="x-ignore-phone",
     )
 
