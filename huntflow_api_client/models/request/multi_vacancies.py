@@ -120,3 +120,10 @@ class VacancyBlockUpdatePartial(VacancyBlockUpdate):
         max_items=1,
         description="Fill quota ID",
     )
+
+
+class MultiVacancyUpdatePartialRequest(MultiVacancyUpdateRequest):
+    blocks: List[VacancyBlockUpdatePartial] = Field(  # type: ignore
+        ...,
+        description="List of sub-vacancies for a multivacancy",
+    )

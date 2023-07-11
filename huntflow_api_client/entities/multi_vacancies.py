@@ -1,6 +1,7 @@
 from huntflow_api_client.entities.base import BaseEntity, CreateEntityMixin, UpdateEntityMixin
 from huntflow_api_client.models.request.multi_vacancies import (
     MultiVacancyCreateRequest,
+    MultiVacancyUpdatePartialRequest,
     MultiVacancyUpdateRequest,
 )
 from huntflow_api_client.models.response.muilti_vacancies import MultiVacancyResponse
@@ -53,7 +54,7 @@ class MultiVacancy(BaseEntity, CreateEntityMixin, UpdateEntityMixin):
         self,
         account_id: int,
         vacancy_id: int,
-        data: MultiVacancyUpdateRequest,
+        data: MultiVacancyUpdatePartialRequest,
     ) -> MultiVacancyResponse:
         """
         API method reference
