@@ -1,6 +1,6 @@
 from typing import List, Optional, Union
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from huntflow_api_client.models.common import JsonRequestModel
 
@@ -26,3 +26,10 @@ class UploadFileHeaders(JsonRequestModel):
         description="Phone",
         alias="x-ignore-phone",
     )
+
+    @validator("file_parse")
+    def convert_bool_to_str(cls, v):
+        return str(v).lower()
+
+    class Config:
+        allow_population_by_field_name = True
