@@ -28,8 +28,8 @@ class UploadFileHeaders(JsonRequestModel):
     )
 
     @validator("file_parse")
-    def convert_bool_to_str(cls, v):
-        return str(v).lower()
+    def convert_bool_to_str(cls, value: bool) -> str:
+        return str(value).lower()
 
     class Config:
         allow_population_by_field_name = True
