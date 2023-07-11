@@ -3,7 +3,9 @@ from typing import Any, Dict, List, Optional, Union
 from huntflow_api_client.entities.base import BaseEntity, CRUDEntityMixin
 from huntflow_api_client.models.common import StatusResponse
 from huntflow_api_client.models.request.vacancies import (
+    VacancyCloseRequest,
     VacancyCreateRequest,
+    VacancyHoldRequest,
     VacancyMemberCreateRequest,
     VacancyUpdatePartialRequest,
     VacancyUpdateRequest,
@@ -17,6 +19,7 @@ from huntflow_api_client.models.response.vacancies import (
     VacancyListResponse,
     VacancyQuotasResponse,
     VacancyResponse,
+    VacancyStatusGroupsResponse,
 )
 
 
@@ -277,3 +280,57 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             params=params,
         )
         return VacancyQuotasResponse.parse_obj(response.json())
+
+    async def get_vacancy_status_groups(self, account_id: int) -> VacancyStatusGroupsResponse:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/vacancies/status_groups
+
+        :param account_id: Organization ID
+        :return: List of vacancy status groups.
+        """
+        response = await self._api.request("GET", f"/accounts/{account_id}/vacancies/status_groups")
+        return VacancyStatusGroupsResponse.parse_obj(response.json())
+
+    async def close(self, account_id: int, vacancy_id: int, data: VacancyCloseRequest) -> None:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/vacancies/-vacancy_id-/state/close
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        :param data: Additional data for closing a vacancy.
+        """
+        await self._api.request(
+            "POST",
+            f"/accounts/{account_id}/vacancies/{vacancy_id}/state/close",
+            json=data.jsonable_dict(exclude_none=True),
+        )
+
+    async def hold(self, account_id: int, vacancy_id: int, data: VacancyHoldRequest) -> None:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/vacancies/-vacancy_id-/state/hold
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        :param data: Additional data for holding a vacancy.
+        """
+        await self._api.request(
+            "POST",
+            f"/accounts/{account_id}/vacancies/{vacancy_id}/state/hold",
+            json=data.jsonable_dict(exclude_none=True),
+        )
+
+    async def resume(self, account_id: int, vacancy_id: int) -> None:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/vacancies/-vacancy_id-/state/resume
+
+        :param account_id: Organization ID
+        :param vacancy_id: Vacancy ID
+        """
+        await self._api.request(
+            "POST",
+            f"/accounts/{account_id}/vacancies/{vacancy_id}/state/resume",
+        )

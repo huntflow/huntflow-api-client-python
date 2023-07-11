@@ -176,3 +176,28 @@ class VacancyFrameQuotasResponse(BaseModel):
 
 class VacancyQuotasResponse(BaseModel):
     __root__: Dict[str, VacancyQuotaList] = Field(..., descriptions="Vacancy quotas")
+
+
+class VacancyStatusInGroup(BaseModel):
+    id: PositiveInt = Field(..., description="Item ID")
+    account_vacancy_status: PositiveInt = Field(..., description="Vacancy status ID")
+    stay_duration: Optional[int] = Field(
+        None,
+        description=(
+            "The allowed number of days of a candidate's stay at this status."
+            "`null` means unlimited"
+        ),
+    )
+
+
+class VacancyStatusGroup(BaseModel):
+    id: PositiveInt = Field(..., description="Group ID")
+    name: str = Field(..., description="Group name")
+    statuses: List[VacancyStatusInGroup] = Field(
+        ...,
+        description="List of vacancy statuses in the group",
+    )
+
+
+class VacancyStatusGroupsResponse(BaseModel):
+    items: List[VacancyStatusGroup]
