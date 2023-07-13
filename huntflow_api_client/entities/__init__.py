@@ -1,6 +1,7 @@
 from huntflow_api_client.entities.account_offers import AccountOffer
 from huntflow_api_client.entities.account_vacancy_request import AccountVacancyRequest
 from huntflow_api_client.entities.accounts import Account
+from huntflow_api_client.entities.action_logs import ActionLog
 from huntflow_api_client.entities.applicant_logs import ApplicantLog
 from huntflow_api_client.entities.applicant_offers import ApplicantOffer
 from huntflow_api_client.entities.applicant_on_vacancy import ApplicantOnVacancy
@@ -30,6 +31,7 @@ __all__ = (
     "AccountOffer",
     "AccountTag",
     "AccountVacancyRequest",
+    "ActionLog",
     "Applicant",
     "ApplicantLog",
     "ApplicantOffer",

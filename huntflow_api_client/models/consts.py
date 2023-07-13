@@ -131,3 +131,14 @@ class PrecisionTypes(str, Enum):
 class SurveyType(str, Enum):
     TYPE_A = "type_a"
     TYPE_Q = "type_q"
+
+
+class ActionLogType(str, Enum):
+    SUCCESS_LOGIN = "SUCCESS_LOGIN"
+    FAILED_LOGIN = "FAILED_LOGIN"
+    LOGOUT = "LOGOUT"
+    INVITE_ACCEPTED = "INVITE_ACCEPTED"
+    NEW_AUTH_IN_ACCOUNT = "NEW_AUTH_IN_ACCOUNT"
+    VACANCY_EXTERNAL = "VACANCY_EXTERNAL"
+    ACCOUNT_MEMBER = "ACCOUNT_MEMBER"
+    DOWNLOAD_APPLICANTS = "DOWNLOAD_APPLICANTS"
