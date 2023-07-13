@@ -1,7 +1,9 @@
+from typing import Union
+
 from huntflow_api_client.entities.base import BaseEntity, CreateEntityMixin, UpdateEntityMixin
 from huntflow_api_client.models.request.multi_vacancies import (
     MultiVacancyCreateRequest,
-    MultiVacancyUpdatePartialRequest,
+    MultiVacancyPartialUpdateRequest,
     MultiVacancyUpdateRequest,
 )
 from huntflow_api_client.models.response.muilti_vacancies import MultiVacancyResponse
@@ -32,41 +34,23 @@ class MultiVacancy(BaseEntity, CreateEntityMixin, UpdateEntityMixin):
         self,
         account_id: int,
         vacancy_id: int,
-        data: MultiVacancyUpdateRequest,
+        data: Union[MultiVacancyUpdateRequest, MultiVacancyPartialUpdateRequest],
+        partial: bool = False,
     ) -> MultiVacancyResponse:
         """
-        API method reference
+        API methods reference
             https://api.huntflow.ai/v2/docs#put-/accounts/-account_id-/multi-vacancies/-vacancy_id-
-
-        :param account_id: Organization ID
-        :param vacancy_id: Vacancy ID
-        :param data: Data for updating multivacancy
-        :return: Task ID
-        """
-        response = await self._api.request(
-            "PUT",
-            f"/accounts/{account_id}/multi-vacancies/{vacancy_id}",
-            json=data.jsonable_dict(exclude_none=True),
-        )
-        return MultiVacancyResponse.parse_obj(response.json())
-
-    async def partial_update(
-        self,
-        account_id: int,
-        vacancy_id: int,
-        data: MultiVacancyUpdatePartialRequest,
-    ) -> MultiVacancyResponse:
-        """
-        API method reference
             https://api.huntflow.ai/v2/docs#patch-/accounts/-account_id-/multi-vacancies/-vacancy_id-
 
         :param account_id: Organization ID
         :param vacancy_id: Vacancy ID
-        :param data: Data for partial updating multivacancy
+        :param data: Data for updating multivacancy
+        :param partial: Flag indicating that the multivacancy needs to be partially updated
         :return: Task ID
         """
+        method = "PATCH" if partial else "PUT"
         response = await self._api.request(
-            "PATCH",
+            method,
             f"/accounts/{account_id}/multi-vacancies/{vacancy_id}",
             json=data.jsonable_dict(exclude_none=True),
         )

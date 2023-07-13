@@ -7,7 +7,7 @@ from huntflow_api_client.entities import MultiVacancy
 from huntflow_api_client.models.common import FillQuota
 from huntflow_api_client.models.request.multi_vacancies import (
     MultiVacancyCreateRequest,
-    MultiVacancyUpdatePartialRequest,
+    MultiVacancyPartialUpdateRequest,
     MultiVacancyUpdateRequest,
     VacancyBlock,
     VacancyBlockUpdatePartial,
@@ -70,10 +70,15 @@ async def test_partial_update_multi_vacancy(
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     multi_vacancies = MultiVacancy(api_client)
-    data = MultiVacancyUpdatePartialRequest(
+    data = MultiVacancyPartialUpdateRequest(
         position="Test vacancy",
         blocks=[VacancyBlockUpdatePartial()],
     )
 
-    response = await multi_vacancies.partial_update(ACCOUNT_ID, VACANCY_ID, data)
+    response = await multi_vacancies.update(
+        account_id=ACCOUNT_ID,
+        vacancy_id=VACANCY_ID,
+        data=data,
+        partial=True,
+    )
     assert response == MultiVacancyResponse(**MULTI_VACANCY_RESPONSE)

@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, PositiveInt
 from huntflow_api_client.models.common import EditedFillQuota, FillQuota, JsonRequestModel
 from huntflow_api_client.models.request.vacancies import VacancyCreateState, VacancyUpdateState
 
-html_tags = "ul, ol, li, p, br, a, strong, em, u, b, i"
+HTML_TAGS = "ul, ol, li, p, br, a, strong, em, u, b, i"
 
 
 class VacancyBlock(BaseModel):
@@ -42,16 +42,16 @@ class MultiVacancyCreateRequest(JsonRequestModel):
     body: Optional[str] = Field(
         None,
         description=(
-            f"The responsibilities for a vacancy in HTML format. Available tags: {html_tags}"
+            f"The responsibilities for a vacancy in HTML format. Available tags: {HTML_TAGS}"
         ),
     )
     requirements: Optional[str] = Field(
         None,
-        description=f"The requirements for a vacancy in HTML format. Available tags: {html_tags}",
+        description=f"The requirements for a vacancy in HTML format. Available tags: {HTML_TAGS}",
     )
     conditions: Optional[str] = Field(
         None,
-        description=f"The conditions for a vacancy in HTML format. Available tags: {html_tags}",
+        description=f"The conditions for a vacancy in HTML format. Available tags: {HTML_TAGS}",
     )
     files: Optional[List[PositiveInt]] = Field(
         None,
@@ -88,11 +88,11 @@ class MultiVacancyUpdateRequest(JsonRequestModel):
     )
     requirements: Optional[str] = Field(
         None,
-        description=f"The requirements for a vacancy in HTML format. Available tags: {html_tags}",
+        description=f"The requirements for a vacancy in HTML format. Available tags: {HTML_TAGS}",
     )
     conditions: Optional[str] = Field(
         None,
-        description=f"The conditions for a vacancy in HTML format. Available tags: {html_tags}",
+        description=f"The conditions for a vacancy in HTML format. Available tags: {HTML_TAGS}",
     )
     files: Optional[List[PositiveInt]] = Field(
         None,
@@ -122,7 +122,7 @@ class VacancyBlockUpdatePartial(VacancyBlockUpdate):
     )
 
 
-class MultiVacancyUpdatePartialRequest(MultiVacancyUpdateRequest):
+class MultiVacancyPartialUpdateRequest(MultiVacancyUpdateRequest):
     blocks: List[VacancyBlockUpdatePartial] = Field(  # type: ignore
         ...,
         description="List of sub-vacancies for a multivacancy",
