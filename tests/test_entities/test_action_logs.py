@@ -36,7 +36,7 @@ async def test_action_log_list(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/action_logs",
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/action_logs?count=30",
         json=ACTION_LOGS_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
