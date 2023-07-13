@@ -48,6 +48,7 @@ async def test_update_multi_vacancy(
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/multi-vacancies/{VACANCY_ID}",
         json=MULTI_VACANCY_RESPONSE,
+        method="PUT",
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     multi_vacancies = MultiVacancy(api_client)
@@ -67,6 +68,7 @@ async def test_partial_update_multi_vacancy(
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/multi-vacancies/{VACANCY_ID}",
         json=MULTI_VACANCY_RESPONSE,
+        method="PATCH",
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     multi_vacancies = MultiVacancy(api_client)
