@@ -8,7 +8,7 @@ class ActionLog(BaseEntity, ListEntityMixin):
         API method reference https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/action_logs
 
         :param account_id: Organization ID
-        :return: An applicant resume
+        :return: List of security logs sorted in descending order (from newest to older)
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/action_logs")
         return ActionLogsResponse.parse_obj(response.json())
