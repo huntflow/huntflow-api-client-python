@@ -12,7 +12,7 @@ ACCOUNT_ID = 1
 ACTION_LOGS_LIST_RESPONSE: Dict[str, Any] = {
     "items": [
         {
-            "id": 1,
+            "id": 100,
             "user": {
                 "id": 1,
                 "name": "John Joe",
@@ -27,7 +27,7 @@ ACTION_LOGS_LIST_RESPONSE: Dict[str, Any] = {
             "data": {},
         },
     ],
-    "next_id": 2,
+    "next_id": 70,
 }
 
 
