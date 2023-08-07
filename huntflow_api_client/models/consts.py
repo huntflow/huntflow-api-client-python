@@ -51,6 +51,7 @@ class AgreementState(str, Enum):
     sent = "sent"
     accepted = "accepted"
     declined = "declined"
+    send_error = "send_error"
 
 
 class ApplicantSearchField(str, Enum):
