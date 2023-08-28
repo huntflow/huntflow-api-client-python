@@ -12,6 +12,7 @@ from huntflow_api_client.models.request.vacancies import (
 )
 from huntflow_api_client.models.response.vacancies import (
     AdditionalFieldsSchemaResponse,
+    CloseHoldReasonsListResponse,
     LastVacancyFrameResponse,
     VacancyCreateResponse,
     VacancyFrameQuotasResponse,
@@ -334,3 +335,31 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             "POST",
             f"/accounts/{account_id}/vacancies/{vacancy_id}/state/resume",
         )
+
+    async def get_hold_reasons(self, account_id: int) -> CloseHoldReasonsListResponse:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/vacancy_hold_reasons
+
+        :param account_id: Organization ID
+        :return: List of vacancy hold reasons
+        """
+        response = await self._api.request(
+            "GET",
+            f"/accounts/{account_id}/vacancy_hold_reasons",
+        )
+        return CloseHoldReasonsListResponse(**response.json())
+
+    async def get_close_reasons(self, account_id: int) -> CloseHoldReasonsListResponse:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/vacancy_close_reasons
+
+        :param account_id: Organization ID
+        :return: List of vacancy close reasons
+        """
+        response = await self._api.request(
+            "GET",
+            f"/accounts/{account_id}/vacancy_close_reasons",
+        )
+        return CloseHoldReasonsListResponse(**response.json())
