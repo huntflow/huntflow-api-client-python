@@ -287,6 +287,7 @@ APPLICANT_RESUME_RESPONSE: Dict[str, Any] = {
         "travel_time": {"id": 14, "external_id": "100", "name": "Entity"},
     },
 }
+GET_PDF_RESPONSE = bytes("pdf", "UTF-8")
 
 
 async def test_get_resume_sources(
@@ -351,3 +352,23 @@ async def test_update(
 
     response = await resume.update(ACCOUNT_ID, APPLICANT_ID, EXTERNAL_ID, data)
     assert response == ApplicantResumeResponse(**APPLICANT_RESUME_RESPONSE)
+
+
+async def test_get_resume_pdf(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/"
+        f"externals/{EXTERNAL_ID}/pdf",
+        content=GET_PDF_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    resumes = Resume(api_client)
+
+    response = await resumes.get_pdf(
+        account_id=ACCOUNT_ID,
+        applicant_id=APPLICANT_ID,
+        external_id=EXTERNAL_ID,
+    )
+    assert response == GET_PDF_RESPONSE
