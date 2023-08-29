@@ -270,8 +270,6 @@ VACANCY_STATUS_GROUPS_RESPONSE: Dict[str, Any] = {
         },
     ],
 }
-HOLD_REASONS_RESPONSE: Dict[str, Any] = {"items": [{"id": 20, "name": "Vacancy cancelled"}]}
-CLOSE_REASONS_RESPONSE: Dict[str, Any] = {"items": [{"id": 23, "name": "Everyone hired"}]}
 
 
 async def test_get_get_org_vacancy_additional_fields_schema(
