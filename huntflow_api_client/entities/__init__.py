@@ -14,6 +14,7 @@ from huntflow_api_client.entities.divisions import AccountDivision
 from huntflow_api_client.entities.email_templates import MailTemplate
 from huntflow_api_client.entities.file import File
 from huntflow_api_client.entities.multi_vacancies import MultiVacancy
+from huntflow_api_client.entities.organization_settings import OrganizationSettings
 from huntflow_api_client.entities.production_calendars import ProductionCalendar
 from huntflow_api_client.entities.questionary import ApplicantsQuestionary
 from huntflow_api_client.entities.regions import Region
@@ -46,6 +47,7 @@ __all__ = (
     "File",
     "MailTemplate",
     "MultiVacancy",
+    "OrganizationSettings",
     "ProductionCalendar",
     "Region",
     "RejectionReason",
