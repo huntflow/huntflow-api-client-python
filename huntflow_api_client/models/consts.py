@@ -143,3 +143,8 @@ class ActionLogType(str, Enum):
     VACANCY_EXTERNAL = "VACANCY_EXTERNAL"
     ACCOUNT_MEMBER = "ACCOUNT_MEMBER"
     DOWNLOAD_APPLICANTS = "DOWNLOAD_APPLICANTS"
+
+
+class SurveyTypesEnum(str, Enum):
+    TYPE_A = "type_a"
+    TYPE_Q = "type_q"
