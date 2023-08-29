@@ -86,3 +86,24 @@ class Resume(BaseEntity, GetEntityMixin, DeleteEntityMixin, UpdateEntityMixin):
             json=data.jsonable_dict(exclude_none=True),
         )
         return ApplicantResumeResponse.parse_obj(response.json())
+
+    async def get_pdf(
+        self,
+        account_id: int,
+        applicant_id: int,
+        external_id: int,
+    ) -> bytes:
+        """
+        API method reference
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/applicants/-applicant_id-/externals/-external_id-/pdf
+
+        :param account_id: Organization ID
+        :param applicant_id: Applicant ID
+        :param external_id: Resume ID
+        :return: A pdf file of the applicant's resume
+        """
+        response = await self._api.request(
+            "GET",
+            f"/accounts/{account_id}/applicants/{applicant_id}/externals/{external_id}/pdf",
+        )
+        return response.content
