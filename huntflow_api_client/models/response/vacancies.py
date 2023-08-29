@@ -201,12 +201,3 @@ class VacancyStatusGroup(BaseModel):
 
 class VacancyStatusGroupsResponse(BaseModel):
     items: List[VacancyStatusGroup]
-
-
-class CloseHoldReason(BaseModel):
-    id: Optional[int] = Field(None, description="Reason ID")
-    name: str = Field(..., description="Reason name")
-
-
-class CloseHoldReasonsListResponse(BaseModel):
-    items: List[CloseHoldReason]

@@ -17,7 +17,6 @@ from huntflow_api_client.models.request.vacancies import (
 )
 from huntflow_api_client.models.response.vacancies import (
     AdditionalFieldsSchemaResponse,
-    CloseHoldReasonsListResponse,
     LastVacancyFrameResponse,
     VacancyCreateResponse,
     VacancyFrameQuotasResponse,
@@ -542,33 +541,3 @@ async def test_resume_vacancy(
     vacancies = Vacancy(api_client)
 
     await vacancies.resume(ACCOUNT_ID, VACANCY_ID)
-
-
-async def test_get_hold_reasons(
-    httpx_mock: HTTPXMock,
-    token_proxy: HuntflowTokenProxy,
-) -> None:
-    httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancy_hold_reasons",
-        json=HOLD_REASONS_RESPONSE,
-    )
-    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
-    vacancies = Vacancy(api_client)
-
-    response = await vacancies.get_hold_reasons(ACCOUNT_ID)
-    assert response == CloseHoldReasonsListResponse(**HOLD_REASONS_RESPONSE)
-
-
-async def test_get_close_reasons(
-    httpx_mock: HTTPXMock,
-    token_proxy: HuntflowTokenProxy,
-) -> None:
-    httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancy_close_reasons",
-        json=CLOSE_REASONS_RESPONSE,
-    )
-    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
-    vacancies = Vacancy(api_client)
-
-    response = await vacancies.get_close_reasons(ACCOUNT_ID)
-    assert response == CloseHoldReasonsListResponse(**CLOSE_REASONS_RESPONSE)
