@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, Extra, Field, PositiveInt, root_validator
+from pydantic import BaseModel, Field, PositiveInt, RootModel, model_validator
 
 from huntflow_api_client.models.common import File, PaginatedResponse, Vacancy, VacancyQuotaItem
 from huntflow_api_client.models.consts import FieldType
@@ -24,18 +24,12 @@ class AccountVacancyRequestSchemaField(BaseModel):
         alias="fields",
     )
 
-    class Config:
-        extra = Extra.allow
+    class ConfigDict:
+        extra = "allow"
 
 
-class AdditionalFieldsSchemaResponse(BaseModel):
-    __root__: Dict[str, AccountVacancyRequestSchemaField]
-
-    @root_validator(pre=True)
-    def prepare_data(
-        cls, values: Dict[str, AccountVacancyRequestSchemaField]  # noqa N805
-    ) -> Dict[str, Dict[str, AccountVacancyRequestSchemaField]]:
-        return {"__root__": values}
+class AdditionalFieldsSchemaResponse(RootModel):
+    root: Dict[str, AccountVacancyRequestSchemaField]
 
 
 class VacancyItem(Vacancy):
@@ -55,7 +49,7 @@ class VacancyItem(Vacancy):
         description="Vacancy status group ID",
     )
 
-    class Config:
+    class ConfigDict:
         extra = "allow"
 
     def dict(self, *args, **kwargs):  # type: ignore
@@ -64,7 +58,7 @@ class VacancyItem(Vacancy):
 
 
 class VacancyListResponse(PaginatedResponse):
-    total_items: Optional[int] = Field(..., description="Total number of items")
+    total_items: Optional[int] = Field(None, description="Total number of items")
     items: List[VacancyItem]
 
 
@@ -97,7 +91,7 @@ class VacancyResponse(VacancyChild):
         description="Affiliate vacancies if vacancy is a multiple",
     )
 
-    class Config:
+    class ConfigDict:
         extra = "allow"
 
     def dict(self, *args, **kwargs):  # type: ignore
@@ -140,7 +134,7 @@ class VacancyCreateResponse(Vacancy):
         description="Vacancy request ID",
     )
 
-    class Config:
+    class ConfigDict:
         extra = "ignore"
 
 
@@ -174,8 +168,8 @@ class VacancyFrameQuotasResponse(BaseModel):
     items: List[VacancyQuotaItem]
 
 
-class VacancyQuotasResponse(BaseModel):
-    __root__: Dict[str, VacancyQuotaList] = Field(..., descriptions="Vacancy quotas")
+class VacancyQuotasResponse(RootModel):
+    root: Dict[int, VacancyQuotaList] = Field(..., description="Vacancy quotas")
 
 
 class VacancyStatusInGroup(BaseModel):

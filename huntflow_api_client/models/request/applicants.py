@@ -35,12 +35,12 @@ class ApplicantCreateRequest(Applicant, JsonRequestModel):
     birthday: Optional[date] = Field(None, description="Date of birth")
     externals: Optional[List[ApplicantResumeCreate]] = Field(
         None,
-        max_items=1,
+        max_length=1,
         description="List of applicant's resumes",
     )
     social: List[ApplicantSocial] = Field(
         [],
-        max_items=1,
+        max_length=1,
         description="List of applicant's social accounts",
     )
 
@@ -49,13 +49,13 @@ class ApplicantUpdateRequest(Applicant, JsonRequestModel):
     birthday: Optional[date] = Field(None, description="Date of birth")
     social: Optional[List[ApplicantSocial]] = Field(
         None,
-        max_items=1,
+        max_length=1,
         description="List of applicant's social accounts",
     )
 
 
 class ApplicantEvent(BaseModel):
-    vacancy: Optional[PositiveInt] = Field(None, include_in_schema=False)
+    vacancy: Optional[PositiveInt] = None
     private: bool = Field(True, description="Event private flag")
     name: Optional[str] = Field(None, description="Event name")
     reminders: Optional[List[CalendarEventReminder]] = Field(
@@ -63,7 +63,7 @@ class ApplicantEvent(BaseModel):
         description="List of reminders <a href=https://tools.ietf.org/html/rfc5545>RFC 5545</a>",
     )
     location: Optional[str] = Field(None, max_length=1024, description="Event location")
-    interview_type: Optional[PositiveInt] = Field(None, description="Interview type ID", example=17)
+    interview_type: Optional[PositiveInt] = Field(None, description="Interview type ID")
     event_type: CalendarEventType = Field(..., description="Calendar event type")
     description: Optional[str] = Field(None, description="Event description (comment)")
     calendar: PositiveInt = Field(..., description="Calendar ID")

@@ -15,7 +15,7 @@ class AccountOffer(BaseEntity, GetEntityMixin, ListEntityMixin):
         :return: List of organization's offers
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/offers")
-        return AccountOffersListResponse.parse_obj(response.json())
+        return AccountOffersListResponse.model_validate(response.json())
 
     async def get(self, account_id: int, offer_id: int) -> AccountOfferResponse:
         """
@@ -28,4 +28,4 @@ class AccountOffer(BaseEntity, GetEntityMixin, ListEntityMixin):
         :return: Organization's offer with a schema of values
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/offers/{offer_id}")
-        return AccountOfferResponse.parse_obj(response.json())
+        return AccountOfferResponse.model_validate(response.json())

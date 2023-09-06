@@ -19,7 +19,7 @@ class OrganizationSettings(BaseEntity):
             "GET",
             f"/accounts/{account_id}/vacancy_hold_reasons",
         )
-        return HoldReasonsListResponse(**response.json())
+        return HoldReasonsListResponse.model_validate(response.json())
 
     async def get_close_reasons(self, account_id: int) -> CloseReasonsListResponse:
         """
@@ -33,7 +33,7 @@ class OrganizationSettings(BaseEntity):
             "GET",
             f"/accounts/{account_id}/vacancy_close_reasons",
         )
-        return CloseReasonsListResponse(**response.json())
+        return CloseReasonsListResponse.model_validate(response.json())
 
     async def get_applicant_survey_form(
         self,
@@ -52,4 +52,4 @@ class OrganizationSettings(BaseEntity):
             "GET",
             f"/accounts/{account_id}/surveys/type_a/{survey_id}",
         )
-        return BaseSurveySchemaTypeWithSchemas(**response.json())
+        return BaseSurveySchemaTypeWithSchemas.model_validate(response.json())

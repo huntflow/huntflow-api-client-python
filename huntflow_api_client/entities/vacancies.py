@@ -39,7 +39,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             "GET",
             f"/accounts/{account_id}/vacancies/additional_fields",
         )
-        return AdditionalFieldsSchemaResponse(**response.json())
+        return AdditionalFieldsSchemaResponse.model_validate(response.json())
 
     async def list(
         self,
@@ -71,7 +71,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             f"/accounts/{account_id}/vacancies",
             params=params,
         )
-        return VacancyListResponse(**response.json())
+        return VacancyListResponse.model_validate(response.json())
 
     async def get(self, account_id: int, vacancy_id: int) -> VacancyResponse:
         """
@@ -83,7 +83,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         :return: The specified vacancy
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/vacancies/{vacancy_id}")
-        return VacancyResponse(**response.json())
+        return VacancyResponse.model_validate(response.json())
 
     async def create(self, account_id: int, data: VacancyCreateRequest) -> VacancyCreateResponse:
         """
@@ -98,7 +98,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             f"/accounts/{account_id}/vacancies",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return VacancyCreateResponse(**response.json())
+        return VacancyCreateResponse.model_validate(response.json())
 
     async def update(
         self,
@@ -120,7 +120,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             f"/accounts/{account_id}/vacancies/{vacancy_id}",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return VacancyResponse(**response.json())
+        return VacancyResponse.model_validate(response.json())
 
     async def delete(self, account_id: int, vacancy_id: int) -> None:
         """
@@ -152,7 +152,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             f"/accounts/{account_id}/vacancies/{vacancy_id}",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return VacancyResponse(**response.json())
+        return VacancyResponse.model_validate(response.json())
 
     async def assign_coworker(
         self,
@@ -176,7 +176,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             f"/accounts/{account_id}/vacancies/{vacancy_id}/members/{account_member_id}",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return StatusResponse(**response.json())
+        return StatusResponse.model_validate(response.json())
 
     async def remove_coworker(
         self,
@@ -214,7 +214,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             "GET",
             f"/accounts/{account_id}/vacancies/{vacancy_id}/frames",
         )
-        return VacancyFramesListResponse(**response.json())
+        return VacancyFramesListResponse.model_validate(response.json())
 
     async def get_last_frame(
         self,
@@ -233,7 +233,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             "GET",
             f"/accounts/{account_id}/vacancies/{vacancy_id}/frame",
         )
-        return LastVacancyFrameResponse(**response.json())
+        return LastVacancyFrameResponse.model_validate(response.json())
 
     async def get_frame_quotas(
         self,
@@ -254,7 +254,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             "GET",
             f"/accounts/{account_id}/vacancies/{vacancy_id}/frames/{frame_id}/quotas",
         )
-        return VacancyFrameQuotasResponse(**response.json())
+        return VacancyFrameQuotasResponse.model_validate(response.json())
 
     async def get_quotas(
         self,
@@ -279,7 +279,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
             f"/accounts/{account_id}/vacancies/{vacancy_id}/quotas",
             params=params,
         )
-        return VacancyQuotasResponse.parse_obj(response.json())
+        return VacancyQuotasResponse.model_validate(response.json())
 
     async def get_vacancy_status_groups(self, account_id: int) -> VacancyStatusGroupsResponse:
         """
@@ -290,7 +290,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         :return: List of vacancy status groups.
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/vacancies/status_groups")
-        return VacancyStatusGroupsResponse.parse_obj(response.json())
+        return VacancyStatusGroupsResponse.model_validate(response.json())
 
     async def close(self, account_id: int, vacancy_id: int, data: VacancyCloseRequest) -> None:
         """

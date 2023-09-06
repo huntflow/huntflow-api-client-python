@@ -12,4 +12,4 @@ class ApplicantOnVacancyStatus(BaseEntity, ListEntityMixin):
         :return: List of available applicant on vacancy statuses (stages)
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/vacancies/statuses")
-        return VacancyStatusesResponse.parse_obj(response.json())
+        return VacancyStatusesResponse.model_validate(response.json())

@@ -16,4 +16,4 @@ class DelayedTask(BaseEntity, GetEntityMixin):
 
         path = f"/accounts/{account_id}/delayed_tasks/{task_id}"
         response = await self._api.request("GET", path)
-        return DelayedTaskResponse.parse_obj(response.json())
+        return DelayedTaskResponse.model_validate(response.json())

@@ -43,7 +43,7 @@ class Coworker(BaseEntity, ListEntityMixin, GetEntityMixin):
             f"/accounts/{account_id}/coworkers",
             params=params,
         )
-        return CoworkersListResponse(**response.json())
+        return CoworkersListResponse.model_validate(response.json())
 
     async def get(
         self,
@@ -68,4 +68,4 @@ class Coworker(BaseEntity, ListEntityMixin, GetEntityMixin):
             f"/accounts/{account_id}/coworkers",
             params=params,
         )
-        return CoworkerResponse(**response.json())
+        return CoworkerResponse.model_validate(response.json())

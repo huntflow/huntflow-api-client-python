@@ -39,4 +39,4 @@ async def test_get_delayed_task(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     tasks = DelayedTask(api_client)
     response = await tasks.get(ACCOUNT_ID, TASK_ID)
-    assert response == DelayedTaskResponse.parse_obj(DELAYED_TASKS_RESPONSE)
+    assert response == DelayedTaskResponse.model_validate(DELAYED_TASKS_RESPONSE)

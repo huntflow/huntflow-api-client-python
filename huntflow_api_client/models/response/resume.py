@@ -1,7 +1,7 @@
 import typing as t
 from datetime import datetime
 
-from pydantic import BaseModel, Extra, Field
+from pydantic import BaseModel, Field
 
 from huntflow_api_client.models.common import File
 from huntflow_api_client.models.consts import PrecisionTypes
@@ -277,8 +277,8 @@ class RawData(BaseModel):
         description="Resume text (for resumes with auth_type = NATIVE)",
     )
 
-    class Config:
-        extra = Extra.allow
+    class ConfigDict:
+        extra = "allow"
 
 
 class ApplicantResumeResponse(ApplicantResume):

@@ -46,7 +46,7 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
             path,
             params=params,
         )
-        return DivisionsListResponse.parse_obj(response.json())
+        return DivisionsListResponse.model_validate(response.json())
 
     async def create(
         self,
@@ -67,4 +67,4 @@ class AccountDivision(BaseEntity, ListEntityMixin, CreateEntityMixin):
             f"/accounts/{account_id}/divisions/batch",
             json=divisions.jsonable_dict(exclude_none=True),
         )
-        return BatchDivisionsResponse.parse_obj(response.json())
+        return BatchDivisionsResponse.model_validate(response.json())

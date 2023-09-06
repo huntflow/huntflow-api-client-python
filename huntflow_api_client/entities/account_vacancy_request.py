@@ -24,7 +24,7 @@ class AccountVacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin):
             "only_active": only_active,
         }
         response = await self._api.request("GET", path, params=params)
-        return AccountVacancyRequestsListResponse.parse_obj(response.json())
+        return AccountVacancyRequestsListResponse.model_validate(response.json())
 
     async def get(
         self,
@@ -41,4 +41,4 @@ class AccountVacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin):
         """
         path = f"/accounts/{account_id}/account_vacancy_requests/{account_vacancy_request_id}"
         response = await self._api.request("GET", path)
-        return AccountVacancyRequestResponse.parse_obj(response.json())
+        return AccountVacancyRequestResponse.model_validate(response.json())

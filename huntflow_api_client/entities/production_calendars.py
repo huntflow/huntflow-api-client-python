@@ -26,7 +26,7 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         """
         path = "/production_calendars"
         response = await self._api.request("GET", path)
-        return CalendarListResponse.parse_obj(response.json())
+        return CalendarListResponse.model_validate(response.json())
 
     async def get(self, calendar_id: int) -> CalendarResponse:
         """
@@ -37,7 +37,7 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         """
         path = f"/production_calendars/{calendar_id}"
         response = await self._api.request("GET", path)
-        return CalendarResponse.parse_obj(response.json())
+        return CalendarResponse.model_validate(response.json())
 
     async def get_organizations_calendar(self, account_id: int) -> AccountCalendarResponse:
         """
@@ -48,7 +48,7 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         """
         path = f"/accounts/{account_id}/calendar"
         response = await self._api.request("GET", path)
-        return AccountCalendarResponse.parse_obj(response.json())
+        return AccountCalendarResponse.model_validate(response.json())
 
     async def get_non_working_days_in_period(
         self,
@@ -74,7 +74,7 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
             params["start"] = start.strftime("%Y-%m-%d")
         path = f"/production_calendars/{calendar_id}/days/{deadline}"
         response = await self._api.request("GET", path, params=params)
-        return NonWorkingDaysResponse.parse_obj(response.json())
+        return NonWorkingDaysResponse.model_validate(response.json())
 
     async def get_non_working_days_for_multiple_period(
         self,
@@ -91,8 +91,8 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
             specified periods
         """
         path = f"/production_calendars/{calendar_id}/days"
-        response = await self._api.request("POST", path, data=data.json())
-        return NonWorkingDaysBulkResponse.parse_obj(response.json())
+        response = await self._api.request("POST", path, content=data.model_dump_json())
+        return NonWorkingDaysBulkResponse.model_validate(response.json())
 
     async def get_deadline_date_with_non_working_days(
         self,
@@ -130,8 +130,8 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         :return: List of deadlines
         """
         path = f"/production_calendars/{calendar_id}/deadline"
-        response = await self._api.request("POST", path, data=data.json())
-        return DatesBulkResponse.parse_obj(response.json())
+        response = await self._api.request("POST", path, content=data.model_dump_json())
+        return DatesBulkResponse.model_validate(response.json())
 
     async def get_start_date_with_non_working_days(
         self,
@@ -170,5 +170,5 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         :return: List of start dates
         """
         path = f"/production_calendars/{calendar_id}/start"
-        response = await self._api.request("POST", path, data=data.json())
-        return DatesBulkResponse.parse_obj(response.json())
+        response = await self._api.request("POST", path, content=data.model_dump_json())
+        return DatesBulkResponse.model_validate(response.json())

@@ -31,7 +31,7 @@ class Resume(BaseEntity, GetEntityMixin, DeleteEntityMixin, UpdateEntityMixin):
             "GET",
             f"/accounts/{account_id}/applicants/{applicant_id}/externals/{external_id}",
         )
-        return ApplicantResumeResponse.parse_obj(response.json())
+        return ApplicantResumeResponse.model_validate(response.json())
 
     async def get_sources(self, account_id: int) -> ApplicantSourcesResponse:
         """
@@ -42,7 +42,7 @@ class Resume(BaseEntity, GetEntityMixin, DeleteEntityMixin, UpdateEntityMixin):
         :return: List of applicant's resume sources
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/applicants/sources")
-        return ApplicantSourcesResponse.parse_obj(response.json())
+        return ApplicantSourcesResponse.model_validate(response.json())
 
     async def delete(
         self,
@@ -85,7 +85,7 @@ class Resume(BaseEntity, GetEntityMixin, DeleteEntityMixin, UpdateEntityMixin):
             f"/accounts/{account_id}/applicants/{applicant_id}/externals/{external_id}",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return ApplicantResumeResponse.parse_obj(response.json())
+        return ApplicantResumeResponse.model_validate(response.json())
 
     async def get_pdf(
         self,

@@ -52,9 +52,9 @@ class VacancyCreateRequest(Vacancy, JsonRequestModel):
         None,
         description="List of file IDs attached to a vacancy.",
     )
-    fill_quotas: List[FillQuota] = Field(..., max_items=1, description="Fill quota ID")
+    fill_quotas: List[FillQuota] = Field(..., max_length=1, description="Fill quota ID")
 
-    class Config:
+    class ConfigDict:
         extra = "allow"
 
 
@@ -85,7 +85,7 @@ class VacancyUpdateRequest(Vacancy, JsonRequestModel):
         description="Vacancy close reason ID",
     )
 
-    class Config:
+    class ConfigDict:
         extra = "allow"
 
 

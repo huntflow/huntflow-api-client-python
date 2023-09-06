@@ -33,4 +33,4 @@ class File(BaseEntity):
             data=data,
             headers=headers.jsonable_dict(exclude_none=True, by_alias=True),
         )
-        return UploadResponse(**response.json())
+        return UploadResponse.model_validate(response.json())

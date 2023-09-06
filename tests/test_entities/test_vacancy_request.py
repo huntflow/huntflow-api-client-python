@@ -89,7 +89,9 @@ async def test_list_vacancy_request(
     vacancy_request = VacancyRequest(api_client)
 
     response = await vacancy_request.list(ACCOUNT_ID)
-    assert response == VacancyRequestListResponse.parse_obj(VACANCY_REQUEST_LIST_WITHOUT_VALUES)
+    assert response == VacancyRequestListResponse.model_validate(
+        VACANCY_REQUEST_LIST_WITHOUT_VALUES,
+    )
 
     httpx_mock.add_response(
         url=(
@@ -100,7 +102,7 @@ async def test_list_vacancy_request(
     )
 
     response = await vacancy_request.list(ACCOUNT_ID, vacancy_id=1, values=True)
-    assert response == VacancyRequestListResponse.parse_obj(VACANCY_REQUEST_LIST_WITH_VALUES)
+    assert response == VacancyRequestListResponse.model_validate(VACANCY_REQUEST_LIST_WITH_VALUES)
 
 
 async def test_get_vacancy_request(
@@ -115,7 +117,7 @@ async def test_get_vacancy_request(
     vacancy_request = VacancyRequest(api_client)
 
     response = await vacancy_request.get(ACCOUNT_ID, 1)
-    assert response == VacancyRequestResponse.parse_obj(VACANCY_REQUEST_RESPONSE)
+    assert response == VacancyRequestResponse.model_validate(VACANCY_REQUEST_RESPONSE)
     assert response.values
 
 
@@ -129,6 +131,6 @@ async def test_create_vacancy_request(
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancy_request = VacancyRequest(api_client)
-    data = CreateVacancyRequestRequest.parse_obj(VACANCY_REQUEST_CREATE_REQUEST)
+    data = CreateVacancyRequestRequest.model_validate(VACANCY_REQUEST_CREATE_REQUEST)
     response = await vacancy_request.create(ACCOUNT_ID, data)
-    assert response == VacancyRequestResponse.parse_obj(VACANCY_REQUEST_RESPONSE)
+    assert response == VacancyRequestResponse.model_validate(VACANCY_REQUEST_RESPONSE)

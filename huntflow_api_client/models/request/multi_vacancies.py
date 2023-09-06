@@ -9,7 +9,7 @@ HTML_TAGS = "ul, ol, li, p, br, a, strong, em, u, b, i"
 
 
 class VacancyBlock(BaseModel):
-    fill_quotas: List[FillQuota] = Field(..., max_items=1, description="Fill quota ID")
+    fill_quotas: List[FillQuota] = Field(..., max_length=1, description="Fill quota ID")
     money: Optional[str] = Field(None, description="Salary")
     priority: Optional[int] = Field(
         None,
@@ -18,7 +18,7 @@ class VacancyBlock(BaseModel):
         le=1,
     )
 
-    class Config:
+    class ConfigDict:
         extra = "allow"
 
 
@@ -31,7 +31,6 @@ class MultiVacancyCreateRequest(JsonRequestModel):
     company: Optional[str] = Field(
         None,
         description="Department name (ignored if the divisions are enabled)",
-        example="Google",
     )
     hidden: bool = Field(False, description="Is the vacancy hidden from coworkers?")
     state: VacancyCreateState = Field(VacancyCreateState.OPEN, description="The state of a vacancy")
@@ -59,7 +58,7 @@ class MultiVacancyCreateRequest(JsonRequestModel):
     )
     blocks: List[VacancyBlock] = Field(..., description="List of sub-vacancies for a multivacancy")
 
-    class Config:
+    class ConfigDict:
         extra = "allow"
 
 
@@ -76,7 +75,6 @@ class MultiVacancyUpdateRequest(JsonRequestModel):
     company: Optional[str] = Field(
         None,
         description="Department name (ignored if the divisions are enabled)",
-        example="Google",
     )
     hidden: bool = Field(False, description="Is the vacancy hidden from coworkers?")
     state: VacancyUpdateState = Field(VacancyUpdateState.OPEN, description="The state of a vacancy")
@@ -103,7 +101,7 @@ class MultiVacancyUpdateRequest(JsonRequestModel):
         description="List of sub-vacancies for a multivacancy",
     )
 
-    class Config:
+    class ConfigDict:
         extra = "allow"
 
 
@@ -117,7 +115,7 @@ class VacancyBlockUpdatePartial(VacancyBlockUpdate):
     )
     fill_quotas: Optional[List[EditedFillQuota]] = Field(  # type: ignore
         None,
-        max_items=1,
+        max_length=1,
         description="Fill quota ID",
     )
 

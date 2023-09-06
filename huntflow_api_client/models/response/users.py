@@ -15,5 +15,5 @@ class UserResponse(BaseModel):
     meta: Optional[dict] = Field(None, description="Additional meta information")
     permissions: List[Permission] = Field(default_factory=list, description="User permissions")
 
-    class Config:
+    class ConfigDict:
         allow_population_by_field_name = True

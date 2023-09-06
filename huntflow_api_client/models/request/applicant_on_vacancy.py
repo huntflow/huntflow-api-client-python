@@ -31,12 +31,12 @@ class AddApplicantToVacancyRequest(JsonRequestModel):
     )
     files: Optional[List[PositiveInt]] = Field(
         None,
-        max_items=15,
+        max_length=15,
         description="Upload files. The list of file's ID attached to the log",
     )
     calendar_event: Optional[ApplicantEvent] = Field(None, description="Calendar event object")
     email: Optional[ApplicantLogEmail] = Field(None, description="Email object")
-    im: Optional[List[ApplicantLogIm]] = Field(None, max_items=1, description="Telegram message")
+    im: Optional[List[ApplicantLogIm]] = Field(None, max_length=1, description="Telegram message")
     sms: Optional[ApplicantLogSms] = Field(None, description="SMS message")
     applicant_offer: Optional[ApplicantOffer] = Field(None, description="Applicant's offer")
     survey_questionary_id: Optional[int] = Field(None, description="Survey questionary ID")
@@ -60,13 +60,13 @@ class ChangeVacancyApplicantStatusRequest(JsonRequestModel):
     )
     files: Optional[List[PositiveInt]] = Field(
         None,
-        max_items=15,
+        max_length=15,
         description="Upload files. The list of file's ID attached to the log",
     )
     applicant_offer: Optional[ApplicantOffer] = Field(None, description="Applicant's offer")
     calendar_event: Optional[ApplicantEvent] = Field(None, description="Calendar event object")
     email: Optional[ApplicantLogEmail] = Field(None, description="Email object")
-    im: Optional[List[ApplicantLogIm]] = Field(None, max_items=1, description="Telegram message")
+    im: Optional[List[ApplicantLogIm]] = Field(None, max_length=1, description="Telegram message")
     sms: Optional[ApplicantLogSms] = Field(None, description="SMS message")
     survey_questionary_id: Optional[int] = Field(None, description="Survey questionary ID")
 

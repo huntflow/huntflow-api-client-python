@@ -58,7 +58,7 @@ async def test_get_schema(
     questionary = ApplicantsQuestionary(api_client)
 
     response = await questionary.get_schema(ACCOUNT_ID)
-    assert response == QuestionarySchemaResponse.parse_obj(QUESTIONARY_SCHEMA_RESPONSE)
+    assert response == QuestionarySchemaResponse.model_validate(QUESTIONARY_SCHEMA_RESPONSE)
 
 
 async def test_create_questionary(

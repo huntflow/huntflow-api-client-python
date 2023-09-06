@@ -1,6 +1,6 @@
 import typing as t
 
-from pydantic import BaseModel, Extra, Field, PositiveInt
+from pydantic import BaseModel, Field, PositiveInt
 
 from huntflow_api_client.models.consts import FieldType
 
@@ -8,28 +8,27 @@ from huntflow_api_client.models.consts import FieldType
 class AccountVacancyRequestSchemaField(BaseModel):
     id: PositiveInt = Field(..., description="Field ID")
     type: FieldType = Field(..., description="Field type")
-    title: t.Optional[str] = Field(None, description="Field title", example="Reason")
+    title: t.Optional[str] = Field(None, description="Field title")
     required: bool = Field(False, description="Field required flag")
-    order: int = Field(..., description="The order of the field on the form", example=1)
+    order: int = Field(..., description="The order of the field on the form")
     values: t.Optional[t.List] = Field(
         None,
         description="List of possible values (for fields with `select` type)",
-        example=["New position", "Replacing an employee"],
     )
-    value: t.Optional[str] = Field(None, description="Default value", example="New position")
+    value: t.Optional[str] = Field(None, description="Default value")
     fields: t.Optional[t.Dict[str, "AccountVacancyRequestSchemaField"]] = Field(
         None,
         description="Nested fields",
     )
 
-    class Config:
-        extra = Extra.allow
+    class ConfigDict:
+        extra = "allow"
 
 
 class AccountVacancyRequestResponse(BaseModel):
-    id: PositiveInt = Field(..., description="Schema ID", example=1)
-    account: PositiveInt = Field(..., description="Organization ID", example=11)
-    name: str = Field("", description="Schema name", example="IT Developers")
+    id: PositiveInt = Field(..., description="Schema ID")
+    account: PositiveInt = Field(..., description="Organization ID")
+    name: str = Field("", description="Schema name")
     attendee_required: t.Optional[bool] = Field(
         None,
         description=(
@@ -41,7 +40,6 @@ class AccountVacancyRequestResponse(BaseModel):
     attendee_hint: str = Field(
         "",
         description="Hint under the field 'Send for approval'",
-        example="Send for approval",
     )
     active: bool = Field(..., description="Schema activity flag")
     schema_: t.Optional[t.Dict[str, AccountVacancyRequestSchemaField]] = Field(

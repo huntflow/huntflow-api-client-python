@@ -22,10 +22,10 @@ class CoworkerResponse(BaseModel):
     meta: Optional[dict] = Field(None, description="Additional meta information")
     permissions: List[Permission] = Field(default_factory=list, description="Coworker permissions")
 
-    class Config:
+    class ConfigDict:
         allow_population_by_field_name = True
 
 
 class CoworkersListResponse(PaginatedResponse):
-    total_items: Optional[int] = Field(..., description="Total number of items")
+    total_items: Optional[int] = Field(None, description="Total number of items")
     items: List[CoworkerResponse] = Field(..., description="List of coworkers")

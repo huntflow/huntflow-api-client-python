@@ -106,7 +106,9 @@ async def test_list_schemas(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancy_request = AccountVacancyRequest(api_client)
     response = await vacancy_request.list(ACCOUNT_ID, only_active=True)
-    assert response == AccountVacancyRequestsListResponse.parse_obj(VACANCY_REQUEST_SCHEMAS_LIST)
+    assert response == AccountVacancyRequestsListResponse.model_validate(
+        VACANCY_REQUEST_SCHEMAS_LIST,
+    )
 
 
 async def test_get_schema(
@@ -121,4 +123,4 @@ async def test_get_schema(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancy_request = AccountVacancyRequest(api_client)
     response = await vacancy_request.get(ACCOUNT_ID, schema_id)
-    assert response == AccountVacancyRequestResponse.parse_obj(VACANCY_REQUEST_SCHEMA)
+    assert response == AccountVacancyRequestResponse.model_validate(VACANCY_REQUEST_SCHEMA)

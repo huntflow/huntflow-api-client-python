@@ -19,4 +19,4 @@ class MailTemplate(BaseEntity, ListEntityMixin):
             f"/accounts/{account_id}/mail/templates",
             params={"editable": editable},
         )
-        return MailTemplatesResponse.parse_obj(response.json())
+        return MailTemplatesResponse.model_validate(response.json())
