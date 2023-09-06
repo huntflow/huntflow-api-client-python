@@ -1,6 +1,6 @@
 import json
 from datetime import date, datetime
-from typing import AbstractSet, Any, Callable, Dict, List, Mapping, Optional, Union
+from typing import AbstractSet, Any, Dict, List, Mapping, Optional, Union
 
 from pydantic import AnyHttpUrl, BaseModel, EmailStr, Field, PositiveInt
 

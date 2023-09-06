@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, Field, PositiveInt, RootModel, model_validator
+from pydantic import BaseModel, Field, PositiveInt, RootModel
 
 from huntflow_api_client.models.common import File, PaginatedResponse, Vacancy, VacancyQuotaItem
 from huntflow_api_client.models.consts import FieldType
