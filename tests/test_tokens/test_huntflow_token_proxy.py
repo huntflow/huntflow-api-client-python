@@ -27,7 +27,7 @@ async def test_get_refresh_token_data__ok(
     assert refresh_token_data == {"refresh_token": token_pair.refresh_token}
 
 
-async def test_update_token__ok2(
+async def test_update_token__ok(
     token_storage: HuntflowTokenFileStorage,
     token_filename: str,
 ) -> None:
