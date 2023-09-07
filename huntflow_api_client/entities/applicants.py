@@ -54,7 +54,7 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
             f"/accounts/{account_id}/applicants",
             params=params,
         )
-        return ApplicantListResponse.parse_obj(response.json())
+        return ApplicantListResponse.model_validate(response.json())
 
     async def create(
         self,
@@ -73,7 +73,7 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
             f"/accounts/{account_id}/applicants",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return ApplicantCreateResponse.parse_obj(response.json())
+        return ApplicantCreateResponse.model_validate(response.json())
 
     async def get(self, account_id: int, applicant_id: int) -> ApplicantItem:
         """
@@ -88,7 +88,7 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
             "GET",
             f"/accounts/{account_id}/applicants/{applicant_id}",
         )
-        return ApplicantItem.parse_obj(response.json())
+        return ApplicantItem.model_validate(response.json())
 
     async def patch(
         self,
@@ -110,7 +110,7 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
             f"/accounts/{account_id}/applicants/{applicant_id}",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return ApplicantItem.parse_obj(response.json())
+        return ApplicantItem.model_validate(response.json())
 
     async def delete(self, account_id: int, applicant_id: int) -> None:
         """
@@ -185,4 +185,4 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
                 params["vacancy"] = vacancy if vacancy else "null"
 
         response = await self._api.request("GET", path, params=params)
-        return ApplicantSearchByCursorResponse.parse_obj(response.json())
+        return ApplicantSearchByCursorResponse.model_validate(response.json())

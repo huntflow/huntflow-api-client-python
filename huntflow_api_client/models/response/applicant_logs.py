@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, Extra, Field, PositiveInt
+from pydantic import BaseModel, Field, PositiveInt
 
 from huntflow_api_client.models.common import (
     ApplicantOffer,
@@ -97,7 +97,6 @@ class ApplicantLogCalendarEvent(BaseModel):
     description: Optional[str] = Field(
         None,
         description="Event description",
-        example="Interview with John Doe",
     )
     timezone: Optional[str] = Field(None, description="Event time zone")
     start: datetime = Field(..., description="Event start date and time")
@@ -185,7 +184,7 @@ class CreateApplicantLogResponse(BaseModel):
     created: datetime = Field(..., description="Date and time of creation of the log")
     employment_date: Optional[date] = Field(None, description="Employment date")
     applicant_offer: Optional[ApplicantOffer] = Field(..., description="Offer object")
-    comment: Optional[str] = Field(None, description="Comment text", example="Example comment")
+    comment: Optional[str] = Field(None, description="Comment text")
     files: List[File] = Field([], description="List of files attached to the log")
     calendar_event: Optional[ApplicantLogCalendarEvent] = Field(
         None,
@@ -197,5 +196,5 @@ class CreateApplicantLogResponse(BaseModel):
         description="Survey Questionary",
     )
 
-    class Config:
-        extra = Extra.allow
+    class ConfigDict:
+        extra = "allow"

@@ -12,4 +12,4 @@ class RejectionReason(BaseEntity, ListEntityMixin):
         :return: List of applicant on vacancy rejection reasons
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/rejection_reasons")
-        return RejectionReasonsListResponse.parse_obj(response.json())
+        return RejectionReasonsListResponse.model_validate(response.json())

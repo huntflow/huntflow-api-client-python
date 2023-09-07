@@ -13,7 +13,7 @@ class UserSettings(BaseEntity):
         :return: List of user email accounts.
         """
         response = await self._api.request("GET", "/email_accounts")
-        return EmailAccountsListResponse.parse_obj(response.json())
+        return EmailAccountsListResponse.model_validate(response.json())
 
     async def get_calendar_accounts(self) -> CalendarAccountsListResponse:
         """
@@ -22,4 +22,4 @@ class UserSettings(BaseEntity):
         :return: List of user calendar accounts with associated calendars.
         """
         response = await self._api.request("GET", "/calendar_accounts")
-        return CalendarAccountsListResponse.parse_obj(response.json())
+        return CalendarAccountsListResponse.model_validate(response.json())

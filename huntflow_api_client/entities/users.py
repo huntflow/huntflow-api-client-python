@@ -13,4 +13,4 @@ class User(BaseEntity, GetEntityMixin):
         :return: The specified user with a list of his permissions
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/users/{user_id}")
-        return UserResponse.parse_obj(response.json())
+        return UserResponse.model_validate(response.json())

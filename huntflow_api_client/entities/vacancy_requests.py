@@ -44,7 +44,7 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
             params["vacancy_id"] = vacancy_id
 
         response = await self._api.request("GET", path, params=params)
-        return VacancyRequestListResponse.parse_obj(response.json())
+        return VacancyRequestListResponse.model_validate(response.json())
 
     async def get(self, account_id: int, vacancy_request_id: int) -> VacancyRequestResponse:
         """
@@ -57,7 +57,7 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
         """
         path = f"/accounts/{account_id}/vacancy_requests/{vacancy_request_id}"
         response = await self._api.request("GET", path)
-        return VacancyRequestResponse.parse_obj(response.json())
+        return VacancyRequestResponse.model_validate(response.json())
 
     async def create(
         self,
@@ -78,4 +78,4 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
             path,
             json=request_data.jsonable_dict(exclude_none=True),
         )
-        return VacancyRequestResponse.parse_obj(response.json())
+        return VacancyRequestResponse.model_validate(response.json())

@@ -35,7 +35,7 @@ class ApplicantOnVacancy(BaseEntity):
             f"/accounts/{account_id}/applicants/{applicant_id}/vacancy",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return AddApplicantToVacancyResponse.parse_obj(response.json())
+        return AddApplicantToVacancyResponse.model_validate(response.json())
 
     async def change_vacancy_status_for_applicant(
         self,
@@ -57,7 +57,7 @@ class ApplicantOnVacancy(BaseEntity):
             f"/accounts/{account_id}/applicants/{applicant_id}/vacancy",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return AddApplicantToVacancyResponse.parse_obj(response.json())
+        return AddApplicantToVacancyResponse.model_validate(response.json())
 
     async def move_applicant_to_child_vacancy(
         self,
@@ -79,4 +79,4 @@ class ApplicantOnVacancy(BaseEntity):
             f"/accounts/{account_id}/applicants/vacancy/{vacancy_id}/split",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return ApplicantVacancySplitResponse.parse_obj(response.json())
+        return ApplicantVacancySplitResponse.model_validate(response.json())

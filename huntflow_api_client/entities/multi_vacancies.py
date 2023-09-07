@@ -28,7 +28,7 @@ class MultiVacancy(BaseEntity, CreateEntityMixin, UpdateEntityMixin):
             f"/accounts/{account_id}/multi-vacancies",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return MultiVacancyResponse.parse_obj(response.json())
+        return MultiVacancyResponse.model_validate(response.json())
 
     async def update(
         self,
@@ -54,4 +54,4 @@ class MultiVacancy(BaseEntity, CreateEntityMixin, UpdateEntityMixin):
             f"/accounts/{account_id}/multi-vacancies/{vacancy_id}",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return MultiVacancyResponse.parse_obj(response.json())
+        return MultiVacancyResponse.model_validate(response.json())

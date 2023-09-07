@@ -44,7 +44,7 @@ class ApplicantOffer(BaseEntity, UpdateEntityMixin, GetEntityMixin):
             f"/accounts/{account_id}/applicants/{applicant_id}/offers/{offer_id}",
             json=data.jsonable_dict(),
         )
-        return ApplicantVacancyOfferResponse.parse_obj(response.json())
+        return ApplicantVacancyOfferResponse.model_validate(response.json())
 
     async def get(
         self,
@@ -71,4 +71,4 @@ class ApplicantOffer(BaseEntity, UpdateEntityMixin, GetEntityMixin):
             f"/vacancy_frames/{vacancy_frame_id}/offer",
             params={"normalize": normalize},
         )
-        return ApplicantVacancyOfferResponse.parse_obj(response.json())
+        return ApplicantVacancyOfferResponse.model_validate(response.json())

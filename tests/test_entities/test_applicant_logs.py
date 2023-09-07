@@ -189,7 +189,7 @@ async def test_applicant_log_list(
         type_=ApplicantLogType.ADD,
         personal=True,
     )
-    assert response == ApplicantLogResponse.parse_obj(APPLICANT_LOG_LIST_RESPONSE)
+    assert response == ApplicantLogResponse.model_validate(APPLICANT_LOG_LIST_RESPONSE)
 
 
 async def test_create_log(
@@ -209,4 +209,4 @@ async def test_create_log(
         applicant_id=APPLICANT_ID,
         data=data,
     )
-    assert response == CreateApplicantLogResponse.parse_obj(APPLICANT_CREATE_LOG_RESPONSE)
+    assert response == CreateApplicantLogResponse.model_validate(APPLICANT_CREATE_LOG_RESPONSE)

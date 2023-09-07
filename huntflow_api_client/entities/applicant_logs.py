@@ -46,7 +46,7 @@ class ApplicantLog(BaseEntity, ListEntityMixin, CreateEntityMixin):
             params["vacancy"] = vacancy
 
         response = await self._api.request("GET", path, params=params)
-        return ApplicantLogResponse.parse_obj(response.json())
+        return ApplicantLogResponse.model_validate(response.json())
 
     async def create(
         self,
@@ -70,4 +70,4 @@ class ApplicantLog(BaseEntity, ListEntityMixin, CreateEntityMixin):
             f"/accounts/{account_id}/applicants/{applicant_id}/logs",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return CreateApplicantLogResponse.parse_obj(response.json())
+        return CreateApplicantLogResponse.model_validate(response.json())

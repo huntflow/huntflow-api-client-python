@@ -10,6 +10,7 @@ from huntflow_api_client.models.request.multi_vacancies import (
     MultiVacancyPartialUpdateRequest,
     MultiVacancyUpdateRequest,
     VacancyBlock,
+    VacancyBlockUpdate,
     VacancyBlockUpdatePartial,
 )
 from huntflow_api_client.models.response.muilti_vacancies import MultiVacancyResponse
@@ -54,7 +55,7 @@ async def test_update_multi_vacancy(
     multi_vacancies = MultiVacancy(api_client)
     data = MultiVacancyUpdateRequest(
         position="Test vacancy",
-        blocks=[VacancyBlock(fill_quotas=[FillQuota()])],
+        blocks=[VacancyBlockUpdate(fill_quotas=[FillQuota()])],
     )
 
     response = await multi_vacancies.update(ACCOUNT_ID, VACANCY_ID, data)

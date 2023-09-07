@@ -14,7 +14,7 @@ class Account(BaseEntity, GetEntityMixin, ListEntityMixin):
         :return: Information about the current user
         """
         response = await self._api.request("GET", "/me")
-        return MeResponse.parse_obj(response.json())
+        return MeResponse.model_validate(response.json())
 
     async def list(self) -> OrganizationsListResponse:
         """
@@ -24,7 +24,7 @@ class Account(BaseEntity, GetEntityMixin, ListEntityMixin):
             associated with the passed authentication
         """
         response = await self._api.request("GET", "/accounts")
-        return OrganizationsListResponse.parse_obj(response.json())
+        return OrganizationsListResponse.model_validate(response.json())
 
     async def get(self, account_id: int) -> OrganizationInfoResponse:
         """
@@ -34,4 +34,4 @@ class Account(BaseEntity, GetEntityMixin, ListEntityMixin):
         :return: Information about the specified organization
         """
         response = await self._api.request("GET", f"/accounts/{account_id}")
-        return OrganizationInfoResponse.parse_obj(response.json())
+        return OrganizationInfoResponse.model_validate(response.json())

@@ -18,7 +18,7 @@ class Webhook(BaseEntity, ListEntityMixin, CreateEntityMixin, DeleteEntityMixin)
         """
         path = f"/accounts/{account_id}/hooks"
         response = await self._api.request("GET", path)
-        return WebhooksListResponse(**response.json())
+        return WebhooksListResponse.model_validate(response.json())
 
     async def create(self, account_id: int, data: WebhookRequest) -> WebhookResponse:
         """
@@ -30,7 +30,7 @@ class Webhook(BaseEntity, ListEntityMixin, CreateEntityMixin, DeleteEntityMixin)
         """
         path = f"/accounts/{account_id}/hooks"
         response = await self._api.request("POST", path, json=data.jsonable_dict(exclude_none=True))
-        return WebhookResponse(**response.json())
+        return WebhookResponse.model_validate(response.json())
 
     async def delete(self, account_id: int, webhook_id: int) -> None:
         """

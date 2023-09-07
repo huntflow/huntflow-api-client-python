@@ -109,7 +109,7 @@ async def test_get_dictionary(
     dictionaries = Dictionary(api_client)
 
     response = await dictionaries.get(ACCOUNT_ID, DICT_CODE)
-    assert response == DictionaryResponse.parse_obj(DICT_GET_RESPONSE)
+    assert response == DictionaryResponse.model_validate(DICT_GET_RESPONSE)
 
 
 async def test_list_dictionary(
@@ -124,7 +124,7 @@ async def test_list_dictionary(
     dictionaries = Dictionary(api_client)
 
     response = await dictionaries.list(ACCOUNT_ID)
-    assert response == DictionariesListResponse.parse_obj(DICT_LIST_RESPONSE)
+    assert response == DictionariesListResponse.model_validate(DICT_LIST_RESPONSE)
 
 
 async def test_create_dictionary(
@@ -140,7 +140,7 @@ async def test_create_dictionary(
 
     api_request = DictionaryCreateRequest(**DICT_CREATE_REQUEST)
     response = await dictionaries.create(ACCOUNT_ID, api_request)
-    assert response == DictionaryTaskResponse.parse_obj(DICT_CREATE_RESPONSE)
+    assert response == DictionaryTaskResponse.model_validate(DICT_CREATE_RESPONSE)
 
 
 async def test_update_dictionary(
@@ -156,4 +156,4 @@ async def test_update_dictionary(
 
     api_request = DictionaryUpdateRequest(**DICT_UPDATE_REQUEST)
     response = await dictionaries.update(ACCOUNT_ID, DICT_CODE, api_request)
-    assert response == DictionaryTaskResponse.parse_obj(DICT_UPDATE_RESPONSE)
+    assert response == DictionaryTaskResponse.model_validate(DICT_UPDATE_RESPONSE)

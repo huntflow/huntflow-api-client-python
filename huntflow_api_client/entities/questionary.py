@@ -20,7 +20,7 @@ class ApplicantsQuestionary(BaseEntity, GetEntityMixin, CreateEntityMixin, Updat
         :return: A schema of applicant's questionary for organization
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/applicants/questionary")
-        return QuestionarySchemaResponse.parse_obj(response.json())
+        return QuestionarySchemaResponse.model_validate(response.json())
 
     async def create(
         self,

@@ -1,7 +1,8 @@
 import json
 from datetime import date, datetime
-from typing import AbstractSet, Any, Callable, Dict, List, Mapping, Optional, Union
+from typing import Any, Dict, List, Optional, Set, Union
 
+import typing_extensions
 from pydantic import AnyHttpUrl, BaseModel, EmailStr, Field, PositiveInt
 
 from huntflow_api_client.models.consts import (
@@ -11,70 +12,63 @@ from huntflow_api_client.models.consts import (
     VacancyState,
 )
 
-IntStr = Union[int, str]
-AbstractSetIntStr = AbstractSet[IntStr]
-MappingIntStrAny = Mapping[IntStr, Any]
+_FieldSet: typing_extensions.TypeAlias = "Set[int] | Set[str] | Dict[int, Any] | Dict[str, Any]"
 
 
 class JsonRequestModel(BaseModel):
     def jsonable_dict(
         self,
         *,
-        include: Optional[Union[AbstractSetIntStr, MappingIntStrAny]] = None,
-        exclude: Optional[Union[AbstractSetIntStr, MappingIntStrAny]] = None,
+        include: Optional[_FieldSet] = None,
+        exclude: Optional[_FieldSet] = None,
         by_alias: bool = False,
-        skip_defaults: Optional[bool] = None,
         exclude_unset: bool = False,
         exclude_defaults: bool = False,
         exclude_none: bool = False,
-        encoder: Optional[Callable[[Any], Any]] = None,
-        **dumps_kwargs: Any,
+        round_trip: bool = False,
+        warnings: bool = True,
     ) -> Dict[str, Any]:
-        params = {
-            "include": include,
-            "exclude": exclude,
-            "by_alias": by_alias,
-            "skip_defaults": skip_defaults,
-            "exclude_unset": exclude_unset,
-            "exclude_defaults": exclude_defaults,
-            "exclude_none": exclude_none,
-            "encoder": encoder,
-        }
-        return json.loads(self.json(**params, **dumps_kwargs))  # type: ignore
+        return json.loads(
+            self.model_dump_json(
+                include=include,
+                exclude=exclude,
+                by_alias=by_alias,
+                exclude_unset=exclude_unset,
+                exclude_defaults=exclude_defaults,
+                exclude_none=exclude_none,
+                round_trip=round_trip,
+                warnings=warnings,
+            ),
+        )
 
 
 class PaginatedResponse(BaseModel):
-    page: PositiveInt = Field(..., description="Page number", example=1)
-    count: int = Field(..., description="Number of items per page", example=30)
-    total_pages: int = Field(..., description="Total number of pages", example=2)
+    page: PositiveInt = Field(..., description="Page number")
+    count: int = Field(..., description="Number of items per page")
+    total_pages: int = Field(..., description="Total number of pages")
 
 
 class Vacancy(BaseModel):
     account_division: Optional[PositiveInt] = Field(
         None,
         description="Division ID",
-        example=12,
     )
     account_region: Optional[PositiveInt] = Field(
         None,
         description="Account region",
-        example=1,
     )
     position: str = Field(
         ...,
         description="The name of the vacancy (occupation)",
-        example="Developer",
     )
     company: Optional[str] = Field(
         None,
         description="Department (ignored if the DEPARTMENTS are enabled)",
-        example="Google",
     )
-    money: Optional[str] = Field(None, description="Salary", example="$10000")
+    money: Optional[str] = Field(None, description="Salary")
     priority: Optional[int] = Field(
         None,
         description="The priority of a vacancy (0 for usual or 1 for high)",
-        example=0,
         ge=0,
         le=1,
     )
@@ -93,44 +87,40 @@ class FillQuota(BaseModel):
     vacancy_request: Optional[PositiveInt] = Field(
         None,
         description="Vacancy request ID",
-        example=12,
     )
 
 
 class EditedFillQuota(FillQuota):
-    id: Optional[PositiveInt] = Field(None, description="Fill quota ID", example=15)
+    id: Optional[PositiveInt] = Field(None, description="Fill quota ID")
 
 
 class File(BaseModel):
-    id: PositiveInt = Field(..., description="File ID", example=19)
+    id: PositiveInt = Field(..., description="File ID")
     url: AnyHttpUrl = Field(..., description="File URL")
-    content_type: str = Field(..., description="MIME type of file", example="application/pdf")
-    name: str = Field(..., description="File name", example="Resume.pdf")
+    content_type: str = Field(..., description="MIME type of file")
+    name: str = Field(..., description="File name")
 
 
 class Applicant(BaseModel):
-    first_name: Optional[str] = Field(None, description="First name", example="John")
-    last_name: Optional[str] = Field(None, description="Last name", example="Doe")
-    middle_name: Optional[str] = Field(None, description="Middle name", example="Michael")
-    money: Optional[str] = Field(None, description="Salary expectation", example="$100000")
-    phone: Optional[str] = Field(None, description="Phone number", example="89999999999")
+    first_name: Optional[str] = Field(None, description="First name")
+    last_name: Optional[str] = Field(None, description="Last name")
+    middle_name: Optional[str] = Field(None, description="Middle name")
+    money: Optional[str] = Field(None, description="Salary expectation")
+    phone: Optional[str] = Field(None, description="Phone number")
     email: Union[EmailStr, str, None] = Field(
         None,
         description="Email address",
-        example="mail@some.domain.com",
     )
-    skype: Optional[str] = Field(None, description="Skype login", example="my_skype")
+    skype: Optional[str] = Field(None, description="Skype login")
     position: Optional[str] = Field(
         None,
         description="Applicant’s occupation",
-        example="Front-end developer",
     )
     company: Optional[str] = Field(
         None,
         description="Applicant’s place of work",
-        example="Google Inc.",
     )
-    photo: Optional[int] = Field(None, description="Applicant’s photo ID", example=1)
+    photo: Optional[int] = Field(None, description="Applicant’s photo ID")
 
 
 class StatusResponse(BaseModel):
@@ -188,7 +178,7 @@ class EmailFollowup(BaseModel):
     html: str = Field(..., description="Email content (HTML)")
     days: int = Field(
         ...,
-        gte=1,
+        ge=1,
         description="The number of days after which to send a followup if there is no response",
     )
 
@@ -239,7 +229,7 @@ class ApplicantOffer(BaseModel):
 
 class CalendarEventReminder(BaseModel):
     multiplier: EventReminderMultiplier = Field(..., description="Reminder period")
-    value: int = Field(..., gte=0, lt=40320, description="Reminder value")
+    value: int = Field(..., ge=0, lt=40320, description="Reminder value")
     method: CalendarEventReminderMethod = Field(..., description="Reminder method")
 
 
@@ -248,5 +238,5 @@ class CalendarEventAttendee(BaseModel):
     name: Optional[str] = Field(None, description="Attendee name", alias="displayName")
     email: EmailStr = Field(..., description="Attendee email")
 
-    class Config:
+    class ConfigDict:
         allow_population_by_field_name = True

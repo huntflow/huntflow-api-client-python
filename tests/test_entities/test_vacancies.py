@@ -482,7 +482,7 @@ async def test_get_vacancy_quota_list(
     vacancies = Vacancy(api_client)
 
     response = await vacancies.get_quotas(ACCOUNT_ID, VACANCY_ID, FRAME_ID)
-    assert response == VacancyQuotasResponse.parse_obj(VACANCY_QUOTAS_RESPONSE)
+    assert response == VacancyQuotasResponse.model_validate(VACANCY_QUOTAS_RESPONSE)
 
 
 async def test_get_vacancy_status_groups(

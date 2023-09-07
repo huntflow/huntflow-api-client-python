@@ -71,7 +71,7 @@ async def test_list_calendar(
     calendars = ProductionCalendar(api_client)
 
     response = await calendars.list()
-    assert response == CalendarListResponse.parse_obj(CALENDAR_LIST_RESPONSE)
+    assert response == CalendarListResponse.model_validate(CALENDAR_LIST_RESPONSE)
 
 
 async def test_get_calendar(
@@ -86,7 +86,7 @@ async def test_get_calendar(
     calendars = ProductionCalendar(api_client)
 
     response = await calendars.get(calendar_id=1)
-    assert response == CalendarResponse.parse_obj(CALENDAR_GET_RESPONSE)
+    assert response == CalendarResponse.model_validate(CALENDAR_GET_RESPONSE)
 
 
 async def test_get_organizations_calendar(
@@ -101,7 +101,7 @@ async def test_get_organizations_calendar(
     calendars = ProductionCalendar(api_client)
 
     response = await calendars.get_organizations_calendar(account_id=ACCOUNT_ID)
-    assert response == AccountCalendarResponse.parse_obj(ORG_CALENDAR_GET_RESPONSE)
+    assert response == AccountCalendarResponse.model_validate(ORG_CALENDAR_GET_RESPONSE)
 
 
 async def test_get_non_working_days_in_period(
@@ -117,7 +117,7 @@ async def test_get_non_working_days_in_period(
     calendars = ProductionCalendar(api_client)
 
     response = await calendars.get_non_working_days_in_period(calendar_id=1, deadline=DEADLINE_DATE)
-    assert response == NonWorkingDaysResponse.parse_obj(NON_WORKING_DAYS_GET_RESPONSE)
+    assert response == NonWorkingDaysResponse.model_validate(NON_WORKING_DAYS_GET_RESPONSE)
 
 
 async def test_get_non_working_days_for_multiple_period(
@@ -132,13 +132,15 @@ async def test_get_non_working_days_for_multiple_period(
     calendars = ProductionCalendar(api_client)
 
     data = NonWorkingDaysBulkRequest(
-        __root__=[
+        root=[
             NonWorkingDays(deadline=datetime.date(2022, 10, 10), start=datetime.date(2021, 10, 10)),
             NonWorkingDays(deadline=datetime.date(2023, 10, 10), start=datetime.date(2022, 10, 10)),
         ],
     )
     response = await calendars.get_non_working_days_for_multiple_period(calendar_id=1, data=data)
-    assert response == NonWorkingDaysBulkResponse.parse_obj(MULTIPLE_NON_WORKING_DAYS_GET_RESPONSE)
+    assert response == NonWorkingDaysBulkResponse.model_validate(
+        MULTIPLE_NON_WORKING_DAYS_GET_RESPONSE,
+    )
 
 
 async def test_get_deadline_date_with_non_working_days(
@@ -173,7 +175,7 @@ async def test_get_multiple_deadline_dates_with_non_working_days(
     calendars = ProductionCalendar(api_client)
 
     data = DeadLineDatesBulkRequest(
-        __root__=[
+        root=[
             DeadLineDate(days=100, start=datetime.date(2021, 10, 10)),
             DeadLineDate(days=5, start=datetime.date(2022, 10, 10)),
         ],
@@ -183,7 +185,7 @@ async def test_get_multiple_deadline_dates_with_non_working_days(
         calendar_id=1,
         data=data,
     )
-    assert response == DatesBulkResponse.parse_obj(MULTIPLE_DEADLINE_RESPONSE)
+    assert response == DatesBulkResponse.model_validate(MULTIPLE_DEADLINE_RESPONSE)
 
 
 async def test_get_start_date_with_non_working_days(
@@ -218,7 +220,7 @@ async def test_get_multiple_start_dates_with_non_working_days(
     calendars = ProductionCalendar(api_client)
 
     data = StartDatesBulkRequest(
-        __root__=[
+        root=[
             StartDate(days=100, deadline=datetime.date(2021, 10, 10)),
             StartDate(days=200, deadline=datetime.date(2019, 7, 17)),
         ],
@@ -228,4 +230,4 @@ async def test_get_multiple_start_dates_with_non_working_days(
         calendar_id=1,
         data=data,
     )
-    assert response == DatesBulkResponse.parse_obj(MULTIPLE_START_RESPONSE)
+    assert response == DatesBulkResponse.model_validate(MULTIPLE_START_RESPONSE)

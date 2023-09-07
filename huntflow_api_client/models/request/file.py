@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from huntflow_api_client.models.common import JsonRequestModel
 
@@ -27,9 +27,10 @@ class UploadFileHeaders(JsonRequestModel):
         alias="x-ignore-phone",
     )
 
-    @validator("file_parse")
+    @field_validator("file_parse")
+    @classmethod
     def convert_bool_to_str(cls, value: bool) -> str:
         return str(value).lower()
 
-    class Config:
+    class ConfigDict:
         allow_population_by_field_name = True

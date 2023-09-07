@@ -28,8 +28,8 @@ class Experience(BaseModel):
 
 
 class ParsedFields(BaseModel):
-    name: Optional[Name]
-    birthdate: Optional[Birthdate]
+    name: Optional[Name] = None
+    birthdate: Optional[Birthdate] = None
     phones: Optional[List[str]] = Field(None, description="Phones")
     email: Optional[str] = Field(None, description="Email")
     salary: Optional[int] = Field(None, description="Salary")

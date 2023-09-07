@@ -11,12 +11,9 @@ class ApplicantResumeUpdateData(BaseModel):
 
 class ApplicantResumeUpdateRequest(JsonRequestModel):
     account_source: Optional[PositiveInt] = Field(..., description="Resume source ID")
-    data: Optional[ApplicantResumeUpdateData] = Field(
-        ...,
-        description="Resume data",
-    )
+    data: Optional[ApplicantResumeUpdateData] = Field(..., description="Resume data")
     files: Optional[List[PositiveInt]] = Field(
         [],
-        max_items=1,
+        max_length=1,
         description="Upload files<br>" "List of file's ID attached to the applicant resume",
     )

@@ -79,14 +79,14 @@ async def test_list_account_division(
     divisions = AccountDivision(api_client)
 
     response = await divisions.list(ACCOUNT_ID, only_available=only_available)
-    assert response == DivisionsListResponse.parse_obj(ACCOUNT_DIVISIONS_LIST_RESPONSE)
+    assert response == DivisionsListResponse.model_validate(ACCOUNT_DIVISIONS_LIST_RESPONSE)
 
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/coworkers/{COWORKER_ID}/divisions",
         json=ACCOUNT_DIVISIONS_LIST_RESPONSE,
     )
     response = await divisions.list(ACCOUNT_ID, COWORKER_ID)
-    assert response == DivisionsListResponse.parse_obj(ACCOUNT_DIVISIONS_LIST_RESPONSE)
+    assert response == DivisionsListResponse.model_validate(ACCOUNT_DIVISIONS_LIST_RESPONSE)
 
     with pytest.raises(ValueError):
         await divisions.list(ACCOUNT_ID, 1, True)
@@ -102,6 +102,6 @@ async def test_create_account_division(
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     divisions = AccountDivision(api_client)
-    create_divisions_request = BatchDivisionsRequest.parse_obj(BATCH_ACCOUNT_DIVISIONS_REQUEST)
+    create_divisions_request = BatchDivisionsRequest.model_validate(BATCH_ACCOUNT_DIVISIONS_REQUEST)
     response = await divisions.create(ACCOUNT_ID, create_divisions_request)
-    assert response == BatchDivisionsResponse.parse_obj(BATCH_ACCOUNT_DIVISIONS_RESPONSE)
+    assert response == BatchDivisionsResponse.model_validate(BATCH_ACCOUNT_DIVISIONS_RESPONSE)

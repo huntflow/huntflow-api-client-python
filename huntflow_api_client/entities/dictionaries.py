@@ -26,7 +26,7 @@ class Dictionary(BaseEntity, UpdateEntityMixin, ListEntityMixin, CreateEntityMix
         """
         path = f"/accounts/{account_id}/dictionaries"
         response = await self._api.request("GET", path)
-        data = DictionariesListResponse.parse_obj(response.json())
+        data = DictionariesListResponse.model_validate(response.json())
         return data
 
     async def create(
@@ -44,7 +44,7 @@ class Dictionary(BaseEntity, UpdateEntityMixin, ListEntityMixin, CreateEntityMix
         """
         path = f"/accounts/{account_id}/dictionaries"
         response = await self._api.request("POST", path, json=data.jsonable_dict(exclude_none=True))
-        return DictionaryTaskResponse.parse_obj(response.json())
+        return DictionaryTaskResponse.model_validate(response.json())
 
     async def get(self, account_id: int, dict_code: str) -> DictionaryResponse:
         """
@@ -57,7 +57,7 @@ class Dictionary(BaseEntity, UpdateEntityMixin, ListEntityMixin, CreateEntityMix
         """
         path = f"/accounts/{account_id}/dictionaries/{dict_code}"
         response = await self._api.request("GET", path)
-        return DictionaryResponse.parse_obj(response.json())
+        return DictionaryResponse.model_validate(response.json())
 
     async def update(
         self,
@@ -76,4 +76,4 @@ class Dictionary(BaseEntity, UpdateEntityMixin, ListEntityMixin, CreateEntityMix
         """
         path = f"/accounts/{account_id}/dictionaries/{dict_code}"
         response = await self._api.request("PUT", path, json=data.jsonable_dict(exclude_none=True))
-        return DictionaryTaskResponse.parse_obj(response.json())
+        return DictionaryTaskResponse.model_validate(response.json())

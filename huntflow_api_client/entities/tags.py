@@ -26,7 +26,7 @@ class AccountTag(BaseEntity, CRUDEntityMixin, ListEntityMixin):
         :return: The specified tag
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/tags/{account_tag_id}")
-        return AccountTagResponse(**response.json())
+        return AccountTagResponse.model_validate(response.json())
 
     async def create(
         self,
@@ -45,7 +45,7 @@ class AccountTag(BaseEntity, CRUDEntityMixin, ListEntityMixin):
             f"/accounts/{account_id}/tags",
             json=account_tag.jsonable_dict(exclude_none=True),
         )
-        return AccountTagResponse(**response.json())
+        return AccountTagResponse.model_validate(response.json())
 
     async def update(
         self,
@@ -67,7 +67,7 @@ class AccountTag(BaseEntity, CRUDEntityMixin, ListEntityMixin):
             f"/accounts/{account_id}/tags/{account_tag_id}",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return AccountTagResponse(**response.json())
+        return AccountTagResponse.model_validate(response.json())
 
     async def delete(self, account_id: int, account_tag_id: int) -> None:
         """
@@ -90,7 +90,7 @@ class AccountTag(BaseEntity, CRUDEntityMixin, ListEntityMixin):
         :return: List of tags in the organization.
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/tags")
-        return AccountTagsListResponse(**response.json())
+        return AccountTagsListResponse.model_validate(response.json())
 
 
 class ApplicantTag(BaseEntity, UpdateEntityMixin, ListEntityMixin):
@@ -114,7 +114,7 @@ class ApplicantTag(BaseEntity, UpdateEntityMixin, ListEntityMixin):
             f"/accounts/{account_id}/applicants/{applicant_id}/tags",
             json=data.jsonable_dict(exclude_none=True),
         )
-        return ApplicantTagsListResponse(**response.json())
+        return ApplicantTagsListResponse.model_validate(response.json())
 
     async def list(self, account_id: int, applicant_id: int) -> ApplicantTagsListResponse:
         """
@@ -129,4 +129,4 @@ class ApplicantTag(BaseEntity, UpdateEntityMixin, ListEntityMixin):
             "GET",
             f"/accounts/{account_id}/applicants/{applicant_id}/tags",
         )
-        return ApplicantTagsListResponse(**response.json())
+        return ApplicantTagsListResponse.model_validate(response.json())

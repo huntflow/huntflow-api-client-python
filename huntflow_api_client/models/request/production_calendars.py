@@ -1,7 +1,7 @@
 from datetime import date
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, RootModel
 
 
 class NonWorkingDays(BaseModel):
@@ -9,8 +9,8 @@ class NonWorkingDays(BaseModel):
     start: Optional[date] = Field(None, description="Start date")
 
 
-class NonWorkingDaysBulkRequest(BaseModel):
-    __root__: List[NonWorkingDays]
+class NonWorkingDaysBulkRequest(RootModel):
+    root: List[NonWorkingDays]
 
 
 class DeadLineDate(BaseModel):
@@ -18,8 +18,8 @@ class DeadLineDate(BaseModel):
     start: Optional[date] = Field(None, description="A date to start counting. Default is today")
 
 
-class DeadLineDatesBulkRequest(BaseModel):
-    __root__: List[DeadLineDate]
+class DeadLineDatesBulkRequest(RootModel):
+    root: List[DeadLineDate]
 
 
 class StartDate(BaseModel):
@@ -30,5 +30,5 @@ class StartDate(BaseModel):
     )
 
 
-class StartDatesBulkRequest(BaseModel):
-    __root__: List[StartDate]
+class StartDatesBulkRequest(RootModel):
+    root: List[StartDate]

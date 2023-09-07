@@ -1,6 +1,6 @@
 import typing as t
 
-from pydantic import BaseModel, EmailStr, Extra, Field, PositiveInt
+from pydantic import BaseModel, EmailStr, Field, PositiveInt
 
 from huntflow_api_client.models.common import JsonRequestModel
 
@@ -36,7 +36,7 @@ class CreateVacancyRequestRequest(JsonRequestModel):
         max_length=255,
         description="The name of the vacancy (occupation)",
     )
-    money: t.Optional[str] = Field(None, description="Salary", example="$10000")
+    money: t.Optional[str] = Field(None, description="Salary")
     attendees: t.Optional[t.List[VacancyRequestAttendee]] = Field(
         None,
         description="List of people to send a request for approval",
@@ -46,5 +46,5 @@ class CreateVacancyRequestRequest(JsonRequestModel):
         description="List of file IDs to attach to the vacancy request.",
     )
 
-    class Config:
-        extra = Extra.allow
+    class ConfigDict:
+        extra = "allow"

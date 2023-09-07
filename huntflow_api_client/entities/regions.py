@@ -11,4 +11,4 @@ class Region(BaseEntity, ListEntityMixin):
         :return: List of organization regions
         """
         response = await self._api.request("GET", f"/accounts/{account_id}/regions")
-        return RegionsListResponse.parse_obj(response.json())
+        return RegionsListResponse.model_validate(response.json())

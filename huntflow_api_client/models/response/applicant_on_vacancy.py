@@ -11,7 +11,7 @@ class AddApplicantToVacancyResponse(BaseModel):
     status: int = Field(..., description="Vacancy status ID")
     rejection_reason: Optional[int] = Field(None, description="Rejection reason ID")
 
-    class Config:
+    class ConfigDict:
         allow_population_by_field_name = True
 
 
@@ -22,5 +22,5 @@ class ApplicantVacancySplitResponse(BaseModel):
     vacancy_id: int = Field(..., alias="vacancy", description="Child vacancy ID")
     parent_vacancy_id: int = Field(..., alias="vacancy_parent", description="Parent vacancy ID")
 
-    class Config:
+    class ConfigDict:
         allow_population_by_field_name = True

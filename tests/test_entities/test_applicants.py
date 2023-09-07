@@ -371,7 +371,7 @@ async def test_applicant_search_by_cursor(
         vacancy=[],
         account_source=[1],
     )
-    assert response == ApplicantSearchByCursorResponse.parse_obj(
+    assert response == ApplicantSearchByCursorResponse.model_validate(
         APPLICANT_SEARCH_BY_CURSOR_RESPONSE,
     )
     next_page_cursor = response.next_page_cursor
@@ -382,6 +382,6 @@ async def test_applicant_search_by_cursor(
         json=APPLICANT_SEARCH_BY_CURSOR_RESPONSE,
     )
     response = await applicants.search_by_cursor(ACCOUNT_ID, next_page_cursor=next_page_cursor)
-    assert response == ApplicantSearchByCursorResponse.parse_obj(
+    assert response == ApplicantSearchByCursorResponse.model_validate(
         APPLICANT_SEARCH_BY_CURSOR_RESPONSE,
     )

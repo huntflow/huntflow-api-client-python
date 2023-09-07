@@ -38,4 +38,4 @@ class ActionLog(BaseEntity, ListEntityMixin):
             f"/accounts/{account_id}/action_logs",
             params=params,
         )
-        return ActionLogsResponse.parse_obj(response.json())
+        return ActionLogsResponse.model_validate(response.json())

@@ -25,7 +25,7 @@ class ApplicantLink(BaseModel):
     )
     vacancy_id: int = Field(..., alias="vacancy", description="Vacancy ID")
 
-    class Config:
+    class ConfigDict:
         allow_population_by_field_name = True
 
 
@@ -71,7 +71,7 @@ class ApplicantItem(Applicant):
     )
     birthday: Optional[date] = Field(None, description="Date of birth")
     created: Optional[datetime] = Field(
-        ...,
+        None,
         description="Date and time of adding an applicant",
     )
     email: Union[EmailStr, str, None] = Field(
