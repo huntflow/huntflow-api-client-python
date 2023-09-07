@@ -12,15 +12,15 @@ from huntflow_api_client.models.consts import (
     VacancyState,
 )
 
-IncEx: typing_extensions.TypeAlias = "Set[int] | Set[str] | Dict[int, Any] | Dict[str, Any] | None"
+_FieldSet: typing_extensions.TypeAlias = "Set[int] | Set[str] | Dict[int, Any] | Dict[str, Any]"
 
 
 class JsonRequestModel(BaseModel):
     def jsonable_dict(
         self,
         *,
-        include: IncEx = None,
-        exclude: IncEx = None,
+        include: Optional[_FieldSet] = None,
+        exclude: Optional[_FieldSet] = None,
         by_alias: bool = False,
         exclude_unset: bool = False,
         exclude_defaults: bool = False,
