@@ -90,7 +90,7 @@ class ApplicantItem(Applicant):
 
 
 class ApplicantListResponse(PaginatedResponse):
-    total_items: Optional[int] = Field(None, description="Total number of items")
+    total_items: Optional[int] = Field(..., description="Total number of items")
     items: List[ApplicantItem] = Field(..., description="List of applicants")
 
 

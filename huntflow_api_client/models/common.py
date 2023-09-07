@@ -29,17 +29,18 @@ class JsonRequestModel(BaseModel):
         round_trip: bool = False,
         warnings: bool = True,
     ) -> Dict[str, Any]:
-        params = {
-            "include": include,
-            "exclude": exclude,
-            "by_alias": by_alias,
-            "exclude_unset": exclude_unset,
-            "exclude_defaults": exclude_defaults,
-            "exclude_none": exclude_none,
-            "round_trip": round_trip,
-            "warnings": warnings,
-        }
-        return json.loads(self.model_dump_json(**params))  # type: ignore
+        return json.loads(
+            self.model_dump_json(
+                include=include,
+                exclude=exclude,
+                by_alias=by_alias,
+                exclude_unset=exclude_unset,
+                exclude_defaults=exclude_defaults,
+                exclude_none=exclude_none,
+                round_trip=round_trip,
+                warnings=warnings,
+            )
+        )  # type: ignore
 
 
 class PaginatedResponse(BaseModel):
