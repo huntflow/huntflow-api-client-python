@@ -1,8 +1,9 @@
 import json
 from datetime import date, datetime
-from typing import AbstractSet, Any, Dict, List, Mapping, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import AnyHttpUrl, BaseModel, EmailStr, Field, PositiveInt
+from pydantic.main import IncEx
 
 from huntflow_api_client.models.consts import (
     CalendarEventReminderMethod,
@@ -11,17 +12,13 @@ from huntflow_api_client.models.consts import (
     VacancyState,
 )
 
-IntStr = Union[int, str]
-AbstractSetIntStr = AbstractSet[IntStr]
-MappingIntStrAny = Mapping[IntStr, Any]
-
 
 class JsonRequestModel(BaseModel):
     def jsonable_dict(
         self,
         *,
-        include: Optional[Union[AbstractSetIntStr, MappingIntStrAny]] = None,
-        exclude: Optional[Union[AbstractSetIntStr, MappingIntStrAny]] = None,
+        include: IncEx = None,
+        exclude: IncEx = None,
         by_alias: bool = False,
         exclude_unset: bool = False,
         exclude_defaults: bool = False,
@@ -40,7 +37,7 @@ class JsonRequestModel(BaseModel):
                 round_trip=round_trip,
                 warnings=warnings,
             ),
-        )  # type: ignore
+        )
 
 
 class PaginatedResponse(BaseModel):
