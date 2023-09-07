@@ -94,7 +94,7 @@ class UsersManagement(BaseEntity):
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/users/foreign",
-            data=data.model_dump_json(),
+            content=data.model_dump_json(),
         )
         return CreatedUserControlTaskResponse.model_validate(response.json())
 
@@ -151,6 +151,6 @@ class UsersManagement(BaseEntity):
         response = await self._api.request(
             "PUT",
             f"/accounts/{account_id}/users/foreign/{foreign_user_id}",
-            data=data.model_dump_json(),
+            content=data.model_dump_json(),
         )
         return CreatedUserControlTaskResponse.model_validate(response.json())
