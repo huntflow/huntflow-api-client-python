@@ -39,7 +39,7 @@ class JsonRequestModel(BaseModel):
                 exclude_none=exclude_none,
                 round_trip=round_trip,
                 warnings=warnings,
-            )
+            ),
         )  # type: ignore
 
 
