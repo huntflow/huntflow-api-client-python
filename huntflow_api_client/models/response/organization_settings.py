@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
-from huntflow_api_client.models.consts import SurveyTypesEnum
+from huntflow_api_client.models.consts import SurveyType
 
 
 class HoldReason(BaseModel):
@@ -27,7 +27,7 @@ class CloseReasonsListResponse(BaseModel):
 class BaseSurveySchemaType(BaseModel):
     id: int = Field(..., description="Survey ID")
     name: str = Field(..., description="Survey name")
-    type: SurveyTypesEnum = Field(..., description="Type of survey")
+    type: SurveyType = Field(..., description="Type of survey")
     active: bool = Field(..., description="Is survey active?")
     created: datetime = Field(..., description="Date and time of creating a survey")
     updated: datetime = Field(..., description="Date and time of the last update of the survey")

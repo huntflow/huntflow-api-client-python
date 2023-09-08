@@ -240,3 +240,11 @@ class CalendarEventAttendee(BaseModel):
 
     class ConfigDict:
         allow_population_by_field_name = True
+
+
+class SurveyQuestionaryRespondent(BaseModel):
+    applicant_id: int = Field(..., description="Applicant ID")
+
+
+class SurveyQuestionaryRespondentWithName(SurveyQuestionaryRespondent):
+    name: str = Field(..., description="Applicant name")
