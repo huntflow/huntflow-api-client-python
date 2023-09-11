@@ -23,6 +23,7 @@ from huntflow_api_client.entities.resume import Resume
 from huntflow_api_client.entities.tags import AccountTag, ApplicantTag
 from huntflow_api_client.entities.user_settings import UserSettings
 from huntflow_api_client.entities.users import User
+from huntflow_api_client.entities.users_management import UsersManagement
 from huntflow_api_client.entities.vacancies import Vacancy
 from huntflow_api_client.entities.vacancy_requests import VacancyRequest
 from huntflow_api_client.entities.webhooks import Webhook
@@ -53,6 +54,7 @@ __all__ = (
     "RejectionReason",
     "Resume",
     "User",
+    "UsersManagement",
     "UserSettings",
     "Vacancy",
     "VacancyRequest",
