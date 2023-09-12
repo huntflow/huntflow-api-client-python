@@ -20,6 +20,7 @@ from huntflow_api_client.entities.questionary import ApplicantsQuestionary
 from huntflow_api_client.entities.regions import Region
 from huntflow_api_client.entities.rejection_reason import RejectionReason
 from huntflow_api_client.entities.resume import Resume
+from huntflow_api_client.entities.survey_type_q import SurveyTypeQ
 from huntflow_api_client.entities.tags import AccountTag, ApplicantTag
 from huntflow_api_client.entities.user_settings import UserSettings
 from huntflow_api_client.entities.users import User
@@ -59,4 +60,5 @@ __all__ = (
     "Vacancy",
     "VacancyRequest",
     "Webhook",
+    "SurveyTypeQ",
 )

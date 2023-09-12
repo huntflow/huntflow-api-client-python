@@ -129,11 +129,6 @@ class PrecisionTypes(str, Enum):
     day = "day"
 
 
-class SurveyType(str, Enum):
-    TYPE_A = "type_a"
-    TYPE_Q = "type_q"
-
-
 class ActionLogType(str, Enum):
     SUCCESS_LOGIN = "SUCCESS_LOGIN"
     FAILED_LOGIN = "FAILED_LOGIN"
@@ -145,7 +140,7 @@ class ActionLogType(str, Enum):
     DOWNLOAD_APPLICANTS = "DOWNLOAD_APPLICANTS"
 
 
-class SurveyTypesEnum(str, Enum):
+class SurveyType(str, Enum):
     TYPE_A = "type_a"
     TYPE_Q = "type_q"
 

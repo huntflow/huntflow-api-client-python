@@ -243,6 +243,14 @@ class CalendarEventAttendee(BaseModel):
         allow_population_by_field_name = True
 
 
+class SurveyQuestionaryRespondent(BaseModel):
+    applicant_id: int = Field(..., description="Applicant ID")
+
+
+class SurveyQuestionaryRespondentWithName(SurveyQuestionaryRespondent):
+    name: str = Field(..., description="Applicant name")
+
+
 class ForeignUser(BaseModel):
     id: str = Field(..., description="Foreign User ID")
     name: str = Field(..., description="User name")
