@@ -148,3 +148,15 @@ class ActionLogType(str, Enum):
 class SurveyTypesEnum(str, Enum):
     TYPE_A = "type_a"
     TYPE_Q = "type_q"
+
+
+class UserControlTaskAction(str, Enum):
+    CREATE = "CREATE"
+    UPDATE = "UPDATE"
+    DELETE = "DELETE"
+
+
+class UserControlTaskStatus(str, Enum):
+    PENDING = "PENDING"
+    SUCCESS = "SUCCESS"
+    FAILED = "FAILED"

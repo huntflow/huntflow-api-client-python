@@ -9,6 +9,7 @@ from huntflow_api_client.models.consts import (
     CalendarEventReminderMethod,
     EmailContactType,
     EventReminderMultiplier,
+    MemberType,
     VacancyState,
 )
 
@@ -240,3 +241,24 @@ class CalendarEventAttendee(BaseModel):
 
     class ConfigDict:
         allow_population_by_field_name = True
+
+
+class ForeignUser(BaseModel):
+    id: str = Field(..., description="Foreign User ID")
+    name: str = Field(..., description="User name")
+    email: EmailStr = Field(..., description="Email")
+    type: MemberType = Field(..., description="User type (role)")
+
+    head_id: Optional[str] = Field(None, description="Foreign user ID of head")
+    division_ids: Optional[List[str]] = Field(
+        None,
+        description="Foreign IDs of available divisions, case insensitive. "
+        "If field is not provided, contains null or empty list, "
+        "it means access to all divisions",
+    )
+    permissions: Optional[List[str]] = Field(
+        None,
+        description="User permissions. If field is not provided, "
+        "contains null or empty list, it means no restrictions",
+    )
+    meta: Optional[Dict] = Field(None, description="Additional meta information")
