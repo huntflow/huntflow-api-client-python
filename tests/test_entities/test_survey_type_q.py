@@ -37,24 +37,24 @@ SURVEY_QUESTIONARY_SCHEMA_RESPONSE = {
     "schema": {
         "type": "object",
         "required": [],
-        "properties": {"nLfFauQOra_3hDAXJ3Gct": {"type": "string", "title": "test"}},
+        "properties": {"nLfFauQOra_3hDAXJ3Gct": {"type": "string", "title": "text"}},
         "additionalProperties": False,
     },
     "ui_schema": {
         "ui:order": ["nLfFauQOra_3hDAXJ3Gct"],
         "nLfFauQOra_3hDAXJ3Gct": {
             "ui:widget": "TextWidget",
-            "ui:description": "test",
-            "ui:placeholder": "test",
+            "ui:description": "text",
+            "ui:placeholder": "text",
         },
     },
-    "title": "test",
+    "title": "text",
 }
 
 APPLICANT_SURVEY_QUESTIONARY_RESPONSE = {
     "id": 1,
     "created": "2023-09-08T17:51:12+03:00",
-    "created_by": {"account_id": 47, "name": "API: tt"},
+    "created_by": {"account_id": 47, "name": "API: test"},
     "survey": {
         "id": 28,
         "name": "test",
@@ -72,15 +72,15 @@ APPLICANT_SURVEY_QUESTIONARY_RESPONSE = {
             "ui:order": ["nLfFauQOra_3hDAXJ3Gct"],
             "nLfFauQOra_3hDAXJ3Gct": {
                 "ui:widget": "TextWidget",
-                "ui:description": "test",
-                "ui:placeholder": "test",
+                "ui:description": "text",
+                "ui:placeholder": "text",
             },
         },
-        "title": "test",
+        "title": "text",
     },
-    "respondent": {"applicant_id": 30, "name": "Glibin Vitaly"},
+    "respondent": {"applicant_id": 30, "name": "John Doe"},
     "survey_answer_id": None,
-    "link": "https://int-293.huntflow.dev",
+    "link": "https://huntflow.ai/",
 }
 
 SURVEY_QUESTIONARY_CREATE_REQUEST = {"survey_id": 28, "respondent": {"applicant_id": 30}}
@@ -90,7 +90,7 @@ SURVEY_QUESTIONARY_ANSWER_RESPONSE = {
     "created": "2023-02-02 12:34:56",
     "survey": {
         "title": "test",
-        "name": "Анкета для кандидата",
+        "name": "questionary",
         "id": 123,
         "type": "type_q",
         "active": True,
@@ -104,21 +104,21 @@ SURVEY_QUESTIONARY_ANSWER_RESPONSE = {
                 "Xh6atn8xwSAt1i33jV4fZ": {
                     "type": "number",
                     "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                    "title": "Оцените качество изображения",
+                    "title": "text",
                     "metadata": {
                         "files": [
                             {
                                 "content_type": "image/jpeg",
                                 "id": 77,
                                 "name": "0.jpg",
-                                "url": "https://prod-607-store.huntflow.dev",
+                                "url": "https://huntflow.ai/file",
                             },
                         ],
                     },
                 },
                 "SdER2dgf5Fsddf6SfgZkG": {
                     "type": "array",
-                    "title": "а это поле 'прикреплённый(е) файл(ы)'",
+                    "title": "text",
                     "items": {"type": "number"},
                 },
             },
@@ -127,19 +127,19 @@ SURVEY_QUESTIONARY_ANSWER_RESPONSE = {
             "ui:order": ["Xh6atn8xwSAt1i33jV4fZ", "SdER2dgf5Fsddf6SfgZkG"],
             "Xh6atn8xwSAt1i33jV4fZ": {
                 "ui:widget": "RatingRadioWidget",
-                "ui:description": "Оцените качество изображения",
+                "ui:description": "text",
             },
             "SdER2dgf5Fsddf6SfgZkG": {
                 "ui:widget": "AttachFileWidget",
-                "ui:description": "Прикрепите файлы с ответами",
+                "ui:description": "text",
             },
         },
     },
-    "respondent": {"applicant_id": 456, "name": "Петров Петр Петрович"},
+    "respondent": {"applicant_id": 456, "name": "Applicant Name"},
     "survey_questionary": {
         "id": 732,
         "created": "2023-01-01 11:22:33",
-        "created_by": {"account_id": 1, "name": "Васильев Василий"},
+        "created_by": {"account_id": 1, "name": "Creator Name"},
     },
     "data": {
         "Xh6atn8xwSAt1i33jV4fZ": 4,
@@ -148,13 +148,13 @@ SURVEY_QUESTIONARY_ANSWER_RESPONSE = {
                 "content_type": "image/jpeg",
                 "id": 98,
                 "name": "2.jpg",
-                "url": "https://prod-607-store.huntflow.dev/uploads3",
+                "url": "https://huntflow.ai/uploads3",
             },
             {
                 "content_type": "image/jpeg",
                 "id": 99,
                 "name": "3.jpg",
-                "url": "https://prod-607-store.huntflow.dev/uploads3/na",
+                "url": "https://huntflow.ai/uploads3/na",
             },
         ],
     },
