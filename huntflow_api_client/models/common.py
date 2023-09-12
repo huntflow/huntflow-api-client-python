@@ -250,6 +250,7 @@ class SurveyQuestionaryRespondent(BaseModel):
 class SurveyQuestionaryRespondentWithName(SurveyQuestionaryRespondent):
     name: str = Field(..., description="Applicant name")
 
+
 class ForeignUser(BaseModel):
     id: str = Field(..., description="Foreign User ID")
     name: str = Field(..., description="User name")
