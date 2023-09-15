@@ -1,6 +1,6 @@
 import typing as t
 
-from pydantic import BaseModel, EmailStr, Field, PositiveInt
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, PositiveInt
 
 from huntflow_api_client.models.common import JsonRequestModel
 
@@ -46,5 +46,4 @@ class CreateVacancyRequestRequest(JsonRequestModel):
         description="List of file IDs to attach to the vacancy request.",
     )
 
-    class ConfigDict:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")

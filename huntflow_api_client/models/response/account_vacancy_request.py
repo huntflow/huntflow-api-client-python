@@ -1,6 +1,6 @@
 import typing as t
 
-from pydantic import BaseModel, Field, PositiveInt
+from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.consts import FieldType
 
@@ -21,8 +21,7 @@ class AccountVacancyRequestSchemaField(BaseModel):
         description="Nested fields",
     )
 
-    class ConfigDict:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")
 
 
 class AccountVacancyRequestResponse(BaseModel):

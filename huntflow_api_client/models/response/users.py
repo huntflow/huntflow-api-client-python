@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from huntflow_api_client.models.consts import MemberType
 from huntflow_api_client.models.response.coworkers import Permission
@@ -15,5 +15,4 @@ class UserResponse(BaseModel):
     meta: Optional[dict] = Field(None, description="Additional meta information")
     permissions: List[Permission] = Field(default_factory=list, description="User permissions")
 
-    class ConfigDict:
-        allow_population_by_field_name = True
+    model_config = ConfigDict(populate_by_name=True)

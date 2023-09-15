@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import Field, field_validator
+from pydantic import ConfigDict, Field, field_validator
 
 from huntflow_api_client.models.common import JsonRequestModel
 
@@ -32,5 +32,4 @@ class UploadFileHeaders(JsonRequestModel):
     def convert_bool_to_str(cls, value: bool) -> str:
         return str(value).lower()
 
-    class ConfigDict:
-        allow_population_by_field_name = True
+    model_config = ConfigDict(populate_by_name=True)

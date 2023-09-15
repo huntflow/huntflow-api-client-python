@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class AddApplicantToVacancyResponse(BaseModel):
@@ -11,8 +11,7 @@ class AddApplicantToVacancyResponse(BaseModel):
     status: int = Field(..., description="Vacancy status ID")
     rejection_reason: Optional[int] = Field(None, description="Rejection reason ID")
 
-    class ConfigDict:
-        allow_population_by_field_name = True
+    model_config = ConfigDict(populate_by_name=True)
 
 
 class ApplicantVacancySplitResponse(BaseModel):
@@ -22,5 +21,4 @@ class ApplicantVacancySplitResponse(BaseModel):
     vacancy_id: int = Field(..., alias="vacancy", description="Child vacancy ID")
     parent_vacancy_id: int = Field(..., alias="vacancy_parent", description="Parent vacancy ID")
 
-    class ConfigDict:
-        allow_population_by_field_name = True
+    model_config = ConfigDict(populate_by_name=True)
