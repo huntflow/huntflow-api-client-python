@@ -1,6 +1,6 @@
 import typing as t
 
-from pydantic import BaseModel, Field, RootModel
+from pydantic import BaseModel, ConfigDict, Field, RootModel
 
 from huntflow_api_client.models.consts import FieldType
 
@@ -30,8 +30,7 @@ class QuestionaryField(BaseModel):
         description="Organization dictionary name (for type=dictionary)",
     )
 
-    class ConfigDict:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")
 
 
 class QuestionarySchemaResponse(RootModel):

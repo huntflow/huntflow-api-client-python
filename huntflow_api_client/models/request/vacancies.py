@@ -2,7 +2,7 @@ import datetime
 from enum import Enum
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, Field, PositiveInt
+from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.common import EditedFillQuota, FillQuota, JsonRequestModel, Vacancy
 
@@ -54,8 +54,7 @@ class VacancyCreateRequest(Vacancy, JsonRequestModel):
     )
     fill_quotas: List[FillQuota] = Field(..., max_length=1, description="Fill quota ID")
 
-    class ConfigDict:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")
 
 
 class VacancyUpdateRequest(Vacancy, JsonRequestModel):
@@ -85,8 +84,7 @@ class VacancyUpdateRequest(Vacancy, JsonRequestModel):
         description="Vacancy close reason ID",
     )
 
-    class ConfigDict:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")
 
 
 class VacancyUpdatePartialRequest(VacancyUpdateRequest):

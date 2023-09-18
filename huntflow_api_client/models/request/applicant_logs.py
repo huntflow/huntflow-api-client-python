@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, PositiveInt
+from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.common import (
     ApplicantLogEmail,
@@ -55,5 +55,4 @@ class CreateApplicantLogRequest(JsonRequestModel):
     sms: Optional[ApplicantLogSms] = Field(None, description="SMS message")
     survey_questionary_id: Optional[int] = Field(None, description="Survey questionary ID")
 
-    class ConfigDict:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")

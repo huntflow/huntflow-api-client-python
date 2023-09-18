@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, PositiveInt
+from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.common import EditedFillQuota, FillQuota, JsonRequestModel
 from huntflow_api_client.models.request.vacancies import VacancyCreateState, VacancyUpdateState
@@ -18,8 +18,7 @@ class VacancyBlock(BaseModel):
         le=1,
     )
 
-    class ConfigDict:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")
 
 
 class MultiVacancyCreateRequest(JsonRequestModel):
@@ -58,8 +57,7 @@ class MultiVacancyCreateRequest(JsonRequestModel):
     )
     blocks: List[VacancyBlock] = Field(..., description="List of sub-vacancies for a multivacancy")
 
-    class ConfigDict:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")
 
 
 class VacancyBlockUpdate(VacancyBlock):
@@ -101,8 +99,7 @@ class MultiVacancyUpdateRequest(JsonRequestModel):
         description="List of sub-vacancies for a multivacancy",
     )
 
-    class ConfigDict:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")
 
 
 class VacancyBlockUpdatePartial(VacancyBlockUpdate):

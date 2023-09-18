@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, EmailStr, Field, PositiveInt
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, PositiveInt
 
 from huntflow_api_client.models.common import Applicant, PaginatedResponse
 from huntflow_api_client.models.consts import AgreementState as AgreementStateEnum
@@ -25,8 +25,7 @@ class ApplicantLink(BaseModel):
     )
     vacancy_id: int = Field(..., alias="vacancy", description="Vacancy ID")
 
-    class ConfigDict:
-        allow_population_by_field_name = True
+    model_config = ConfigDict(populate_by_name=True)
 
 
 class ApplicantResume(BaseModel):

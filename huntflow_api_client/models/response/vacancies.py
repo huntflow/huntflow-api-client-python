@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, Field, PositiveInt, RootModel
+from pydantic import BaseModel, ConfigDict, Field, PositiveInt, RootModel
 
 from huntflow_api_client.models.common import File, PaginatedResponse, Vacancy, VacancyQuotaItem
 from huntflow_api_client.models.consts import FieldType
@@ -24,8 +24,7 @@ class AccountVacancyRequestSchemaField(BaseModel):
         alias="fields",
     )
 
-    class ConfigDict:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")
 
 
 class AdditionalFieldsSchemaResponse(RootModel):
@@ -49,8 +48,7 @@ class VacancyItem(Vacancy):
         description="Vacancy status group ID",
     )
 
-    class ConfigDict:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")
 
     def dict(self, *args, **kwargs):  # type: ignore
         include = set(self.__fields__) | set(self.additional_fields_list)
@@ -91,8 +89,7 @@ class VacancyResponse(VacancyChild):
         description="Affiliate vacancies if vacancy is a multiple",
     )
 
-    class ConfigDict:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")
 
     def dict(self, *args, **kwargs):  # type: ignore
         include = set(self.__fields__) | set(self.additional_fields_list)
@@ -134,8 +131,7 @@ class VacancyCreateResponse(Vacancy):
         description="Vacancy request ID",
     )
 
-    class ConfigDict:
-        extra = "ignore"
+    model_config = ConfigDict(extra="ignore")
 
 
 class LastVacancyFrameResponse(BaseModel):

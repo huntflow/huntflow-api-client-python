@@ -3,7 +3,7 @@ from datetime import date, datetime
 from typing import Any, Dict, List, Optional, Set, Union
 
 import typing_extensions
-from pydantic import AnyHttpUrl, BaseModel, EmailStr, Field, PositiveInt
+from pydantic import AnyHttpUrl, BaseModel, ConfigDict, EmailStr, Field, PositiveInt
 
 from huntflow_api_client.models.consts import (
     CalendarEventReminderMethod,
@@ -239,8 +239,7 @@ class CalendarEventAttendee(BaseModel):
     name: Optional[str] = Field(None, description="Attendee name", alias="displayName")
     email: EmailStr = Field(..., description="Attendee email")
 
-    class ConfigDict:
-        allow_population_by_field_name = True
+    model_config = ConfigDict(populate_by_name=True)
 
 
 class SurveyQuestionaryRespondent(BaseModel):
