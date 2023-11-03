@@ -1,11 +1,11 @@
 from typing import Optional
 
-from pydantic import ConfigDict, Field, field_validator
+from pydantic import ConfigDict, Field
 
-from huntflow_api_client.models.common import JsonRequestModel
+from huntflow_api_client.models.common import RequestHeadersModel
 
 
-class UploadFileHeaders(JsonRequestModel):
+class UploadFileHeaders(RequestHeadersModel):
     file_parse: Optional[bool] = Field(
         None,
         description="File will be processed by the system of field recognition",
@@ -26,10 +26,5 @@ class UploadFileHeaders(JsonRequestModel):
         description="Phones to ignore",
         alias="x-ignore-phone",
     )
-
-    @field_validator("file_parse")
-    @classmethod
-    def convert_bool_to_str(cls, value: bool) -> str:
-        return str(value).lower()
 
     model_config = ConfigDict(populate_by_name=True)

@@ -84,7 +84,7 @@ class EducationInfoWithResult(BaseEducationInfo):
 
 class ExtendedEducationInfo(BaseEducationInfo):
     faculty: t.Optional[str] = Field(None, description="Faculty name")
-    form: t.Optional[ExternalEntity]
+    form: t.Optional[ExternalEntity] = None
 
 
 class Experience(BaseModel):
@@ -103,11 +103,11 @@ class Experience(BaseModel):
 
 
 class Attestation(BaseModel):
-    date: t.Optional[DateWithPrecision]
-    name: t.Optional[str]
-    organization: t.Optional[str]
-    description: t.Optional[str]
-    result: t.Optional[str]
+    date: t.Optional[DateWithPrecision] = None
+    name: t.Optional[str] = None
+    organization: t.Optional[str] = None
+    description: t.Optional[str] = None
+    result: t.Optional[str] = None
 
 
 class Education(BaseModel):
@@ -147,10 +147,10 @@ class Certificate(BaseModel):
 
 
 class ContactFullValue(BaseModel):
-    country: str = Field()
-    city: str = Field()
-    number: str = Field()
-    formatted: str = Field()
+    country: str
+    city: str
+    number: str
+    formatted: str
 
 
 class Contact(BaseModel):
@@ -213,11 +213,11 @@ class Military(BaseModel):
 
 
 class SocialRating(BaseModel):
-    kind: t.Optional[str]
-    stats: t.Optional[t.Any]
-    tags: t.Optional[t.List[str]]
-    url: t.Optional[str]
-    login: t.Optional[str]
+    kind: t.Optional[str] = None
+    stats: t.Optional[t.Any] = None
+    tags: t.Optional[t.List[str]] = None
+    url: t.Optional[str] = None
+    login: t.Optional[str] = None
     registered_at: t.Optional[str] = Field(None, description="ISO datetime")
 
 

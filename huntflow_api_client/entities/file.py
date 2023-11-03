@@ -31,6 +31,6 @@ class File(BaseEntity):
             f"/accounts/{account_id}/upload",
             files={"file": file},
             data=data,
-            headers=headers.jsonable_dict(exclude_none=True, by_alias=True),
+            headers=headers.header_dict(exclude_none=True, by_alias=True),
         )
         return UploadResponse.model_validate(response.json())

@@ -1,26 +1,10 @@
 import datetime
-from enum import Enum
 from typing import List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.common import EditedFillQuota, FillQuota, JsonRequestModel, Vacancy
-
-
-class VacancyListState(str, Enum):
-    OPEN = "OPEN"
-    CLOSED = "CLOSED"
-    HOLD = "HOLD"
-
-
-class VacancyUpdateState(str, Enum):
-    OPEN = "OPEN"
-    CLOSED = "CLOSED"
-    HOLD = "HOLD"
-
-
-class VacancyCreateState(str, Enum):
-    OPEN = "OPEN"
+from huntflow_api_client.models.consts import AvailableVacancyCreateState
 
 
 class VacancyCreateRequest(Vacancy, JsonRequestModel):
@@ -28,8 +12,8 @@ class VacancyCreateRequest(Vacancy, JsonRequestModel):
         None,
         description="Organization offer ID",
     )
-    state: VacancyCreateState = Field(  # type: ignore
-        VacancyCreateState.OPEN,
+    state: AvailableVacancyCreateState = Field(  # type: ignore
+        AvailableVacancyCreateState.OPEN,
         description="The state of a vacancy",
     )
     coworkers: Optional[List[PositiveInt]] = Field(

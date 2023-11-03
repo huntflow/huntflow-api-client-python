@@ -1,7 +1,7 @@
 
 [project]
 name = "huntflow-api-client"
-version = "0.1.1"
+version = "0.1.2"
 description = "Huntflow API Client for Python"
 authors = [
     {name = "Developers huntflow", email = "developer@huntflow.ru"},
@@ -29,7 +29,7 @@ build-backend = "pdm.backend"
 [tool.pdm.dev-dependencies]
 test = [
     "pytest>=7.3.1",
-    "pytest-httpx>=0.22.0",
+    "pytest-httpx==0.22.0",
     "respx>=0.20.1",
     "pytest-asyncio>=0.21.0",
     "freezegun>=1.2.2",

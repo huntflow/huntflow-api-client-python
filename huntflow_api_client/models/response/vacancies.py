@@ -40,7 +40,7 @@ class VacancyItem(Vacancy):
     )
     multiple: Optional[bool] = Field(
         None,
-        description="Flag indicating if this vacancy is a " "multiple",
+        description="Flag indicating if this vacancy is a multiple",
     )
     parent: Optional[PositiveInt] = Field(None, description="Vacancy parent ID")
     account_vacancy_status_group: Optional[PositiveInt] = Field(
@@ -49,10 +49,6 @@ class VacancyItem(Vacancy):
     )
 
     model_config = ConfigDict(extra="allow")
-
-    def dict(self, *args, **kwargs):  # type: ignore
-        include = set(self.__fields__) | set(self.additional_fields_list)
-        return super().dict(include=include)
 
 
 class VacancyListResponse(PaginatedResponse):
@@ -90,10 +86,6 @@ class VacancyResponse(VacancyChild):
     )
 
     model_config = ConfigDict(extra="allow")
-
-    def dict(self, *args, **kwargs):  # type: ignore
-        include = set(self.__fields__) | set(self.additional_fields_list)
-        return super().dict(include=include)
 
 
 class VacancyCreateResponse(Vacancy):

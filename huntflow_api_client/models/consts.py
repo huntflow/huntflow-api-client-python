@@ -25,6 +25,22 @@ class VacancyState(str, Enum):
     CREATED = "CREATED"
 
 
+class AvailableVacancyCreateState(str, Enum):
+    OPEN = "OPEN"
+
+
+class AvailableMultiVacancyUpdateState(str, Enum):
+    OPEN = "OPEN"
+    CLOSED = "CLOSED"
+    HOLD = "HOLD"
+
+
+class AvailableVacancyListParameter(str, Enum):
+    OPEN = "OPEN"
+    CLOSED = "CLOSED"
+    HOLD = "HOLD"
+
+
 class FieldType(str, Enum):
     string = "string"
     integer = "integer"
