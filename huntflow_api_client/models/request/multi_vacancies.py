@@ -3,7 +3,10 @@ from typing import List, Optional
 from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.common import EditedFillQuota, FillQuota, JsonRequestModel
-from huntflow_api_client.models.request.vacancies import VacancyCreateState, VacancyUpdateState
+from huntflow_api_client.models.consts import (
+    AvailableMultiVacancyUpdateState,
+    AvailableVacancyCreateState,
+)
 
 HTML_TAGS = "ul, ol, li, p, br, a, strong, em, u, b, i"
 
@@ -32,7 +35,10 @@ class MultiVacancyCreateRequest(JsonRequestModel):
         description="Department name (ignored if the divisions are enabled)",
     )
     hidden: bool = Field(False, description="Is the vacancy hidden from coworkers?")
-    state: VacancyCreateState = Field(VacancyCreateState.OPEN, description="The state of a vacancy")
+    state: AvailableVacancyCreateState = Field(
+        AvailableVacancyCreateState.OPEN,
+        description="The state of a vacancy",
+    )
     coworkers: Optional[List[PositiveInt]] = Field(
         None,
         description="The list of coworker ID working with a vacancy",
@@ -75,7 +81,10 @@ class MultiVacancyUpdateRequest(JsonRequestModel):
         description="Department name (ignored if the divisions are enabled)",
     )
     hidden: bool = Field(False, description="Is the vacancy hidden from coworkers?")
-    state: VacancyUpdateState = Field(VacancyUpdateState.OPEN, description="The state of a vacancy")
+    state: AvailableMultiVacancyUpdateState = Field(
+        AvailableMultiVacancyUpdateState.OPEN,
+        description="The state of a vacancy",
+    )
     body: Optional[str] = Field(
         None,
         description=(

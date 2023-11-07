@@ -6,11 +6,11 @@ from pytest_httpx import HTTPXMock
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.vacancies import Vacancy
 from huntflow_api_client.models.common import EditedFillQuota, FillQuota, StatusResponse
+from huntflow_api_client.models.consts import AvailableVacancyListParameter
 from huntflow_api_client.models.request.vacancies import (
     VacancyCloseRequest,
     VacancyCreateRequest,
     VacancyHoldRequest,
-    VacancyListState,
     VacancyMemberCreateRequest,
     VacancyUpdatePartialRequest,
     VacancyUpdateRequest,
@@ -299,7 +299,7 @@ async def test_list_vacancies(
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
 
-    state = [VacancyListState.OPEN.value, VacancyListState.HOLD.value]
+    state = [AvailableVacancyListParameter.OPEN.value, AvailableVacancyListParameter.HOLD.value]
     response = await vacancies.list(account_id=ACCOUNT_ID, state=state)
     assert response == VacancyListResponse(**GET_LIST_VACANCIES_RESPONSE)
 
