@@ -65,7 +65,7 @@ class Coworker(BaseEntity, ListEntityMixin, GetEntityMixin):
             params["vacancy_id"] = vacancy_id
         response = await self._api.request(
             "GET",
-            f"/accounts/{account_id}/coworkers",
+            f"/accounts/{account_id}/coworkers/{coworker_id}",
             params=params,
         )
         return CoworkerResponse.model_validate(response.json())
