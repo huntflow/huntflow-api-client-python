@@ -98,7 +98,11 @@ class UsersManagement(BaseEntity):
         )
         return CreatedUserControlTaskResponse.model_validate(response.json())
 
-    async def delete_user(self, account_id: int, foreign_user_id: str) -> None:
+    async def delete_user(
+        self,
+        account_id: int,
+        foreign_user_id: str,
+    ) -> CreatedUserControlTaskResponse:
         """
         API method reference
             https://api.huntflow.ai/v2/docs#delete-/accounts/-account_id-/users/foreign/-foreign_user_id-
@@ -106,10 +110,11 @@ class UsersManagement(BaseEntity):
         :param account_id: Organization ID
         :param foreign_user_id: Foreign ID of User
         """
-        await self._api.request(
+        response = await self._api.request(
             "DELETE",
             f"/accounts/{account_id}/users/foreign/{foreign_user_id}",
         )
+        return CreatedUserControlTaskResponse.model_validate(response.json())
 
     async def get_user_internal_id_by_foreign(
         self,

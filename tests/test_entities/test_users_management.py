@@ -58,7 +58,7 @@ GET_USER_CONTROL_TASK_RESPONSE: Dict[str, Any] = {
     "completed": "2020-01-01T00:00:00+03:00",
 }
 GET_USER_ID_BY_FOREIGN_RESPONSE: Dict[str, Any] = {"id": 12345}
-CREATE_USER_RESPONSE: Dict[str, Any] = {
+CREATE_USER_TASK_RESPONSE: Dict[str, Any] = {
     "task_id": TASK_ID,
     "action": "CREATE",
     "created": "2020-01-01T00:00:00+03:00",
@@ -142,12 +142,14 @@ async def test_delete_user(
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/users/foreign/{FOREIGN_USER_ID}",
-        status_code=204,
+        status_code=202,
+        json=CREATE_USER_TASK_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     users_management = UsersManagement(api_client)
 
-    await users_management.delete_user(ACCOUNT_ID, FOREIGN_USER_ID)
+    response = await users_management.delete_user(ACCOUNT_ID, FOREIGN_USER_ID)
+    assert response == CreatedUserControlTaskResponse(**CREATE_USER_TASK_RESPONSE)
 
 
 async def test_create_user(
@@ -156,7 +158,7 @@ async def test_create_user(
 ) -> None:
     httpx_mock.add_response(
         url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/users/foreign",
-        json=CREATE_USER_RESPONSE,
+        json=CREATE_USER_TASK_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     users_management = UsersManagement(api_client)
@@ -167,7 +169,7 @@ async def test_create_user(
         type=MemberType.owner,
     )
     response = await users_management.create_user(account_id=ACCOUNT_ID, data=data)
-    assert response == CreatedUserControlTaskResponse(**CREATE_USER_RESPONSE)
+    assert response == CreatedUserControlTaskResponse(**CREATE_USER_TASK_RESPONSE)
 
 
 async def test_update_user(
