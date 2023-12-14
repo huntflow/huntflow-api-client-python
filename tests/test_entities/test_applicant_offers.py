@@ -34,7 +34,10 @@ async def test_update(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/offers/{OFFER_ID}",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/applicants/{APPLICANT_ID}/offers/{OFFER_ID}"
+        ),
         json=OFFER_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -83,7 +86,10 @@ async def test_get_offer_pdf(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/offers/{OFFER_ID}/pdf",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/applicants/{APPLICANT_ID}/offers/{OFFER_ID}/pdf"
+        ),
         content=GET_PDF_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

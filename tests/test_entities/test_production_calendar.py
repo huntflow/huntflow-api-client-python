@@ -148,8 +148,10 @@ async def test_get_deadline_date_with_non_working_days(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/production_calendars/{CALENDAR_ID}/deadline/{DAYS_COUNT}?start="
-        f"{START_DATE}",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/production_calendars/{CALENDAR_ID}"
+            f"/deadline/{DAYS_COUNT}?start={START_DATE}"
+        ),
         json=DEADLINE_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -193,8 +195,10 @@ async def test_get_start_date_with_non_working_days(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/production_calendars/{CALENDAR_ID}/start/{DAYS_COUNT}?deadline="
-        f"{DEADLINE_DATE}",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/production_calendars"
+            f"/{CALENDAR_ID}/start/{DAYS_COUNT}?deadline={DEADLINE_DATE}"
+        ),
         json=DEADLINE_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

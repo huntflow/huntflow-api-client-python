@@ -400,7 +400,10 @@ async def test_assign_coworker(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/members/{COWORKER_ID}",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/vacancies/{VACANCY_ID}/members/{COWORKER_ID}"
+        ),
         json=ASSIGN_COWORKER_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -416,7 +419,10 @@ async def test_remove_coworker(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/members/{COWORKER_ID}",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/vacancies/{VACANCY_ID}/members/{COWORKER_ID}"
+        ),
         status_code=204,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -460,7 +466,10 @@ async def test_get_vacancy_quotas_in_frame(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/frames/{FRAME_ID}/quotas",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/vacancies/{VACANCY_ID}/frames/{FRAME_ID}/quotas"
+        ),
         json=VACANCY_QUOTAS_IN_FRAME_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -475,7 +484,10 @@ async def test_get_vacancy_quota_list(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/quotas?count=2&page=1",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/vacancies/{VACANCY_ID}/quotas?count=2&page=1"
+        ),
         json=VACANCY_QUOTAS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

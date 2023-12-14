@@ -71,7 +71,10 @@ async def test_get(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/coworkers/{COWORKER_ID}?vacancy_id={VACANCY_ID}",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/coworkers/{COWORKER_ID}?vacancy_id={VACANCY_ID}"
+        ),
         json=GET_COWORKER_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

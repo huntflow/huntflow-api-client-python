@@ -13,7 +13,7 @@ from huntflow_api_client.errors.errors import (
 from huntflow_api_client.tokens.locker import AsyncioLockLocker
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
-from tests.api import FakeAPIServer, TokenPair, BASE_URL
+from tests.api import BASE_URL, FakeAPIServer, TokenPair
 
 
 @respx.mock

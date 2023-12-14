@@ -310,7 +310,10 @@ async def test_get(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/externals/{EXTERNAL_ID}",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/applicants/{APPLICANT_ID}/externals/{EXTERNAL_ID}"
+        ),
         json=APPLICANT_RESUME_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -325,7 +328,10 @@ async def test_delete_resume(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/externals/{EXTERNAL_ID}",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/applicants/{APPLICANT_ID}/externals/{EXTERNAL_ID}"
+        ),
         status_code=204,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -339,7 +345,10 @@ async def test_update(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/externals/{EXTERNAL_ID}",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/applicants/{APPLICANT_ID}/externals/{EXTERNAL_ID}"
+        ),
         json=APPLICANT_RESUME_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

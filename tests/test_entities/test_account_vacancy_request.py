@@ -100,7 +100,10 @@ async def test_list_schemas(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/account_vacancy_requests?only_active=true",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            "/account_vacancy_requests?only_active=true"
+        ),
         json=VACANCY_REQUEST_SCHEMAS_LIST,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

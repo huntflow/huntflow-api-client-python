@@ -82,7 +82,10 @@ async def test_list_vacancy_request(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/vacancy_requests?page=1&&count=30&&values=false",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/vacancy_requests?page=1&&count=30&&values=false"
+        ),
         json=VACANCY_REQUEST_LIST_WITHOUT_VALUES,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

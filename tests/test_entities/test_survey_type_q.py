@@ -220,7 +220,10 @@ async def test_get_survey_questionary(
 ) -> None:
     questionary_id = 1
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/surveys/type_q/questionaries/{questionary_id}",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/surveys/type_q/questionaries/{questionary_id}"
+        ),
         json=APPLICANT_SURVEY_QUESTIONARY_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -238,7 +241,10 @@ async def test_delete_survey_questionary(
 ) -> None:
     questionary_id = 1
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/surveys/type_q/questionaries/{questionary_id}",
+        url=(
+            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"/surveys/type_q/questionaries/{questionary_id}"
+        ),
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     questionary = SurveyTypeQ(api_client)
