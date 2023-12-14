@@ -47,7 +47,6 @@ class Router:
 
 
 class FakeAPIServer:
-    base_url = BASE_URL_WITH_VERSION
     token_pair: TokenPair
     is_expired_token: bool
 
