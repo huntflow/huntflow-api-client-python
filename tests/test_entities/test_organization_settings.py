@@ -10,7 +10,7 @@ from huntflow_api_client.models.response.organization_settings import (
     HoldReasonsListResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, BASE_URL_WITH_VERSION
 
 ACCOUNT_ID = 1
 SURVEY_ID = 2
@@ -34,7 +34,7 @@ async def test_get_hold_reasons(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancy_hold_reasons",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/vacancy_hold_reasons",
         json=HOLD_REASONS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -49,7 +49,7 @@ async def test_get_close_reasons(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancy_close_reasons",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/vacancy_close_reasons",
         json=CLOSE_REASONS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -64,7 +64,7 @@ async def test_get_applicant_survey_form(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/surveys/type_a/{SURVEY_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/surveys/type_a/{SURVEY_ID}",
         json=SURVEY_FORM_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

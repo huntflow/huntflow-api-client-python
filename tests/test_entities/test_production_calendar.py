@@ -21,7 +21,7 @@ from huntflow_api_client.models.response.production_calendars import (
     NonWorkingDaysResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, BASE_URL_WITH_VERSION
 
 ACCOUNT_ID = 1
 CALENDAR_ID = 1
@@ -64,7 +64,7 @@ async def test_list_calendar(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/production_calendars",
+        url=f"{BASE_URL_WITH_VERSION}/production_calendars",
         json=CALENDAR_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -79,7 +79,7 @@ async def test_get_calendar(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/production_calendars/{CALENDAR_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/production_calendars/{CALENDAR_ID}",
         json=CALENDAR_GET_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -94,7 +94,7 @@ async def test_get_organizations_calendar(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/calendar",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/calendar",
         json=ORG_CALENDAR_GET_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -109,7 +109,7 @@ async def test_get_non_working_days_in_period(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/production_calendars/{CALENDAR_ID}/days/"
+        url=f"{BASE_URL_WITH_VERSION}/production_calendars/{CALENDAR_ID}/days/"
         f"{DEADLINE_DATE.strftime('%Y-%m-%d')}?verbose=true",
         json=NON_WORKING_DAYS_GET_RESPONSE,
     )
@@ -125,7 +125,7 @@ async def test_get_non_working_days_for_multiple_period(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/production_calendars/{CALENDAR_ID}/days",
+        url=f"{BASE_URL_WITH_VERSION}/production_calendars/{CALENDAR_ID}/days",
         json=MULTIPLE_NON_WORKING_DAYS_GET_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -148,7 +148,7 @@ async def test_get_deadline_date_with_non_working_days(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/production_calendars/{CALENDAR_ID}/deadline/{DAYS_COUNT}?start="
+        url=f"{BASE_URL_WITH_VERSION}/production_calendars/{CALENDAR_ID}/deadline/{DAYS_COUNT}?start="
         f"{START_DATE}",
         json=DEADLINE_RESPONSE,
     )
@@ -168,7 +168,7 @@ async def test_get_multiple_deadline_dates_with_non_working_days(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/production_calendars/{CALENDAR_ID}/deadline",
+        url=f"{BASE_URL_WITH_VERSION}/production_calendars/{CALENDAR_ID}/deadline",
         json=MULTIPLE_DEADLINE_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -193,7 +193,7 @@ async def test_get_start_date_with_non_working_days(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/production_calendars/{CALENDAR_ID}/start/{DAYS_COUNT}?deadline="
+        url=f"{BASE_URL_WITH_VERSION}/production_calendars/{CALENDAR_ID}/start/{DAYS_COUNT}?deadline="
         f"{DEADLINE_DATE}",
         json=DEADLINE_RESPONSE,
     )
@@ -213,7 +213,7 @@ async def test_get_multiple_start_dates_with_non_working_days(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/production_calendars/{CALENDAR_ID}/start",
+        url=f"{BASE_URL_WITH_VERSION}/production_calendars/{CALENDAR_ID}/start",
         json=MULTIPLE_START_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

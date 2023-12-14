@@ -14,7 +14,7 @@ from huntflow_api_client.models.response.users_management import (
     UserInternalIDResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, BASE_URL_WITH_VERSION
 
 ACCOUNT_ID = 1
 FOREIGN_USER_ID = "some_foreign_id"
@@ -75,7 +75,7 @@ async def test_get_users_with_foreign(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/users/foreign?count=30&page=1",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/users/foreign?count=30&page=1",
         json=GET_USERS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -90,7 +90,7 @@ async def test_get_user_by_foreign(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/users/foreign/{FOREIGN_USER_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/users/foreign/{FOREIGN_USER_ID}",
         json=GET_USER_BY_FOREIGN_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -108,7 +108,7 @@ async def test_get_user_control_task(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/users/foreign/task/{TASK_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/users/foreign/task/{TASK_ID}",
         json=GET_USER_CONTROL_TASK_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -123,7 +123,7 @@ async def test_get_user_internal_id_by_foreign(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/users/foreign/{FOREIGN_USER_ID}/id",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/users/foreign/{FOREIGN_USER_ID}/id",
         json=GET_USER_ID_BY_FOREIGN_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -141,7 +141,7 @@ async def test_delete_user(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/users/foreign/{FOREIGN_USER_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/users/foreign/{FOREIGN_USER_ID}",
         status_code=202,
         json=CREATE_USER_TASK_RESPONSE,
     )
@@ -157,7 +157,7 @@ async def test_create_user(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/users/foreign",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/users/foreign",
         json=CREATE_USER_TASK_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -177,7 +177,7 @@ async def test_update_user(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/users/foreign/{FOREIGN_USER_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/users/foreign/{FOREIGN_USER_ID}",
         json=UPDATE_USER_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

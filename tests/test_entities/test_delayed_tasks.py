@@ -4,7 +4,7 @@ from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities import DelayedTask
 from huntflow_api_client.models.response.delayed_tasks import DelayedTaskResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, BASE_URL_WITH_VERSION
 
 DELAYED_TASKS_RESPONSE = {
     "task_id": "1882e199-a310-4000-8706-490f0822fa01",
@@ -33,7 +33,7 @@ async def test_get_delayed_task(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/delayed_tasks/{TASK_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/delayed_tasks/{TASK_ID}",
         json=DELAYED_TASKS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

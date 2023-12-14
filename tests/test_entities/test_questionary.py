@@ -6,7 +6,7 @@ from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities import ApplicantsQuestionary
 from huntflow_api_client.models.response.questionary import QuestionarySchemaResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, BASE_URL_WITH_VERSION
 
 ACCOUNT_ID = 1
 APPLICANT_ID = 2
@@ -51,7 +51,7 @@ async def test_get_schema(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/questionary",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/questionary",
         json=QUESTIONARY_SCHEMA_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -66,7 +66,7 @@ async def test_create_questionary(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/questionary",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/questionary",
         json=QUESTIONARY_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -82,7 +82,7 @@ async def test_get_applicants_questionary(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/questionary",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/questionary",
         json=QUESTIONARY_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -97,7 +97,7 @@ async def test_update_questionary(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/questionary",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/questionary",
         json=QUESTIONARY_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

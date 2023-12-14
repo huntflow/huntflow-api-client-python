@@ -11,7 +11,7 @@ from huntflow_api_client.models.response.divisions import (
     DivisionsListResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, BASE_URL_WITH_VERSION
 
 ACCOUNT_ID = 1
 COWORKER_ID = 1
@@ -72,7 +72,7 @@ async def test_list_account_division(
 ) -> None:
     only_available = True
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/divisions?only_available=true",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/divisions?only_available=true",
         json=ACCOUNT_DIVISIONS_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -82,7 +82,7 @@ async def test_list_account_division(
     assert response == DivisionsListResponse.model_validate(ACCOUNT_DIVISIONS_LIST_RESPONSE)
 
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/coworkers/{COWORKER_ID}/divisions",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/coworkers/{COWORKER_ID}/divisions",
         json=ACCOUNT_DIVISIONS_LIST_RESPONSE,
     )
     response = await divisions.list(ACCOUNT_ID, COWORKER_ID)
@@ -97,7 +97,7 @@ async def test_create_account_division(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/divisions/batch",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/divisions/batch",
         json=BATCH_ACCOUNT_DIVISIONS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

@@ -15,7 +15,7 @@ from huntflow_api_client.errors import (
     TooManyRequestsError,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, BASE_URL_WITH_VERSION
 
 
 @pytest.fixture()
@@ -24,7 +24,7 @@ def api_client(token_proxy: HuntflowTokenProxy) -> HuntflowAPI:
 
 
 class TestErrorHandler401:
-    url = f"{BASE_URL}/me"
+    url = f"{BASE_URL_WITH_VERSION}/me"
 
     async def test_authorization_error(
         self,
@@ -90,7 +90,7 @@ class TestErrorHandler401:
 
 
 class TestErrorHandler400:
-    url = f"{BASE_URL}/accounts/11/vacancies"
+    url = f"{BASE_URL_WITH_VERSION}/accounts/11/vacancies"
 
     async def test_bad_request_error(self, httpx_mock: HTTPXMock, api_client: HuntflowAPI) -> None:
         httpx_mock.add_response(
@@ -131,7 +131,7 @@ class TestErrorHandler400:
 
 
 class TestErrorHandler402:
-    url = f"{BASE_URL}/me"
+    url = f"{BASE_URL_WITH_VERSION}/me"
 
     async def test_payment_required_error(
         self,
@@ -152,7 +152,7 @@ class TestErrorHandler402:
 
 
 class TestErrorHandler403:
-    url = f"{BASE_URL}/me"
+    url = f"{BASE_URL_WITH_VERSION}/me"
 
     async def test_access_denied_error(
         self,
@@ -175,7 +175,7 @@ class TestErrorHandler403:
 class TestErrorHandler404:
     async def test_not_found_error(self, httpx_mock: HTTPXMock, api_client: HuntflowAPI) -> None:
         httpx_mock.add_response(
-            url=f"{BASE_URL}/accounts/11/vacancy_requests/0",
+            url=f"{BASE_URL_WITH_VERSION}/accounts/11/vacancy_requests/0",
             method="GET",
             status_code=404,
             json={"errors": [{"type": "not_found", "title": "Unknown vacancy request"}]},
@@ -192,7 +192,7 @@ class TestErrorHandler404:
         api_client: HuntflowAPI,
     ) -> None:
         httpx_mock.add_response(
-            url=f"{BASE_URL}/token/refresh",
+            url=f"{BASE_URL_WITH_VERSION}/token/refresh",
             method="POST",
             status_code=404,
             json={"errors": [{"type": "not_found", "title": "error.robot_token.not_found"}]},
@@ -205,7 +205,7 @@ class TestErrorHandler404:
 
 
 class TestErrorHandler429:
-    url = f"{BASE_URL}/me"
+    url = f"{BASE_URL_WITH_VERSION}/me"
 
     async def test_too_many_requests_error(
         self,
@@ -235,7 +235,7 @@ class TestErrorHandler429:
 
 
 class TestDefaultErrorHandler:
-    url = f"{BASE_URL}/me"
+    url = f"{BASE_URL_WITH_VERSION}/me"
 
     async def test_api_error(self, httpx_mock: HTTPXMock, api_client: HuntflowAPI) -> None:
         httpx_mock.add_response(

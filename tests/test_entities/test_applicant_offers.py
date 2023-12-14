@@ -7,7 +7,7 @@ from huntflow_api_client.entities.applicant_offers import ApplicantOffer
 from huntflow_api_client.models.request.applicant_offers import ApplicantOfferUpdate
 from huntflow_api_client.models.response.applicant_offers import ApplicantVacancyOfferResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, BASE_URL_WITH_VERSION
 
 ACCOUNT_ID = 1
 OFFER_ID = 2
@@ -34,7 +34,7 @@ async def test_update(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/offers/{OFFER_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/offers/{OFFER_ID}",
         json=OFFER_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -63,7 +63,7 @@ async def test_get_applicant_on_vacancy_offer(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}"
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}"
         f"/vacancy_frames/{VACANCY_FRAME_ID}/offer?normalize=false",
         json=OFFER_RESPONSE,
     )
@@ -83,7 +83,7 @@ async def test_get_offer_pdf(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/offers/{OFFER_ID}/pdf",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/offers/{OFFER_ID}/pdf",
         content=GET_PDF_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

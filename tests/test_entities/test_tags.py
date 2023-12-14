@@ -14,7 +14,7 @@ from huntflow_api_client.models.response.tags import (
     ApplicantTagsListResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, BASE_URL_WITH_VERSION
 
 ACCOUNT_ID = 1
 TAG_ID = 2
@@ -40,7 +40,7 @@ async def test_get_account_tag(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
         json=ACCOUNT_TAG_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -55,7 +55,7 @@ async def test_create_account_tag(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/tags",
         json=ACCOUNT_TAG_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -72,7 +72,7 @@ async def test_update_account_tag(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
         json=ACCOUNT_TAG_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -89,7 +89,7 @@ async def test_delete_tag(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/tags/{TAG_ID}",
         status_code=204,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -104,7 +104,7 @@ async def test_list_account_tag(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/tags",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/tags",
         json=ACCOUNT_TAGS_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -119,7 +119,7 @@ async def test_list_applicant_tag(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/tags",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/tags",
         json=APPLICANT_TAGS_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -134,7 +134,7 @@ async def test_update_applicant_tag(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/tags",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/tags",
         json=APPLICANT_TAGS_UPDATE_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

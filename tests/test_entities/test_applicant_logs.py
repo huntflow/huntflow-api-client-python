@@ -11,7 +11,7 @@ from huntflow_api_client.models.response.applicant_logs import (
     CreateApplicantLogResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, BASE_URL_WITH_VERSION
 
 ACCOUNT_ID = 1
 APPLICANT_ID = 2
@@ -173,7 +173,7 @@ async def test_applicant_log_list(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/logs?"
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/logs?"
         f"vacancy={VACANCY_ID}&&type={ApplicantLogType.ADD.value}&&personal=true"
         f"&&page=1&&count=30&&personal=false",
         status_code=200,
@@ -197,7 +197,7 @@ async def test_create_log(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/logs",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/logs",
         status_code=200,
         json=APPLICANT_CREATE_LOG_RESPONSE,
     )

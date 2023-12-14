@@ -6,7 +6,7 @@ from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.applicant_on_vacancy_status import ApplicantOnVacancyStatus
 from huntflow_api_client.models.response.applicant_on_vacancy_status import VacancyStatusesResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, BASE_URL_WITH_VERSION
 
 ACCOUNT_ID = 1
 APPLICANT_ON_VAC_STATUS_LIST_RESPONSE: Dict[str, Any] = {
@@ -28,7 +28,7 @@ async def test_list(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/statuses",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/vacancies/statuses",
         json=APPLICANT_ON_VAC_STATUS_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

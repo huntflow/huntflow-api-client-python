@@ -15,7 +15,7 @@ from huntflow_api_client.models.response.applicants import (
     ApplicantSearchByCursorResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, BASE_URL_WITH_VERSION
 
 ACCOUNT_ID = 1
 APPLICANT_ID = 2
@@ -275,7 +275,7 @@ async def test_list_applicant(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants?count=30&page=1",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants?count=30&page=1",
         json=APPLICANT_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -290,7 +290,7 @@ async def test_get_applicant(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}",
         json=APPLICANT_GET_RESPONSE,
     )
 
@@ -306,7 +306,7 @@ async def test_create_applicant(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants",
         json=APPLICANT_CREATE_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -323,7 +323,7 @@ async def test_patch_applicant(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}",
         json=APPLICANT_PATCH_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -340,7 +340,7 @@ async def test_delete_applicant(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants" f"/{APPLICANT_ID}",
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants" f"/{APPLICANT_ID}",
         status_code=204,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -354,7 +354,7 @@ async def test_applicant_search_by_cursor(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/search_by_cursor?"
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/search_by_cursor?"
         "q=1&&status=1&&rejection_reason=1&&rejection_reason=2&&vacancy=null&&account_source=1"
         "&&only_current_status=false&&field=all&&count=30",
         status_code=200,
@@ -376,7 +376,7 @@ async def test_applicant_search_by_cursor(
     )
     next_page_cursor = response.next_page_cursor
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/search_by_cursor?"
+        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/search_by_cursor?"
         f"next_page_cursor={next_page_cursor}",
         status_code=200,
         json=APPLICANT_SEARCH_BY_CURSOR_RESPONSE,
