@@ -7,7 +7,7 @@ from huntflow_api_client.entities.file import File
 from huntflow_api_client.models.request.file import UploadFileHeaders
 from huntflow_api_client.models.response.file import UploadResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 UPLOAD_FILE_RESPONSE: Dict[str, Any] = {
@@ -43,7 +43,7 @@ async def test_upload_file(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/upload",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/upload",
         json=UPLOAD_FILE_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

@@ -14,7 +14,7 @@ from huntflow_api_client.models.response.dictionaries import (
     DictionaryTaskResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 DICT_CODE = "dict_code"
@@ -102,7 +102,7 @@ async def test_get_dictionary(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/dictionaries/{DICT_CODE}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/dictionaries/{DICT_CODE}",
         json=DICT_GET_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -117,7 +117,7 @@ async def test_list_dictionary(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/dictionaries",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/dictionaries",
         json=DICT_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -132,7 +132,7 @@ async def test_create_dictionary(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/dictionaries",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/dictionaries",
         json=DICT_CREATE_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -148,7 +148,7 @@ async def test_update_dictionary(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/dictionaries/{DICT_CODE}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/dictionaries/{DICT_CODE}",
         json=DICT_UPDATE_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

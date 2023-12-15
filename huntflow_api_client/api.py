@@ -10,19 +10,21 @@ from huntflow_api_client.tokens.token import ApiToken
 
 logger = logging.getLogger(__name__)
 
+API_VERSION_PATH = "/v2"
+
 
 class HuntflowAPI:
     def __init__(
         self,
-        base_url: str = "https://api.huntflow.dev/v2",
+        base_url: str = "https://api.huntflow.dev",
         # Specify one of this: token or token_proxy
         token: Optional[ApiToken] = None,
         token_proxy: Optional[AbstractTokenProxy] = None,
         auto_refresh_tokens: bool = False,
     ):
         """API client.
-        :param base_url: Base url for API (including schema and version prefix),
-            like 'https://<api domain>/v2'
+        :param base_url: Base url for API (including schema),
+            like 'https://<api domain>'
         :param token: Optional token structure with access token.
             Use it if you don't care about token refreshing
         :param token_proxy: Alternative way (see `token` param) to provide token.
@@ -39,13 +41,13 @@ class HuntflowAPI:
                 raise ValueError("Parameters token and token_proxy can't be None at the same time")
             token_proxy = DummyHuntflowTokenProxy(token)
         self._token_proxy: AbstractTokenProxy = token_proxy
-        self.base_url = base_url
+        self.api_url = base_url + API_VERSION_PATH
 
         self._autorefresh_tokens = auto_refresh_tokens
 
     @property
     def http_client(self) -> httpx.AsyncClient:
-        http_client = httpx.AsyncClient(base_url=self.base_url)
+        http_client = httpx.AsyncClient(base_url=self.api_url)
         http_client.event_hooks["response"] = [raise_for_status]
         return http_client
 

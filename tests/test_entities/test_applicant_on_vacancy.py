@@ -14,7 +14,7 @@ from huntflow_api_client.models.response.applicant_on_vacancy import (
     ApplicantVacancySplitResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 APPLICANT_ID = 1
@@ -51,7 +51,7 @@ async def test_attach_applicant_to_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/vacancy",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/vacancy",
         json=ATTACH_APPLICANT_TO_VAC_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -73,7 +73,7 @@ async def test_update_vacancy_status_for_applicant(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/vacancy",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/vacancy",
         json=UPDATE_STATUS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -95,7 +95,7 @@ async def test_move_applicant_to_child_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/applicants/vacancy/{VACANCY_ID}/split",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/applicants/vacancy/{VACANCY_ID}/split",
         json=MOVE_APPLICANT_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

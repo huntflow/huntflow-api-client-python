@@ -6,9 +6,11 @@ import httpx
 import respx
 from respx.types import URLPatternTypes
 
+from huntflow_api_client.api import API_VERSION_PATH
 from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
 
-BASE_URL = "https://api.huntflow.dev/v2"
+BASE_URL = "https://api.huntflow.dev"
+VERSIONED_BASE_URL = BASE_URL + API_VERSION_PATH
 ACCESS_TOKEN_EXPIRES_IN = 86400 * 7
 REFRESH_TOKEN_EXPIRES_IN = 86400 * 14
 
@@ -37,7 +39,7 @@ class Router:
 
         respx.request(
             method=self.method,
-            url=f"{BASE_URL}{self.url}",
+            url=f"{VERSIONED_BASE_URL}{self.url}",
             name=self.name,
         ).mock(side_effect=inner)
 
@@ -45,7 +47,6 @@ class Router:
 
 
 class FakeAPIServer:
-    base_url = BASE_URL
     token_pair: TokenPair
     is_expired_token: bool
 

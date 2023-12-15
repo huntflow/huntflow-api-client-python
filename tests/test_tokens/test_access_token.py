@@ -13,7 +13,7 @@ from huntflow_api_client.errors.errors import (
 from huntflow_api_client.tokens.locker import AsyncioLockLocker
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
-from tests.api import FakeAPIServer, TokenPair
+from tests.api import BASE_URL, FakeAPIServer, TokenPair
 
 
 @respx.mock
@@ -22,7 +22,7 @@ async def test_valid_access_token__ok(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     api = HuntflowAPI(
-        fake_server.base_url,
+        BASE_URL,
         token_proxy=token_proxy,
         auto_refresh_tokens=True,
     )
@@ -39,7 +39,7 @@ async def test_access_token_invalid__error(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     huntflow_api = HuntflowAPI(
-        fake_server.base_url,
+        BASE_URL,
         token_proxy=token_proxy,
         auto_refresh_tokens=False,
     )
@@ -60,7 +60,7 @@ async def test_access_token_expired__error(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     huntflow_api = HuntflowAPI(
-        fake_server.base_url,
+        BASE_URL,
         token_proxy=token_proxy,
         auto_refresh_tokens=False,
     )
@@ -81,7 +81,7 @@ async def test_invalid_refresh_token__error(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     huntflow_api = HuntflowAPI(
-        fake_server.base_url,
+        BASE_URL,
         token_proxy=token_proxy,
         auto_refresh_tokens=True,
     )
@@ -108,7 +108,7 @@ async def test_auto_refresh_tokens__ok(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     huntflow_api = HuntflowAPI(
-        fake_server.base_url,
+        BASE_URL,
         token_proxy=token_proxy,
         auto_refresh_tokens=True,
     )
@@ -132,7 +132,7 @@ async def test_auto_refresh_tokens_several_api_one_proxy__ok(
     api_count = 10
     apis = [
         HuntflowAPI(
-            fake_server.base_url,
+            BASE_URL,
             token_proxy=token_proxy,
             auto_refresh_tokens=True,
         )
@@ -174,7 +174,7 @@ async def test_auto_refresh_tokens_several_api_several_proxies__ok(
     for _ in range(api_count):
         storage = HuntflowTokenFileStorage(token_filename)
         token_proxy = HuntflowTokenProxy(storage, locker)
-        api = HuntflowAPI(fake_server.base_url, token_proxy=token_proxy, auto_refresh_tokens=True)
+        api = HuntflowAPI(BASE_URL, token_proxy=token_proxy, auto_refresh_tokens=True)
         apis.append(api)
 
     fake_server.expire_token()

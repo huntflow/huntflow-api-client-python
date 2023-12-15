@@ -10,7 +10,7 @@ from huntflow_api_client.models.response.accounts import (
     OrganizationsListResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 GET_USER_RESPONSE: Dict[str, Any] = {
@@ -46,7 +46,7 @@ async def test_get_current_user(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/me",
+        url=f"{VERSIONED_BASE_URL}/me",
         json=GET_USER_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -61,7 +61,7 @@ async def test_available_org_list(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts",
+        url=f"{VERSIONED_BASE_URL}/accounts",
         json=ORG_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -76,7 +76,7 @@ async def test_get_org_info(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}",
         json=GET_ORG_INFO_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

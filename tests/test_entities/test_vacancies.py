@@ -27,7 +27,7 @@ from huntflow_api_client.models.response.vacancies import (
     VacancyStatusGroupsResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 VACANCY_ID = 2
@@ -277,7 +277,7 @@ async def test_get_get_org_vacancy_additional_fields_schema(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/additional_fields",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/additional_fields",
         json=GET_ORG_ADD_FIELDS_SCHEMA_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -292,7 +292,7 @@ async def test_list_vacancies(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies?"
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies?"
         f"count=30&page=1&mine=false&state=OPEN&state=HOLD",
         json=GET_LIST_VACANCIES_RESPONSE,
     )
@@ -309,7 +309,7 @@ async def test_get_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}",
         json=GET_VACANCY_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -324,7 +324,7 @@ async def test_create_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies",
         json=CREATE_VACANCY_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -348,7 +348,7 @@ async def test_update_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}",
         json=UPDATE_VACANCY_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -368,7 +368,7 @@ async def test_delete_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}",
         status_code=204,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -382,7 +382,7 @@ async def test_patch_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}",
         json=PATCH_VACANCY_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -400,7 +400,10 @@ async def test_assign_coworker(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/members/{COWORKER_ID}",
+        url=(
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}"
+            f"/vacancies/{VACANCY_ID}/members/{COWORKER_ID}"
+        ),
         json=ASSIGN_COWORKER_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -416,7 +419,10 @@ async def test_remove_coworker(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/members/{COWORKER_ID}",
+        url=(
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}"
+            f"/vacancies/{VACANCY_ID}/members/{COWORKER_ID}"
+        ),
         status_code=204,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -430,7 +436,7 @@ async def test_vacancy_frames_list(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/frames",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/frames",
         json=VACANCY_FRAME_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -445,7 +451,7 @@ async def test_get_last_vacancy_frame(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/frame",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/frame",
         json=LAST_VACANCY_FRAME_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -460,7 +466,10 @@ async def test_get_vacancy_quotas_in_frame(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/frames/{FRAME_ID}/quotas",
+        url=(
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}"
+            f"/vacancies/{VACANCY_ID}/frames/{FRAME_ID}/quotas"
+        ),
         json=VACANCY_QUOTAS_IN_FRAME_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -475,7 +484,10 @@ async def test_get_vacancy_quota_list(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/quotas?count=2&page=1",
+        url=(
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}"
+            f"/vacancies/{VACANCY_ID}/quotas?count=2&page=1"
+        ),
         json=VACANCY_QUOTAS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -490,7 +502,7 @@ async def test_get_vacancy_status_groups(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/status_groups",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/status_groups",
         json=VACANCY_STATUS_GROUPS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -505,7 +517,7 @@ async def test_close_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/state/close",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/state/close",
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
@@ -519,7 +531,7 @@ async def test_hold_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/state/hold",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/state/hold",
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)
@@ -533,7 +545,7 @@ async def test_resume_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/state/resume",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancies/{VACANCY_ID}/state/resume",
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     vacancies = Vacancy(api_client)

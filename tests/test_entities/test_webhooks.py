@@ -8,7 +8,7 @@ from huntflow_api_client.models.consts import WebhookEvent
 from huntflow_api_client.models.request.webhooks import WebhookRequest
 from huntflow_api_client.models.response.webhooks import WebhookResponse, WebhooksListResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 HOOK_ID = 2
@@ -41,7 +41,7 @@ async def test_list_webhooks(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/hooks",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/hooks",
         json=WEBHOOK_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -56,7 +56,7 @@ async def test_create_webhook(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/hooks",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/hooks",
         json=WEBHOOK_CREATE_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -77,7 +77,7 @@ async def test_delete_webhook(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/hooks/{HOOK_ID}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/hooks/{HOOK_ID}",
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     webhooks = Webhook(api_client)

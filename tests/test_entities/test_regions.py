@@ -6,7 +6,7 @@ from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.regions import Region
 from huntflow_api_client.models.response.regions import RegionsListResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 REGIONS_LIST_RESPONSE: Dict[str, Any] = {
@@ -20,7 +20,7 @@ async def test_regions_list(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/regions",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/regions",
         json=REGIONS_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

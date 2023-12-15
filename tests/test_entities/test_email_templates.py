@@ -6,7 +6,7 @@ from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities import MailTemplate
 from huntflow_api_client.models.response.email_templates import MailTemplatesResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 TEMPLATE_LIST_RESPONSE: Dict[str, Any] = {
@@ -46,7 +46,7 @@ async def test_list_templates(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/mail/templates?editable=false",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/mail/templates?editable=false",
         json=TEMPLATE_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

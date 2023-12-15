@@ -37,7 +37,7 @@ def parse_args():
         default=3,
         help="Number of concurrent requests",
     )
-    parser.add_argument("--url", type=str, help="https://<api domain>/v2")
+    parser.add_argument("--url", type=str, help="https://<api domain>")
     parser.add_argument(
         "--token-file",
         type=str,

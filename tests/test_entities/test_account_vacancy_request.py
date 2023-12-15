@@ -7,7 +7,7 @@ from huntflow_api_client.models.response.account_vacancy_request import (
     AccountVacancyRequestsListResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 
@@ -100,7 +100,10 @@ async def test_list_schemas(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/account_vacancy_requests?only_active=true",
+        url=(
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}"
+            "/account_vacancy_requests?only_active=true"
+        ),
         json=VACANCY_REQUEST_SCHEMAS_LIST,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -117,7 +120,7 @@ async def test_get_schema(
 ) -> None:
     schema_id = 1
     httpx_mock.add_response(
-        url=f"{BASE_URL}/accounts/{ACCOUNT_ID}/account_vacancy_requests/{schema_id}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/account_vacancy_requests/{schema_id}",
         json=VACANCY_REQUEST_SCHEMA,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
