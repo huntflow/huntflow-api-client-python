@@ -10,7 +10,7 @@ from huntflow_api_client.models.response.survey import (
     SurveySchemaTypeQResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL, BASE_URL_WITH_VERSION
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 
@@ -166,7 +166,7 @@ async def test_list_schemas(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/surveys/type_q?active=true",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/surveys/type_q?active=true",
         json=SURVEY_QUESTIONARY_SCHEMAS_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -184,7 +184,7 @@ async def test_get_schema(
 ) -> None:
     survey_id = 1
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/surveys/type_q/{survey_id}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/surveys/type_q/{survey_id}",
         json=SURVEY_QUESTIONARY_SCHEMA_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -202,7 +202,7 @@ async def test_create_survey_questionary(
 ) -> None:
     request_data = SurveyQuestionaryCreateRequest.model_validate(SURVEY_QUESTIONARY_CREATE_REQUEST)
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/surveys/type_q/questionaries",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/surveys/type_q/questionaries",
         json=APPLICANT_SURVEY_QUESTIONARY_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -221,7 +221,7 @@ async def test_get_survey_questionary(
     questionary_id = 1
     httpx_mock.add_response(
         url=(
-            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}"
             f"/surveys/type_q/questionaries/{questionary_id}"
         ),
         json=APPLICANT_SURVEY_QUESTIONARY_RESPONSE,
@@ -242,7 +242,7 @@ async def test_delete_survey_questionary(
     questionary_id = 1
     httpx_mock.add_response(
         url=(
-            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}"
             f"/surveys/type_q/questionaries/{questionary_id}"
         ),
     )
@@ -258,7 +258,7 @@ async def test_get_answer(
 ) -> None:
     answer_id = 1
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/surveys/type_q/answers/{answer_id}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/surveys/type_q/answers/{answer_id}",
         json=SURVEY_QUESTIONARY_ANSWER_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

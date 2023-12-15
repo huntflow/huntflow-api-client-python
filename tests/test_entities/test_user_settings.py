@@ -9,7 +9,7 @@ from huntflow_api_client.models.response.user_settings import (
     EmailAccountsListResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL, BASE_URL_WITH_VERSION
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 GET_USER_EMAIL_ACCOUNTS_RESPONSE: Dict[str, Any] = {
     "items": [
@@ -49,7 +49,7 @@ async def test_get_email_accounts(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/email_accounts",
+        url=f"{VERSIONED_BASE_URL}/email_accounts",
         json=GET_USER_EMAIL_ACCOUNTS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -64,7 +64,7 @@ async def test_get_calendar_accounts(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/calendar_accounts",
+        url=f"{VERSIONED_BASE_URL}/calendar_accounts",
         json=GET_USER_CALENDAR_ACCOUNTS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

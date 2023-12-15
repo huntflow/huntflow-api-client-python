@@ -10,7 +10,7 @@ from huntflow_api_client.tokens.token import ApiToken
 
 logger = logging.getLogger(__name__)
 
-HUNTFLOW_API_VERSION = "/v2"
+API_VERSION_PATH = "/v2"
 
 
 class HuntflowAPI:
@@ -41,7 +41,7 @@ class HuntflowAPI:
                 raise ValueError("Parameters token and token_proxy can't be None at the same time")
             token_proxy = DummyHuntflowTokenProxy(token)
         self._token_proxy: AbstractTokenProxy = token_proxy
-        self.api_url = base_url + HUNTFLOW_API_VERSION
+        self.api_url = base_url + API_VERSION_PATH
 
         self._autorefresh_tokens = auto_refresh_tokens
 

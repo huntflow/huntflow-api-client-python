@@ -6,7 +6,7 @@ from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.rejection_reason import RejectionReason
 from huntflow_api_client.models.response.rejection_reason import RejectionReasonsListResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL, BASE_URL_WITH_VERSION
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 REJECTION_REASONS_LIST_RESPONSE: Dict[str, Any] = {
@@ -19,7 +19,7 @@ async def test_rejection_reasons_list(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/rejection_reasons",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/rejection_reasons",
         json=REJECTION_REASONS_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

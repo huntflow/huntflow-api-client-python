@@ -13,7 +13,7 @@ from huntflow_api_client.models.response.resume import (
     ApplicantSourcesResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL, BASE_URL_WITH_VERSION
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 APPLICANT_ID = 2
@@ -295,7 +295,7 @@ async def test_get_resume_sources(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/sources",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/applicants/sources",
         json=RESUME_SOURCES_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -311,7 +311,7 @@ async def test_get(
 ) -> None:
     httpx_mock.add_response(
         url=(
-            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}"
             f"/applicants/{APPLICANT_ID}/externals/{EXTERNAL_ID}"
         ),
         json=APPLICANT_RESUME_RESPONSE,
@@ -329,7 +329,7 @@ async def test_delete_resume(
 ) -> None:
     httpx_mock.add_response(
         url=(
-            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}"
             f"/applicants/{APPLICANT_ID}/externals/{EXTERNAL_ID}"
         ),
         status_code=204,
@@ -346,7 +346,7 @@ async def test_update(
 ) -> None:
     httpx_mock.add_response(
         url=(
-            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}"
             f"/applicants/{APPLICANT_ID}/externals/{EXTERNAL_ID}"
         ),
         json=APPLICANT_RESUME_RESPONSE,
@@ -368,7 +368,7 @@ async def test_get_resume_pdf(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/"
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/"
         f"externals/{EXTERNAL_ID}/pdf",
         content=GET_PDF_RESPONSE,
     )

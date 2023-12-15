@@ -6,7 +6,7 @@ from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.coworkers import Coworker
 from huntflow_api_client.models.response.coworkers import CoworkerResponse, CoworkersListResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL, BASE_URL_WITH_VERSION
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 COWORKER_ID = 2
@@ -72,7 +72,7 @@ async def test_get(
 ) -> None:
     httpx_mock.add_response(
         url=(
-            f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}"
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}"
             f"/coworkers/{COWORKER_ID}?vacancy_id={VACANCY_ID}"
         ),
         json=GET_COWORKER_RESPONSE,
@@ -90,7 +90,7 @@ async def test_list(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/coworkers?count=30&page=1",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/coworkers?count=30&page=1",
         json=GET_COWORKER_LIST_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

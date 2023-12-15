@@ -15,7 +15,7 @@ from huntflow_api_client.models.request.multi_vacancies import (
 )
 from huntflow_api_client.models.response.muilti_vacancies import MultiVacancyResponse
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from tests.api import BASE_URL, BASE_URL_WITH_VERSION
+from tests.api import BASE_URL, VERSIONED_BASE_URL
 
 ACCOUNT_ID = 1
 VACANCY_ID = 2
@@ -27,7 +27,7 @@ async def test_create_multi_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/multi-vacancies",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/multi-vacancies",
         json=MULTI_VACANCY_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -47,7 +47,7 @@ async def test_update_multi_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/multi-vacancies/{VACANCY_ID}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/multi-vacancies/{VACANCY_ID}",
         json=MULTI_VACANCY_RESPONSE,
         method="PUT",
     )
@@ -67,7 +67,7 @@ async def test_partial_update_multi_vacancy(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{BASE_URL_WITH_VERSION}/accounts/{ACCOUNT_ID}/multi-vacancies/{VACANCY_ID}",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/multi-vacancies/{VACANCY_ID}",
         json=MULTI_VACANCY_RESPONSE,
         method="PATCH",
     )
