@@ -1,8 +1,9 @@
 import logging
 import re
 import argparse
+from typing import Optional, List
+import httpx
 import toml
-from github import Github, Auth
 
 
 def get_logger() -> logging.Logger:
@@ -16,6 +17,34 @@ def get_project_version() -> str:
     with open("pyproject.toml") as f:
         data = toml.loads(f.read())
     return data["project"]["version"]
+
+
+def make_request(
+        method: str,
+        path: str,
+        token: str,
+        data: Optional[dict] = None,
+        params: Optional[dict] = None
+) -> httpx.Response:
+    base_url = "https://api.github.com/repos/huntflow/huntflow-api-client-python"
+    url = base_url + path
+    headers = {"Authorization": f"Bearer {token}"}
+    response = httpx.request(method=method, url=url, data=data, headers=headers, params=params)
+    response.raise_for_status()
+    return response
+
+
+def get_release_tags(github_token: str) -> List[str]:
+    result = []
+    params = {"page": 1}
+    while True:
+        response = make_request(method="GET", path="/releases", token=github_token, params=params)
+        data = response.json()
+        if not data:
+            return result
+        existing_tags = [item["tag_name"] for item in data]
+        result.extend(existing_tags)
+        params["page"] += 1
 
 
 def main(github_token: str, current_branch: str):
@@ -38,23 +67,24 @@ def main(github_token: str, current_branch: str):
             major_release,
         )
         return
+    existing_releases = get_release_tags(github_token=github_token)
 
-    token = Auth.Token(github_token)
-    git = Github(auth=token)
-    repo = git.get_repo(full_name_or_id="huntflow/huntflow-api-client-python", lazy=False)
-    existing_releases = {release.tag_name for release in repo.get_releases()}
     if project_version in existing_releases:
         logger.info("Release %s already exists", project_version)
         return
 
-    repo.create_git_release(
-        tag=project_version,
-        name=f"Release {project_version}",
-        target_commitish=current_branch,
-        message=""
-    )
+    is_latest = all(project_version > item for item in existing_releases)
+    logger.info(is_latest)
+    release_data = {
+        "tag": project_version,
+        "name": f"Release {project_version}",
+        "target_commitish": current_branch,
+        "body": "",
+        "make_latest": is_latest,
+    }
+    make_request(method="GET", path="/releases", token=github_token, data=release_data)
+
     logger.info("Release %s successfully created", project_version)
-    git.close()
 
 
 def parse_args():
