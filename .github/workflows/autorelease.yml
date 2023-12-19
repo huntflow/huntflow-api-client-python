@@ -12,11 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Extract branch name
-        shell: bash
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: extract_branch
-
       - name: Set up python
         uses: actions/setup-python@v4
         with:
@@ -25,8 +20,8 @@ jobs:
         uses: pdm-project/setup-pdm@v3
 
       - name: Install dependencies
-        run: pdm install
+        run: pdm sync
 
       - name: Run autorelease
-        run: python3 auto_release.py --github_token ${{ secrets.GITHUB_TOKEN }} --current_branch ${{ steps.extract_branch.outputs.branch }}
+        run: python3 auto_release.py --github_token ${{ secrets.GITHUB_TOKEN }} --current_branch ${{ github.base_ref }}
 
