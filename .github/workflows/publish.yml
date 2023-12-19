@@ -1,0 +1,18 @@
+name: Build and publish package to PyPI
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up PDM
+        uses: pdm-project/setup-pdm@v3
+
+      - name: Publish package distributions to PyPI
+        run: pdm publish
