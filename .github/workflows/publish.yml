@@ -2,7 +2,8 @@ name: Build and publish package to PyPI
 
 on:
   release:
-    types: [ created ]
+    types: [ published ]
+    branches: [ "v[0-9]+" ]
 
 jobs:
   build-and-publish:
