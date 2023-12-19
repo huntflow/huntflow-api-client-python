@@ -1,7 +1,7 @@
 
 [project]
 name = "huntflow-api-client"
-version = "0.1.4"
+version = "3.0.0_test_test"
 description = "Huntflow API Client for Python"
 authors = [
     {name = "Developers huntflow", email = "developer@huntflow.ru"},
@@ -46,6 +46,10 @@ lint = [
     "flake8-commas>=2.1.0",
     "flake8>=6.0.0",
     "setuptools>=67.7.2",
+]
+dev = [
+    "PyGithub>=2.1.1",
+    "toml>=0.10.2",
 ]
 
 [tool.black]
