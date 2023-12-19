@@ -15,7 +15,10 @@ jobs:
           ref: v3
       - name: Set up PDM
         uses: pdm-project/setup-pdm@v3
-      -
+        with:
+          ref: v3
+
       - name: Publish package distributions to PyPI
         run: pdm publish
-
+        with:
+          ref: v3

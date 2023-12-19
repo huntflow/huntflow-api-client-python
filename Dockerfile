@@ -7,3 +7,4 @@ RUN pip install --upgrade pip
 RUN pip install PyGithub pyproject_parser
 
 CMD ["python", "auto_release.py", "--github_token", "1", "--current_branch", "v3"]
+
