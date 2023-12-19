@@ -23,7 +23,7 @@ jobs:
         run: pdm sync
 
       - name: Activate venv
-        run: source venv/bin/activate
+        run: . .venv/bin/activate
 
       - name: Run autorelease
         run: python3 auto_release.py --github_token ${{ secrets.GITHUB_TOKEN }} --current_branch ${{ github.base_ref }}
