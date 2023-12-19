@@ -47,6 +47,9 @@ lint = [
     "flake8>=6.0.0",
     "setuptools>=67.7.2",
 ]
+dev = [
+    "toml>=0.10.2",
+]
 
 [tool.black]
 line-length = 100

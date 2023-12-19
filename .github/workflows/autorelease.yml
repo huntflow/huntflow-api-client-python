@@ -1,0 +1,29 @@
+name: Autorelease
+
+on:
+  pull_request:
+    types: [ closed ]
+
+jobs:
+  autorelease:
+    if: github.event.pull_request.merged == true
+
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - name: Set up PDM
+        uses: pdm-project/setup-pdm@v3
+
+      - name: Install dependencies
+        run: pdm install -dG dev
+
+      - name: Run autorelease
+        run: |
+          . .venv/bin/activate
+          python3 auto_release.py --github_token ${{ secrets.GIT_TOKEN }} --current_branch ${{ github.base_ref }}
+
