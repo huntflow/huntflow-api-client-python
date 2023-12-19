@@ -1,7 +1,7 @@
 
 [project]
 name = "huntflow-api-client"
-version = "3.0.100"
+version = "3.0.101"
 description = "Huntflow API Client for Python"
 authors = [
     {name = "Developers huntflow", email = "developer@huntflow.ru"},
