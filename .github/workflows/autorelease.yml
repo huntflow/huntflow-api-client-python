@@ -25,5 +25,5 @@ jobs:
       - name: Run autorelease
         run: |
           . .venv/bin/activate
-          python3 auto_release.py --github_token ${{ secrets.GITHUB_TOKEN }} --current_branch ${{ github.base_ref }}
+          python3 auto_release.py --github_token ${{ secrets.GIT_TOKEN }} --current_branch ${{ github.base_ref }}
 
