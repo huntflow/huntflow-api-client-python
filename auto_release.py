@@ -18,7 +18,11 @@ def get_project_version() -> str:
 
 
 def make_request(
-    method: str, path: str, token: str, data: Optional[dict] = None, params: Optional[dict] = None,
+    method: str,
+    path: str,
+    token: str,
+    data: Optional[dict] = None,
+    params: Optional[dict] = None,
 ) -> httpx.Response:
     base_url = "https://api.github.com/repos/huntflow/huntflow-api-client-python"
     url = base_url + path
