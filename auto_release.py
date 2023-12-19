@@ -6,11 +6,9 @@ import httpx
 import toml
 
 
-def get_logger() -> logging.Logger:
-    logger = logging.getLogger(__name__)
-    logger.addHandler(logging.StreamHandler())
-    logger.setLevel(logging.INFO)
-    return logger
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.StreamHandler())
+logger.setLevel(logging.INFO)
 
 
 def get_project_version() -> str:
@@ -29,7 +27,7 @@ def make_request(
     base_url = "https://api.github.com/repos/huntflow/huntflow-api-client-python"
     url = base_url + path
     headers = {"Authorization": f"Bearer {token}"}
-    response = httpx.request(method=method, url=url, data=data, headers=headers, params=params)
+    response = httpx.request(method=method, url=url, json=data, headers=headers, params=params)
     response.raise_for_status()
     return response
 
@@ -48,7 +46,6 @@ def get_release_tags(github_token: str) -> List[str]:
 
 
 def main(github_token: str, current_branch: str):
-    logger = get_logger()
     branch_patter = r"^v(?P<major_release>\d+)$"
     branch_matching = re.match(branch_patter, current_branch, re.I)
     if not branch_matching:
@@ -74,15 +71,14 @@ def main(github_token: str, current_branch: str):
         return
 
     is_latest = all(project_version > item for item in existing_releases)
-    logger.info(is_latest)
+    logger.info("Latest release: %s", is_latest)
     release_data = {
-        "tag": project_version,
+        "tag_name": project_version,
         "name": f"Release {project_version}",
         "target_commitish": current_branch,
-        "body": "",
-        "make_latest": is_latest,
+        "make_latest": str(is_latest).lower(),
     }
-    make_request(method="GET", path="/releases", token=github_token, data=release_data)
+    make_request(method="POST", path="/releases", token=github_token, data=release_data)
 
     logger.info("Release %s successfully created", project_version)
 
