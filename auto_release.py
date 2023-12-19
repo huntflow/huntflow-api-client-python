@@ -1,10 +1,10 @@
+import argparse
 import logging
 import re
-import argparse
-from typing import Optional, List
-import httpx
-import toml
+from typing import List, Optional
 
+import httpx
+import toml  # type: ignore
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
@@ -18,11 +18,11 @@ def get_project_version() -> str:
 
 
 def make_request(
-        method: str,
-        path: str,
-        token: str,
-        data: Optional[dict] = None,
-        params: Optional[dict] = None
+    method: str,
+    path: str,
+    token: str,
+    data: Optional[dict] = None,
+    params: Optional[dict] = None,
 ) -> httpx.Response:
     base_url = "https://api.github.com/repos/huntflow/huntflow-api-client-python"
     url = base_url + path
@@ -33,7 +33,7 @@ def make_request(
 
 
 def get_release_tags(github_token: str) -> List[str]:
-    result = []
+    result: List[str] = []
     params = {"page": 1}
     while True:
         response = make_request(method="GET", path="/releases", token=github_token, params=params)
@@ -45,7 +45,7 @@ def get_release_tags(github_token: str) -> List[str]:
         params["page"] += 1
 
 
-def main(github_token: str, current_branch: str):
+def main(github_token: str, current_branch: str) -> None:
     branch_patter = r"^v(?P<major_release>\d+)$"
     branch_matching = re.match(branch_patter, current_branch, re.I)
     if not branch_matching:
@@ -83,7 +83,7 @@ def main(github_token: str, current_branch: str):
     logger.info("Release %s successfully created", project_version)
 
 
-def parse_args():
+def parse_args():  # type: ignore
     parser = argparse.ArgumentParser()
     parser.add_argument("--github_token", required=True, type=str)
     parser.add_argument("--current_branch", required=True, type=str)
