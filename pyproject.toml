@@ -47,8 +47,9 @@ lint = [
     "flake8>=6.0.0",
     "setuptools>=67.7.2",
 ]
-dev = [
+release = [
     "toml>=0.10.2",
+    "packaging>=23.2",
 ]
 
 [tool.black]

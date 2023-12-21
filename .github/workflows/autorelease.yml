@@ -20,7 +20,7 @@ jobs:
         uses: pdm-project/setup-pdm@v3
 
       - name: Install dependencies
-        run: pdm install -dG dev
+        run: pdm install -dG release
 
       - name: Run autorelease
         run: >
