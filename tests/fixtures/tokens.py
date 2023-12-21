@@ -24,7 +24,7 @@ def token_storage(token_filename: str, token_pair: TokenPair) -> HuntflowTokenFi
     return new_token_storage(token_filename, token_pair)
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def token_proxy(token_storage: HuntflowTokenFileStorage) -> HuntflowTokenProxy:
     locker = AsyncioLockLocker()
     return HuntflowTokenProxy(locker=locker, storage=token_storage)
