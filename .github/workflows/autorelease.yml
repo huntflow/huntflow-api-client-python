@@ -23,8 +23,7 @@ jobs:
         run: pdm install -dG dev
 
       - name: Run autorelease
-        run: |
-          . .venv/bin/activate
-          python3 .github/scripts/auto_release.py \
-            --github_token ${{ secrets.GIT_TOKEN }} --current_branch ${{ github.base_ref }}
+        run: >
+          pdm run .github/scripts/auto_release.py
+          --github_token ${{ secrets.GIT_TOKEN }} --current_branch ${{ github.base_ref }}
 
