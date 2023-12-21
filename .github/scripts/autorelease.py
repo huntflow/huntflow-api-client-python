@@ -5,6 +5,7 @@ from typing import List, Optional
 
 import httpx
 import toml  # type: ignore
+from packaging.version import Version
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
@@ -46,8 +47,8 @@ def get_release_tags(github_token: str) -> List[str]:
 
 
 def main(github_token: str, current_branch: str) -> None:
-    branch_patter = r"^v(?P<major_release>\d+)$"
-    branch_matching = re.match(branch_patter, current_branch, re.I)
+    branch_pattern = r"^v(?P<major_release>\d+)$"
+    branch_matching = re.match(branch_pattern, current_branch, re.I)
     if not branch_matching:
         logger.info("Branch %s is not a valid release branch", current_branch)
         return
@@ -70,7 +71,9 @@ def main(github_token: str, current_branch: str) -> None:
         logger.info("Release %s already exists", project_version)
         return
 
-    is_latest = all(project_version > item for item in existing_releases)
+    project_version_instance = Version(project_version)
+    is_latest = all(project_version_instance > Version(item) for item in existing_releases)
+
     logger.info("Latest release: %s", is_latest)
     release_data = {
         "tag_name": project_version,
