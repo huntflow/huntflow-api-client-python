@@ -1,7 +1,9 @@
 import uuid
 from pathlib import Path
+from typing import AsyncGenerator
 
 import pytest
+
 from huntflow_api_client.tokens.locker import AsyncioLockLocker
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from huntflow_api_client.tokens.storage import HuntflowTokenFileStorage
@@ -24,6 +26,8 @@ def token_storage(token_filename: str, token_pair: TokenPair) -> HuntflowTokenFi
 
 
 @pytest.fixture
-async def token_proxy(token_storage: HuntflowTokenFileStorage) -> HuntflowTokenProxy:
+async def token_proxy(
+    token_storage: HuntflowTokenFileStorage,
+) -> AsyncGenerator[HuntflowTokenProxy, None]:
     locker = AsyncioLockLocker()
     yield HuntflowTokenProxy(locker=locker, storage=token_storage)
