@@ -54,36 +54,36 @@ def main(github_token: str, current_branch: str) -> None:
         return
 
     major_release = branch_matching.group("major_release")
-    project_version = get_project_version()
-    logger.info("Project version %s", project_version)
+    project_version_str = get_project_version()
+    logger.info("Project version %s", project_version_str)
 
-    if not project_version.startswith(major_release):
+    if not project_version_str.startswith(major_release):
         logger.info(
             "Release tag %s is invalid, major releases in the %s branch must start with %s",
-            project_version,
+            project_version_str,
             current_branch,
             major_release,
         )
         return
     existing_releases = get_release_tags(github_token=github_token)
 
-    if project_version in existing_releases:
-        logger.info("Release %s already exists", project_version)
+    if project_version_str in existing_releases:
+        logger.info("Release %s already exists", project_version_str)
         return
 
-    project_version_instance = Version(project_version)
-    is_latest = all(project_version_instance > Version(item) for item in existing_releases)
+    project_version = Version(project_version_str)
+    is_latest = all(project_version > Version(item) for item in existing_releases)
 
     logger.info("Latest release: %s", is_latest)
     release_data = {
-        "tag_name": project_version,
-        "name": f"Release {project_version}",
+        "tag_name": project_version_str,
+        "name": f"Release {project_version_str}",
         "target_commitish": current_branch,
         "make_latest": str(is_latest).lower(),
     }
     make_request(method="POST", path="/releases", token=github_token, data=release_data)
 
-    logger.info("Release %s successfully created", project_version)
+    logger.info("Release %s successfully created", project_version_str)
 
 
 def parse_args() -> argparse.Namespace:
