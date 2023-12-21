@@ -24,6 +24,6 @@ jobs:
 
       - name: Run autorelease
         run: >
-          pdm run .github/scripts/auto_release.py
+          pdm run .github/scripts/autorelease.py
           --github_token ${{ secrets.GIT_TOKEN }} --current_branch ${{ github.base_ref }}
 
