@@ -48,5 +48,6 @@ class DelayedTaskResponse(BaseModel):
     )
     states_log: t.List[TaskLog] = Field(..., description="Task change log")
     result: t.Union[MultivacancyAddChildTaskResult, MultivacancyUpsertTaskResult, t.Any] = Field(
-        ..., description="Task execution result",
+        ...,
+        description="Task execution result",
     )
