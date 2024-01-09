@@ -18,15 +18,6 @@ class TaskLog(BaseModel):
     comment: t.Optional[str] = Field(None, description="Comment text")
 
 
-class MultivacancyAddChildTaskResult(BaseModel):
-    child_vacancy_id: int
-
-
-class MultivacancyUpsertTaskResult(BaseModel):
-    parent_vacancy_id: int
-    children_vacancies_ids: t.List[int]
-
-
 class DelayedTaskResponse(BaseModel):
     task_id: UUID = Field(..., description="Task ID")
     state: TaskState = Field(..., description="Current task status")
@@ -47,7 +38,4 @@ class DelayedTaskResponse(BaseModel):
         description="Date and time of the last task update (ISO 8601)",
     )
     states_log: t.List[TaskLog] = Field(..., description="Task change log")
-    result: t.Union[MultivacancyAddChildTaskResult, MultivacancyUpsertTaskResult, t.Any] = Field(
-        ...,
-        description="Task execution result",
-    )
+    result: t.Optional[t.Dict] = Field(None, description="Task execution result")
