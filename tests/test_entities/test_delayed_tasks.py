@@ -21,7 +21,6 @@ DELAYED_TASKS_RESPONSE = {
             "comment": "Some text",
         },
     ],
-    "result": None,
 }
 
 
