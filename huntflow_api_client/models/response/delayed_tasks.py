@@ -38,3 +38,4 @@ class DelayedTaskResponse(BaseModel):
         description="Date and time of the last task update (ISO 8601)",
     )
     states_log: t.List[TaskLog] = Field(..., description="Task change log")
+    result: t.Optional[t.Dict] = Field(None, description="Task execution result")
