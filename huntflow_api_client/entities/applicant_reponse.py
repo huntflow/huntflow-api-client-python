@@ -10,7 +10,7 @@ class ApplicantResponse(BaseEntity, ListEntityMixin):
         account_id: int,
         applicant_id: int,
         count: int = 30,
-        next_page_cursor: int = 1,
+        next_page_cursor: str | None = None,
     ) -> ApplicantResponsesListResponse:
         """
         API method reference:
@@ -21,13 +21,11 @@ class ApplicantResponse(BaseEntity, ListEntityMixin):
         :param count: Number of items per page
         :param next_page_cursor: Next page cursor
 
-        :return: List of applicant's worklog
+        :return: List of applicant's responses from job sites
         """
         path = f"/accounts/{account_id}/applicants/{applicant_id}/responses"
-        params: Dict[str, Any] = {
-            "count": count,
-            "next_page_cursor": next_page_cursor,
-        }
-
+        params: Dict[str, Any] = {"count": count}
+        if next_page_cursor:
+            params["next_page_cursor"] = next_page_cursor
         response = await self._api.request("GET", path, params=params)
         return ApplicantResponsesListResponse.model_validate(response.json())

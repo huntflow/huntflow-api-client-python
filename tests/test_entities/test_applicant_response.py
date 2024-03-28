@@ -38,7 +38,7 @@ async def test_applicant_response_list(
 ) -> None:
     httpx_mock.add_response(
         url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/responses"
-        "?count=30&next_page_cursor=1",
+        "?count=30",
         status_code=200,
         json=APPLICANT_RESPONSE_LIST_RESPONSE,
     )
