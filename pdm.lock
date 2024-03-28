@@ -4,8 +4,8 @@
 [metadata]
 groups = ["default", "lint", "release", "test"]
 strategy = ["cross_platform"]
-lock_version = "4.4"
-content_hash = "sha256:83209a34cdd1b3e8ea27fa457cdb0b6ef611f0e4bb2a1c7273c2485bdf395aa8"
+lock_version = "4.4.1"
+content_hash = "sha256:c41d63f0f442711a2033d6579af1aa0c3a6957cc346e2ca59ea2533f7a644a19"
 
 [[package]]
 name = "aiohttp"
@@ -167,7 +167,7 @@ version = "23.12.0"
 requires_python = ">=3.8"
 summary = "The uncompromising code formatter."
 dependencies = [
-    "aiohttp>=3.7.4; sys_platform != \"win32\" or implementation_name != \"pypy\" and extra == \"d\"",
+    "aiohttp>=3.7.4; sys_platform != \"win32\" or implementation_name != \"pypy\"",
     "click>=8.0.0",
     "mypy-extensions>=0.4.3",
     "packaging>=22.0",
