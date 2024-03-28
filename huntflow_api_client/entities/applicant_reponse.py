@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from huntflow_api_client.entities.base import BaseEntity, ListEntityMixin
 from huntflow_api_client.models.response.applicant_response import ApplicantResponsesListResponse
@@ -10,7 +10,7 @@ class ApplicantResponse(BaseEntity, ListEntityMixin):
         account_id: int,
         applicant_id: int,
         count: int = 30,
-        next_page_cursor: str | None = None,
+        next_page_cursor: Optional[str] = None,
     ) -> ApplicantResponsesListResponse:
         """
         API method reference:
