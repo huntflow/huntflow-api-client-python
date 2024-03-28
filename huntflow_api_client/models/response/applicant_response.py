@@ -21,7 +21,7 @@ class ApplicantResponse(BaseModel):
     applicant_external: int = Field(..., description="Resume ID")
     vacancy: ApplicantResponseVacancy = Field(..., description="Vacancy")
     vacancy_external: ApplicantResponseVacancyExternal = Field(
-        ..., description="Publication of a vacancy for which an applicant responded"
+        ..., description="Publication of a vacancy for which an applicant responded",
     )
 
 
