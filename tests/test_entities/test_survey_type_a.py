@@ -3,7 +3,8 @@ from pytest_httpx import HTTPXMock
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.survey_type_a import SurveyTypeA
 from huntflow_api_client.models.response.survey import (
-     SurveySchemasTypeAListResponse, SurveySchemaTypeAResponse,
+    SurveySchemasTypeAListResponse,
+    SurveySchemaTypeAResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL, VERSIONED_BASE_URL
@@ -11,27 +12,27 @@ from tests.api import BASE_URL, VERSIONED_BASE_URL
 ACCOUNT_ID = 1
 
 SURVEY_FEEDBACK_SCHEMAS_LIST_RESPONSE = {
-  "items": [
-    {
-      "id": 1,
-      "name": "test_survey",
-      "type": "type_a",
-      "active": True,
-      "created": "2020-01-01T00:00:00+03:00",
-      "updated": "2020-01-01T00:00:00+03:00"
-    },
-  ],
+    "items": [
+        {
+            "id": 1,
+            "name": "test_survey",
+            "type": "type_a",
+            "active": True,
+            "created": "2020-01-01T00:00:00+03:00",
+            "updated": "2020-01-01T00:00:00+03:00",
+        },
+    ],
 }
 
 SURVEY_FEEDBACK_SCHEMA_RESPONSE = {
-  "id": 1,
-  "name": "test_survey",
-  "type": "type_a",
-  "active": True,
-  "created": "2020-01-01T00:00:00+03:00",
-  "updated": "2020-01-01T00:00:00+03:00",
-  "schema": {},
-  "ui_schema": {}
+    "id": 1,
+    "name": "test_survey",
+    "type": "type_a",
+    "active": True,
+    "created": "2020-01-01T00:00:00+03:00",
+    "updated": "2020-01-01T00:00:00+03:00",
+    "schema": {},
+    "ui_schema": {},
 }
 
 
