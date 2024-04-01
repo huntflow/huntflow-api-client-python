@@ -14,7 +14,7 @@ class ApplicantResponse(BaseEntity, ListEntityMixin):
     ) -> ApplicantResponsesListResponse:
         """
         API method reference:
-            https://api.huntflow.ai/v2//docs#get-/accounts/-account_id-/applicants/-applicant_id-/responses
+            https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/applicants/-applicant_id-/responses
 
         :param account_id: Organization ID
         :param applicant_id: Applicant ID
