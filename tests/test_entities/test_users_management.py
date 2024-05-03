@@ -75,13 +75,17 @@ async def test_get_users_with_foreign(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/users/foreign?count=30&page=1",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/users/"
+        f"foreign?count=30&page=1&member_types=owner",
         json=GET_USERS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     users_management = UsersManagement(api_client)
 
-    response = await users_management.get_users_with_foreign(account_id=ACCOUNT_ID)
+    response = await users_management.get_users_with_foreign(
+        account_id=ACCOUNT_ID,
+        member_types=[MemberType.owner],
+    )
     assert response == ForeignUsersListResponse(**GET_USERS_RESPONSE)
 
 

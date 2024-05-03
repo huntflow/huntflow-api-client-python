@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional, List
+from typing import Any, Dict, List, Optional
 
 from huntflow_api_client.entities.base import BaseEntity
 from huntflow_api_client.models.consts import MemberType
@@ -35,6 +35,8 @@ class UsersManagement(BaseEntity):
             All identifiers in response are foreign.
         """
         params: Dict[str, Any] = {"count": count, "page": page}
+        if member_types:
+            params["member_types"] = [member_type.value for member_type in member_types]
         response = await self._api.request(
             "GET",
             f"/accounts/{account_id}/users/foreign",
