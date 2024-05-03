@@ -1,6 +1,7 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, List
 
 from huntflow_api_client.entities.base import BaseEntity
+from huntflow_api_client.models.consts import MemberType
 from huntflow_api_client.models.request.users_management import ForeignUserRequest
 from huntflow_api_client.models.response.users_management import (
     CreatedUserControlTaskResponse,
@@ -15,6 +16,7 @@ class UsersManagement(BaseEntity):
     async def get_users_with_foreign(
         self,
         account_id: int,
+        member_types: Optional[List[MemberType]] = None,
         count: Optional[int] = 30,
         page: Optional[int] = 1,
     ) -> ForeignUsersListResponse:
@@ -23,6 +25,7 @@ class UsersManagement(BaseEntity):
             https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/users/foreign
 
         :param account_id: Organization ID
+        :param member_types: Array of member types
         :param count: Number of items per page
         :param page: Page number
 
