@@ -65,3 +65,15 @@ class SurveyQuestionaryAnswerResponse(BaseModel):
     respondent: SurveyQuestionaryRespondentWithName
     survey_questionary: SurveyQuestionaryCreatedInfo
     data: dict = Field(..., description="Answer data")
+
+
+class SurveySchemasTypeAListResponse(BaseModel):
+    items: List[BaseSurveySchemaType] = Field(..., description="List of type a survey schemas")
+
+
+class SurveySchemaTypeAResponse(BaseSurveySchemaTypeWithSchemas):
+    type: SurveyType = Field(
+        SurveyType.TYPE_A,
+        description="Type of survey",
+        frozen=True,
+    )

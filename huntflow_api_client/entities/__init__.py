@@ -6,6 +6,7 @@ from huntflow_api_client.entities.applicant_logs import ApplicantLog
 from huntflow_api_client.entities.applicant_offers import ApplicantOffer
 from huntflow_api_client.entities.applicant_on_vacancy import ApplicantOnVacancy
 from huntflow_api_client.entities.applicant_on_vacancy_status import ApplicantOnVacancyStatus
+from huntflow_api_client.entities.applicant_reponse import ApplicantResponse
 from huntflow_api_client.entities.applicants import Applicant
 from huntflow_api_client.entities.coworkers import Coworker
 from huntflow_api_client.entities.delayed_tasks import DelayedTask
@@ -20,6 +21,7 @@ from huntflow_api_client.entities.questionary import ApplicantsQuestionary
 from huntflow_api_client.entities.regions import Region
 from huntflow_api_client.entities.rejection_reason import RejectionReason
 from huntflow_api_client.entities.resume import Resume
+from huntflow_api_client.entities.survey_type_a import SurveyTypeA
 from huntflow_api_client.entities.survey_type_q import SurveyTypeQ
 from huntflow_api_client.entities.tags import AccountTag, ApplicantTag
 from huntflow_api_client.entities.user_settings import UserSettings
@@ -41,6 +43,7 @@ __all__ = (
     "ApplicantOffer",
     "ApplicantOnVacancy",
     "ApplicantOnVacancyStatus",
+    "ApplicantResponse",
     "ApplicantTag",
     "ApplicantsQuestionary",
     "Coworker",
@@ -54,11 +57,12 @@ __all__ = (
     "Region",
     "RejectionReason",
     "Resume",
+    "SurveyTypeA",
+    "SurveyTypeQ",
     "User",
     "UsersManagement",
     "UserSettings",
     "Vacancy",
     "VacancyRequest",
     "Webhook",
-    "SurveyTypeQ",
 )
