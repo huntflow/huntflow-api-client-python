@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from huntflow_api_client.entities.base import (
     BaseEntity,
@@ -26,7 +26,7 @@ class Webhook(BaseEntity, ListEntityMixin, CreateEntityMixin, DeleteEntityMixin)
         :return: List of webhooks
         """
         path = f"/accounts/{account_id}/hooks"
-        params = {}
+        params: Dict[str, Any] = {}
         if webhook_type:
             params["webhook_type"] = webhook_type.value
         response = await self._api.request("GET", path, params=params)
