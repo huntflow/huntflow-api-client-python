@@ -11,6 +11,11 @@ class WebhookEvent(str, Enum):
     SURVEY_QUESTIONARY = "SURVEY-QUESTIONARY"
 
 
+class WebhookType(str, Enum):
+    USER = "USER"
+    APPLICATION = "APPLICATION"
+
+
 class MemberType(str, Enum):
     owner = "owner"
     manager = "manager"
