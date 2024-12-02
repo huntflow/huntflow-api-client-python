@@ -3,7 +3,7 @@ from typing import List
 from pydantic import Field
 
 from huntflow_api_client.models.common import JsonRequestModel
-from huntflow_api_client.models.consts import WebhookEvent
+from huntflow_api_client.models.consts import WebhookEvent, WebhookType
 
 
 class WebhookRequest(JsonRequestModel):
@@ -11,3 +11,4 @@ class WebhookRequest(JsonRequestModel):
     url: str = Field(..., description="Webhook URL")
     active: bool = Field(..., description="Webhook activity flag")
     webhook_events: List[WebhookEvent] = Field(..., description="List of webhook events")
+    type: WebhookType = Field(default=WebhookType.USER, description="Webhook type")
