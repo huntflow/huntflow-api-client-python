@@ -18,6 +18,7 @@ jobs:
         uses: pdm-project/setup-pdm@v3
         with:
           python-version: ${{ matrix.python-version }}
+          version: 2.20.1
 
       - name: Install dependencies
         run: |
