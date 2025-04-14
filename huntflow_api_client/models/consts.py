@@ -180,6 +180,7 @@ class UserControlTaskStatus(str, Enum):
     SUCCESS = "SUCCESS"
     FAILED = "FAILED"
 
+
 class RecommendationProcessingStatus(str, Enum):
     ALL = "ALL"
     PROCESSED = "PROCESSED"
@@ -191,7 +192,7 @@ class RecommendationStatus(str, Enum):
     TAKEN_OTHER = "TAKEN_OTHER"
     DECLINED = "DECLINED"
 
-    
+
 class InterviewType(str, Enum):
     USER = "user"
     INTERVIEW = "interview"
