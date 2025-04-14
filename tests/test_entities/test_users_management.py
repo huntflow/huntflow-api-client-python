@@ -37,6 +37,34 @@ GET_USERS_RESPONSE: Dict[str, Any] = {
         },
     ],
 }
+GET_USERS_RESPONSE_TWO_MEMBERS: Dict[str, Any] = {
+    "page": 1,
+    "count": 30,
+    "total_pages": 1,
+    "total_items": 2,
+    "items": [
+        {
+            "id": "some_foreign_id_1",
+            "name": "John Doe",
+            "email": "mail@gmail.com",
+            "type": "owner",
+            "head_id": "user-032044",
+            "division_ids": ["division-154", "division-871"],
+            "permissions": ["string"],
+            "meta": {},
+        },
+        {
+            "id": "some_foreign_id_2",
+            "name": "Nick Smith",
+            "email": "mail@example.com",
+            "type": "manager",
+            "head_id": "user-1234",
+            "division_ids": ["division-123", "division-321"],
+            "permissions": ["string"],
+            "meta": {},
+        },
+    ],
+}
 GET_USER_BY_FOREIGN_RESPONSE: Dict[str, Any] = {
     "id": FOREIGN_USER_ID,
     "name": "John Doe",
@@ -75,14 +103,32 @@ async def test_get_users_with_foreign(
     token_proxy: HuntflowTokenProxy,
 ) -> None:
     httpx_mock.add_response(
-        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/users/foreign?count=30&page=1",
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/users/"
+        f"foreign?count=30&page=1&member_types=owner",
         json=GET_USERS_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
     users_management = UsersManagement(api_client)
 
-    response = await users_management.get_users_with_foreign(account_id=ACCOUNT_ID)
+    response = await users_management.get_users_with_foreign(
+        account_id=ACCOUNT_ID,
+        member_types=[MemberType.owner],
+    )
     assert response == ForeignUsersListResponse(**GET_USERS_RESPONSE)
+
+    httpx_mock.add_response(
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/users/"
+        f"foreign?count=30&page=1&member_types=owner&member_types=manager",
+        json=GET_USERS_RESPONSE_TWO_MEMBERS,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    users_management = UsersManagement(api_client)
+
+    response = await users_management.get_users_with_foreign(
+        account_id=ACCOUNT_ID,
+        member_types=[MemberType.owner, MemberType.manager],
+    )
+    assert response == ForeignUsersListResponse(**GET_USERS_RESPONSE_TWO_MEMBERS)
 
 
 async def test_get_user_by_foreign(

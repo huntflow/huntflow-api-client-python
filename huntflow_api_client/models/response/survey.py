@@ -65,3 +65,28 @@ class SurveyQuestionaryAnswerResponse(BaseModel):
     respondent: SurveyQuestionaryRespondentWithName
     survey_questionary: SurveyQuestionaryCreatedInfo
     data: dict = Field(..., description="Answer data")
+
+
+class SurveySchemasTypeAListResponse(BaseModel):
+    items: List[BaseSurveySchemaType] = Field(..., description="List of type a survey schemas")
+
+
+class SurveySchemaTypeAResponse(BaseSurveySchemaTypeWithSchemas):
+    type: SurveyType = Field(
+        SurveyType.TYPE_A,
+        description="Type of survey",
+        frozen=True,
+    )
+
+
+class SurveyTypeARespondent(BaseModel):
+    account_id: int = Field(..., description="Account ID")
+    name: str = Field(..., description="Name of the user who created the survey answer")
+
+
+class SurveyAnswerTypeAResponse(BaseModel):
+    id: int = Field(..., description="Survey answer of type A ID")
+    created: datetime.datetime = Field(..., description="Date and time of creating an answer")
+    survey: SurveySchemaTypeAResponse = Field(..., description="Survey schema")
+    respondent: SurveyTypeARespondent = Field(..., description="Who created the survey answer")
+    data: dict = Field(..., description="Answer data")

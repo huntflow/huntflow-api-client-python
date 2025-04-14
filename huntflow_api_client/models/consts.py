@@ -7,6 +7,13 @@ class WebhookEvent(str, Enum):
     RESPONSE = "RESPONSE"
     OFFER = "OFFER"
     VACANCY_REQUEST = "VACANCY-REQUEST"
+    RECRUITMENT_EVALUATION = "RECRUITMENT-EVALUATION"
+    SURVEY_QUESTIONARY = "SURVEY-QUESTIONARY"
+
+
+class WebhookType(str, Enum):
+    USER = "USER"
+    APPLICATION = "APPLICATION"
 
 
 class MemberType(str, Enum):
@@ -154,6 +161,7 @@ class ActionLogType(str, Enum):
     VACANCY_EXTERNAL = "VACANCY_EXTERNAL"
     ACCOUNT_MEMBER = "ACCOUNT_MEMBER"
     DOWNLOAD_APPLICANTS = "DOWNLOAD_APPLICANTS"
+    PASSWORD_CHANGE = "PASSWORD_CHANGE"
 
 
 class SurveyType(str, Enum):
@@ -172,7 +180,6 @@ class UserControlTaskStatus(str, Enum):
     SUCCESS = "SUCCESS"
     FAILED = "FAILED"
 
-
 class RecommendationProcessingStatus(str, Enum):
     ALL = "ALL"
     PROCESSED = "PROCESSED"
@@ -183,3 +190,8 @@ class RecommendationStatus(str, Enum):
     TAKEN = "TAKEN"
     TAKEN_OTHER = "TAKEN_OTHER"
     DECLINED = "DECLINED"
+
+    
+class InterviewType(str, Enum):
+    USER = "user"
+    INTERVIEW = "interview"
