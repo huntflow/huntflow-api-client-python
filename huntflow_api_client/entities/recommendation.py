@@ -6,7 +6,6 @@ from huntflow_api_client.models.response.recommendation import RecommendationLis
 
 
 class Recommendation(BaseEntity, ListEntityMixin):
-
     async def list(
         self,
         account_id: int,

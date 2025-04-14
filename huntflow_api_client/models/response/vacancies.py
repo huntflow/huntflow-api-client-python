@@ -81,7 +81,7 @@ class VacancyChild(VacancyItem):
 
 class VacancyResponse(VacancyChild):
     blocks: Optional[List[VacancyChild]] = Field(
-        [],
+        None,
         description="Affiliate vacancies if vacancy is a multiple",
     )
 
