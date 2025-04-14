@@ -171,3 +171,15 @@ class UserControlTaskStatus(str, Enum):
     PENDING = "PENDING"
     SUCCESS = "SUCCESS"
     FAILED = "FAILED"
+
+
+class RecommendationProcessingStatus(str, Enum):
+    ALL = "ALL"
+    PROCESSED = "PROCESSED"
+    UNPROCESSED = "UNPROCESSED"
+
+
+class RecommendationStatus(str, Enum):
+    TAKEN = "TAKEN"
+    TAKEN_OTHER = "TAKEN_OTHER"
+    DECLINED = "DECLINED"
