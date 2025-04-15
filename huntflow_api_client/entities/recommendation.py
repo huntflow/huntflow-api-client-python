@@ -29,10 +29,9 @@ class Recommendation(BaseEntity, ListEntityMixin):
         if next_page_cursor is not None:
             params = {"next_page_cursor": next_page_cursor}
         else:
-            params = {
-                "count": count,
-                "processing_status": processing_status.value,
-            }
+            params = {"count": count}
+        params["processing_status"] = processing_status.value
+
         response = await self._api.request(
             "GET",
             f"/accounts/{account_id}/recommendations/{vacancy_id}",

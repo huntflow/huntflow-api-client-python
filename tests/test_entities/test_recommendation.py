@@ -54,7 +54,7 @@ async def test_list_recommendation(
     httpx_mock.add_response(
         url=(
             f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/recommendations/{VACANCY_ID}"
-            f"?next_page_cursor={next_page_cursor}"
+            f"?next_page_cursor={next_page_cursor}&processing_status=ALL"
         ),
         json=RECOMMENDATION_LIST_RESPONSE,
     )
