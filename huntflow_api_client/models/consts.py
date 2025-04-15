@@ -181,6 +181,18 @@ class UserControlTaskStatus(str, Enum):
     FAILED = "FAILED"
 
 
+class RecommendationProcessingStatus(str, Enum):
+    ALL = "ALL"
+    PROCESSED = "PROCESSED"
+    UNPROCESSED = "UNPROCESSED"
+
+
+class RecommendationStatus(str, Enum):
+    TAKEN = "TAKEN"
+    TAKEN_OTHER = "TAKEN_OTHER"
+    DECLINED = "DECLINED"
+
+
 class InterviewType(str, Enum):
     USER = "user"
     INTERVIEW = "interview"

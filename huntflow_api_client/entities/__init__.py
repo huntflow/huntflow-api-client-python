@@ -18,6 +18,7 @@ from huntflow_api_client.entities.multi_vacancies import MultiVacancy
 from huntflow_api_client.entities.organization_settings import OrganizationSettings
 from huntflow_api_client.entities.production_calendars import ProductionCalendar
 from huntflow_api_client.entities.questionary import ApplicantsQuestionary
+from huntflow_api_client.entities.recommendation import Recommendation
 from huntflow_api_client.entities.regions import Region
 from huntflow_api_client.entities.rejection_reason import RejectionReason
 from huntflow_api_client.entities.resume import Resume
@@ -54,6 +55,7 @@ __all__ = (
     "MultiVacancy",
     "OrganizationSettings",
     "ProductionCalendar",
+    "Recommendation",
     "Region",
     "RejectionReason",
     "Resume",
