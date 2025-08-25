@@ -4,7 +4,7 @@ from typing import List, Optional, Union
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, PositiveInt
 
 from huntflow_api_client.models.common import Applicant, PaginatedResponse
-from huntflow_api_client.models.consts import AgreementState as AgreementStateEnum
+from huntflow_api_client.models.consts import AgreementStateResponse as AgreementStateEnum
 
 
 class ApplicantTag(BaseModel):

@@ -6,7 +6,7 @@ from huntflow_api_client.entities.base import (
     GetEntityMixin,
     ListEntityMixin,
 )
-from huntflow_api_client.models.consts import AgreementState, ApplicantSearchField
+from huntflow_api_client.models.consts import AgreementStateRequest, ApplicantSearchField
 from huntflow_api_client.models.request.applicants import (
     ApplicantCreateRequest,
     ApplicantUpdateRequest,
@@ -27,7 +27,7 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
         page: Optional[int] = 1,
         status: Optional[int] = None,
         vacancy_id: Optional[int] = None,
-        agreement_state: Optional[AgreementState] = None,
+        agreement_state: Optional[AgreementStateRequest] = None,
     ) -> ApplicantListResponse:
         """
         API method reference https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/applicants
