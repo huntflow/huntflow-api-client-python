@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, PositiveInt
+from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.common import Applicant, PaginatedResponse
 from huntflow_api_client.models.consts import AgreementState as AgreementStateEnum
@@ -73,7 +73,7 @@ class ApplicantItem(Applicant):
         None,
         description="Date and time of adding an applicant",
     )
-    email: Union[EmailStr, str, None] = Field(
+    email: Union[str, str, None] = Field(
         None,
         description="Email address",
     )
@@ -121,7 +121,7 @@ class ApplicantSearchItem(BaseModel):
     birthday: Optional[date] = Field(None, description="Date of birth")
     phone: Optional[str] = Field(None, description="Phone number")
     skype: Optional[str] = Field(None, description="Skype login")
-    email: Union[EmailStr, str, None] = Field(None, description="Email address")
+    email: Union[str, str, None] = Field(None, description="Email address")
     money: Optional[str] = Field(None, description="Salary expectation")
     position: Optional[str] = Field(None, description="Candidate’s occupation")
     company: Optional[str] = Field(None, description="Candidate’s place of work")

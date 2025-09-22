@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import AnyHttpUrl, BaseModel, EmailStr, Field, PositiveInt
+from pydantic import AnyHttpUrl, BaseModel, Field, PositiveInt
 
 from huntflow_api_client.models.consts import MemberType
 
@@ -9,7 +9,7 @@ class MeResponse(BaseModel):
     id: PositiveInt = Field(..., description="User ID")
     name: Optional[str] = Field(None, description="User name")
     position: Optional[str] = Field(None, description="User occupation")
-    email: Optional[EmailStr] = Field(None, description="Email address")
+    email: Optional[str] = Field(None, description="Email address")
     phone: Optional[str] = Field(None, description="Phone number")
     locale: str = Field(..., description="User locale")
 

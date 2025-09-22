@@ -1,7 +1,7 @@
 import datetime
 import typing as t
 
-from pydantic import BaseModel, EmailStr, Field, PositiveInt
+from pydantic import BaseModel, Field, PositiveInt
 
 from huntflow_api_client.models.common import File, PaginatedResponse
 from huntflow_api_client.models.consts import VacancyRequestStatus
@@ -16,14 +16,14 @@ class UserInfo(BaseModel):
         ...,
         description="Name of coworker who create the vacancy request",
     )
-    email: EmailStr = Field(..., description="Email of coworker who create the vacancy request")
+    email: str = Field(..., description="Email of coworker who create the vacancy request")
 
 
 class VacancyRequestApprovalState(BaseModel):
     id: PositiveInt = Field(..., description="Approval ID")
 
     status: VacancyRequestStatus = Field(..., description="Approval status")
-    email: EmailStr = Field(
+    email: str = Field(
         ...,
         description="Email, which was used to send the request for approval",
     )
