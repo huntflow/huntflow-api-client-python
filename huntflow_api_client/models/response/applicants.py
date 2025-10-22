@@ -133,3 +133,12 @@ class ApplicantSearchItem(BaseModel):
 class ApplicantSearchByCursorResponse(BaseModel):
     items: List[ApplicantSearchItem] = Field(..., description="List of applicants")
     next_page_cursor: Optional[str] = Field(None, description="Next page cursor")
+
+
+class ApplicantCreateAgreementLinkResponse(BaseModel):
+    link: str = Field(..., description="Link to agreement")
+
+
+class ApplicantSendAgreementResponse(BaseModel):
+    sent_to: str = Field(..., description="Email recipient")
+    job_id: str = Field(..., description="Job ID")
