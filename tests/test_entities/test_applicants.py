@@ -9,10 +9,12 @@ from huntflow_api_client.models.request.applicants import (
     ApplicantUpdateRequest,
 )
 from huntflow_api_client.models.response.applicants import (
+    ApplicantCreateAgreementLinkResponse,
     ApplicantCreateResponse,
     ApplicantItem,
     ApplicantListResponse,
     ApplicantSearchByCursorResponse,
+    ApplicantSendAgreementResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL, VERSIONED_BASE_URL
@@ -269,6 +271,12 @@ APPLICANT_SEARCH_BY_CURSOR_RESPONSE = {
     "next_page_cursor": "3VudCI6IjoXIjogW10IiwgMy4wXX0=",
 }
 
+APPLICANT_CREATE_AGREEMENT_RESPONSE: Dict[str, Any] = {"link": "https://agreement.example/1"}
+APPLICANT_SEND_AGREEMENT_RESPONSE: Dict[str, Any] = {
+    "sent_to": "user@example.com",
+    "job_id": "job-id-1111",
+}
+
 
 async def test_list_applicant(
     httpx_mock: HTTPXMock,
@@ -385,3 +393,35 @@ async def test_applicant_search_by_cursor(
     assert response == ApplicantSearchByCursorResponse.model_validate(
         APPLICANT_SEARCH_BY_CURSOR_RESPONSE,
     )
+
+
+async def test_create_agreement_link(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/agreement_link",
+        json=APPLICANT_CREATE_AGREEMENT_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+
+    applicants = Applicant(api_client)
+
+    response = await applicants.create_agreement_link(ACCOUNT_ID, APPLICANT_ID)
+    assert response == ApplicantCreateAgreementLinkResponse(**APPLICANT_CREATE_AGREEMENT_RESPONSE)
+
+
+async def test_send_agreement_via_email(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/agreement_email",
+        json=APPLICANT_SEND_AGREEMENT_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+
+    applicants = Applicant(api_client)
+
+    response = await applicants.send_agreement_via_email(ACCOUNT_ID, APPLICANT_ID)
+    assert response == ApplicantSendAgreementResponse(**APPLICANT_SEND_AGREEMENT_RESPONSE)

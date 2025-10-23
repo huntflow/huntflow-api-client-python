@@ -12,10 +12,12 @@ from huntflow_api_client.models.request.applicants import (
     ApplicantUpdateRequest,
 )
 from huntflow_api_client.models.response.applicants import (
+    ApplicantCreateAgreementLinkResponse,
     ApplicantCreateResponse,
     ApplicantItem,
     ApplicantListResponse,
     ApplicantSearchByCursorResponse,
+    ApplicantSendAgreementResponse,
 )
 
 
@@ -186,3 +188,41 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
 
         response = await self._api.request("GET", path, params=params)
         return ApplicantSearchByCursorResponse.model_validate(response.json())
+
+    async def create_agreement_link(
+        self,
+        account_id: int,
+        applicant_id: int,
+    ) -> ApplicantCreateAgreementLinkResponse:
+        """
+        API method reference:
+            https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/applicants/-applicant_id-/agreement_link
+
+        :param account_id: Organization ID
+        :param applicant_id: Applicant ID
+        :return: Link to interact with agreement
+        """
+        response = await self._api.request(
+            "POST",
+            f"/accounts/{account_id}/applicants/{applicant_id}/agreement_link",
+        )
+        return ApplicantCreateAgreementLinkResponse.model_validate(response.json())
+
+    async def send_agreement_via_email(
+        self,
+        account_id: int,
+        applicant_id: int,
+    ) -> ApplicantSendAgreementResponse:
+        """
+        API method reference:
+            https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/applicants/-applicant_id-/agreement_email
+
+        :param account_id: Organization ID
+        :param applicant_id: Applicant ID
+        :return: Job_id and recipient email of agreement
+        """
+        response = await self._api.request(
+            "POST",
+            f"/accounts/{account_id}/applicants/{applicant_id}/agreement_email",
+        )
+        return ApplicantSendAgreementResponse.model_validate(response.json())
