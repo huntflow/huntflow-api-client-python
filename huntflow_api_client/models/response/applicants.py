@@ -15,6 +15,7 @@ class ApplicantTag(BaseModel):
 class ApplicantLink(BaseModel):
     id: Optional[int] = Field(None, description="Link ID")
     status: int = Field(..., description="Vacancy status ID")
+    rejection_reason: Optional[int] = Field(None, description="Rejection reason ID")
     updated: datetime = Field(
         ...,
         description="The date of the applicant's update at a vacancy",
