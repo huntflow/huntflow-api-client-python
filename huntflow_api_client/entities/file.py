@@ -1,4 +1,4 @@
-from typing import BinaryIO, Optional, Union, Dict, Tuple
+from typing import BinaryIO, Dict, Optional, Tuple, Union
 
 from huntflow_api_client.entities.base import BaseEntity
 from huntflow_api_client.models.request.file import UploadFileHeaders
