@@ -12,6 +12,7 @@ class File(BaseEntity):
         headers: UploadFileHeaders,
         file: Union[bytes, BinaryIO],
         preset: Optional[str] = None,
+        filename: Optional[str] = None,
     ) -> UploadResponse:
         """
         API method reference https://api.huntflow.ai/v2/docs#post-/accounts/-account_id-/upload
@@ -20,16 +21,21 @@ class File(BaseEntity):
         :param file: File
         :param preset: Preset
         :param headers: Headers
+        :param filename: Filename
         :return: Additional data
         """
 
         data = {}
         if preset:
             data["preset"] = preset
+        if filename:
+            files = {"file": (filename, file)}
+        else:
+            files = {"file": file}
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/upload",
-            files={"file": file},
+            files=files,
             data=data,
             headers=headers.jsonable_dict(exclude_none=True, by_alias=True),
         )
