@@ -1,4 +1,4 @@
-from typing import BinaryIO, Optional, Union
+from typing import BinaryIO, Optional, Union, Dict, Tuple
 
 from huntflow_api_client.entities.base import BaseEntity
 from huntflow_api_client.models.request.file import UploadFileHeaders
@@ -28,10 +28,13 @@ class File(BaseEntity):
         data = {}
         if preset:
             data["preset"] = preset
+
+        files: Dict[str, Union[Union[bytes, BinaryIO], Tuple[str, Union[bytes, BinaryIO]]]] = {}
         if filename:
-            files = {"file": (filename, file)}
+            files["file"] = (filename, file)
         else:
-            files = {"file": file}
+            files["file"] = file
+
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/upload",
