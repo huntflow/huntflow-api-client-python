@@ -29,6 +29,10 @@ class DictionaryItem(BaseModel):
         description="The unique identifier in the customer's internal system",
     )
     created: datetime = Field(..., description="Date and time of creating a dictionary")
+    last_sync: Optional[datetime] = Field(
+        None,
+        description="Date and time of last dictionary synchronization",
+    )
 
 
 class DictionariesListResponse(BaseModel):
