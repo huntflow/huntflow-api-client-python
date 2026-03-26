@@ -48,7 +48,7 @@ class ApplicantCreateRequest(Applicant, JsonRequestModel):
 class ApplicantUpdateRequest(Applicant, JsonRequestModel):
     birthday: Optional[date] = Field(None, description="Date of birth")
     social: Optional[List[ApplicantSocial]] = Field(
-        [],
+        None,
         max_length=1,
         description="List of applicant's social accounts",
     )
