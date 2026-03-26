@@ -7,10 +7,11 @@ from pydantic import AnyHttpUrl, BaseModel, ConfigDict, EmailStr, Field, Positiv
 
 from huntflow_api_client.models.consts import (
     CalendarEventReminderMethod,
+    CalendarEventStatus,
     EmailContactType,
     EventReminderMultiplier,
     MemberType,
-    VacancyState, CalendarEventStatus,
+    VacancyState,
 )
 
 _FieldSet: typing_extensions.TypeAlias = "Set[int] | Set[str] | Dict[int, Any] | Dict[str, Any]"

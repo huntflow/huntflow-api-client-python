@@ -5,10 +5,10 @@ from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.common import (
     ApplicantOffer,
-    CalendarEventAttendeeRequest,
+    CalendarEventAttendeeResponse,
     File,
     PaginatedResponse,
-    VacancyQuotaItem, CalendarEventAttendeeResponse,
+    VacancyQuotaItem,
 )
 from huntflow_api_client.models.consts import (
     ApplicantLogType,
