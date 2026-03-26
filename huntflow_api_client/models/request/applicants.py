@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, PositiveInt
 
 from huntflow_api_client.models.common import (
     Applicant,
-    CalendarEventAttendee,
+    CalendarEventAttendeeRequest,
     CalendarEventReminder,
     JsonRequestModel,
 )
@@ -48,7 +48,7 @@ class ApplicantCreateRequest(Applicant, JsonRequestModel):
 class ApplicantUpdateRequest(Applicant, JsonRequestModel):
     birthday: Optional[date] = Field(None, description="Date of birth")
     social: Optional[List[ApplicantSocial]] = Field(
-        None,
+        [],
         max_length=1,
         description="List of applicant's social accounts",
     )
@@ -67,7 +67,7 @@ class ApplicantEvent(BaseModel):
     event_type: CalendarEventType = Field(..., description="Calendar event type")
     description: Optional[str] = Field(None, description="Event description (comment)")
     calendar: PositiveInt = Field(..., description="Calendar ID")
-    attendees: List[CalendarEventAttendee] = Field(
+    attendees: List[CalendarEventAttendeeRequest] = Field(
         ...,
         description="Event attendees (participants)",
     )

@@ -5,10 +5,10 @@ from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.common import (
     ApplicantOffer,
-    CalendarEventAttendee,
+    CalendarEventAttendeeRequest,
     File,
     PaginatedResponse,
-    VacancyQuotaItem,
+    VacancyQuotaItem, CalendarEventAttendeeResponse,
 )
 from huntflow_api_client.models.consts import (
     ApplicantLogType,
@@ -111,7 +111,7 @@ class ApplicantLogCalendarEvent(BaseModel):
     )
     foreign: Optional[str] = Field(None, description="Foreign ID of event")
     location: Optional[str] = Field(None, description="Event location")
-    attendees: List[CalendarEventAttendee] = Field(
+    attendees: List[CalendarEventAttendeeResponse] = Field(
         [],
         description="Event attendees (participants)",
     )

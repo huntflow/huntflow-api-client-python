@@ -10,7 +10,7 @@ from huntflow_api_client.models.consts import (
     EmailContactType,
     EventReminderMultiplier,
     MemberType,
-    VacancyState,
+    VacancyState, CalendarEventStatus,
 )
 
 _FieldSet: typing_extensions.TypeAlias = "Set[int] | Set[str] | Dict[int, Any] | Dict[str, Any]"
@@ -234,12 +234,19 @@ class CalendarEventReminder(BaseModel):
     method: CalendarEventReminderMethod = Field(..., description="Reminder method")
 
 
-class CalendarEventAttendee(BaseModel):
+class CalendarEventAttendeeRequest(BaseModel):
     member: Optional[PositiveInt] = Field(None, description="Coworker ID")
     name: Optional[str] = Field(None, description="Attendee name", alias="displayName")
     email: EmailStr = Field(..., description="Attendee email")
 
     model_config = ConfigDict(populate_by_name=True)
+
+
+class CalendarEventAttendeeResponse(CalendarEventAttendeeRequest):
+    status: Optional[CalendarEventStatus] = Field(
+        None,
+        alias="responseStatus",
+    )
 
 
 class SurveyQuestionaryRespondent(BaseModel):
