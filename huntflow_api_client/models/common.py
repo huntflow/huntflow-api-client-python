@@ -238,7 +238,7 @@ class CalendarEventReminder(BaseModel):
 class CalendarEventAttendeeRequest(BaseModel):
     member: Optional[PositiveInt] = Field(None, description="Coworker ID")
     name: Optional[str] = Field(None, description="Attendee name", alias="displayName")
-    email: EmailStr = Field(..., description="Attendee email")
+    email: str = Field(..., description="Attendee email")
 
     model_config = ConfigDict(populate_by_name=True)
 

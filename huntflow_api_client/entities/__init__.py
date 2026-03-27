@@ -18,9 +18,11 @@ from huntflow_api_client.entities.multi_vacancies import MultiVacancy
 from huntflow_api_client.entities.organization_settings import OrganizationSettings
 from huntflow_api_client.entities.production_calendars import ProductionCalendar
 from huntflow_api_client.entities.questionary import ApplicantsQuestionary
+from huntflow_api_client.entities.recommendation import Recommendation
 from huntflow_api_client.entities.regions import Region
 from huntflow_api_client.entities.rejection_reason import RejectionReason
 from huntflow_api_client.entities.resume import Resume
+from huntflow_api_client.entities.survey_type_a import SurveyTypeA
 from huntflow_api_client.entities.survey_type_q import SurveyTypeQ
 from huntflow_api_client.entities.tags import AccountTag, ApplicantTag
 from huntflow_api_client.entities.user_settings import UserSettings
@@ -53,14 +55,16 @@ __all__ = (
     "MultiVacancy",
     "OrganizationSettings",
     "ProductionCalendar",
+    "Recommendation",
     "Region",
     "RejectionReason",
     "Resume",
+    "SurveyTypeA",
+    "SurveyTypeQ",
     "User",
     "UsersManagement",
     "UserSettings",
     "Vacancy",
     "VacancyRequest",
     "Webhook",
-    "SurveyTypeQ",
 )

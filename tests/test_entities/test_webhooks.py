@@ -22,6 +22,7 @@ WEBHOOK_LIST_RESPONSE: Dict[str, Any] = {
             "created": "2023-05-04T17:21:14+03:00",
             "active": True,
             "webhook_events": ["APPLICANT"],
+            "type": "USER",
         },
     ],
 }
@@ -33,6 +34,7 @@ WEBHOOK_CREATE_RESPONSE: Dict[str, Any] = {
     "created": "2023-05-04T17:24:28+03:00",
     "active": True,
     "webhook_events": ["APPLICANT"],
+    "type": "USER",
 }
 
 

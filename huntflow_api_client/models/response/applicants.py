@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, PositiveInt
+from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.common import Applicant, PaginatedResponse
 from huntflow_api_client.models.consts import AgreementState as AgreementStateEnum
@@ -15,6 +15,7 @@ class ApplicantTag(BaseModel):
 class ApplicantLink(BaseModel):
     id: Optional[int] = Field(None, description="Link ID")
     status: int = Field(..., description="Vacancy status ID")
+    rejection_reason: Optional[int] = Field(None, description="Rejection reason ID")
     updated: datetime = Field(
         ...,
         description="The date of the applicant's update at a vacancy",
@@ -73,7 +74,7 @@ class ApplicantItem(Applicant):
         None,
         description="Date and time of adding an applicant",
     )
-    email: Union[EmailStr, str, None] = Field(
+    email: Union[str, str, None] = Field(
         None,
         description="Email address",
     )
@@ -121,7 +122,7 @@ class ApplicantSearchItem(BaseModel):
     birthday: Optional[date] = Field(None, description="Date of birth")
     phone: Optional[str] = Field(None, description="Phone number")
     skype: Optional[str] = Field(None, description="Skype login")
-    email: Union[EmailStr, str, None] = Field(None, description="Email address")
+    email: Union[str, str, None] = Field(None, description="Email address")
     money: Optional[str] = Field(None, description="Salary expectation")
     position: Optional[str] = Field(None, description="Candidate’s occupation")
     company: Optional[str] = Field(None, description="Candidate’s place of work")
@@ -133,3 +134,12 @@ class ApplicantSearchItem(BaseModel):
 class ApplicantSearchByCursorResponse(BaseModel):
     items: List[ApplicantSearchItem] = Field(..., description="List of applicants")
     next_page_cursor: Optional[str] = Field(None, description="Next page cursor")
+
+
+class ApplicantCreateAgreementLinkResponse(BaseModel):
+    link: str = Field(..., description="Link to agreement")
+
+
+class ApplicantSendAgreementResponse(BaseModel):
+    sent_to: str = Field(..., description="Email recipient")
+    job_id: str = Field(..., description="Job ID")

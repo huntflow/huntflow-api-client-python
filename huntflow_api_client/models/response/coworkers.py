@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from huntflow_api_client.models.common import PaginatedResponse
 from huntflow_api_client.models.consts import MemberType
@@ -18,7 +18,7 @@ class CoworkerResponse(BaseModel):
     name: Optional[str] = Field(None, description="Coworker name")
     type: MemberType = Field(..., description="Coworker type (role)")
     head: Optional[int] = Field(None, description="Head user ID")
-    email: Optional[EmailStr] = Field(None, description="Email")
+    email: Optional[str] = Field(None, description="Email")
     meta: Optional[dict] = Field(None, description="Additional meta information")
     permissions: List[Permission] = Field(default_factory=list, description="Coworker permissions")
 
