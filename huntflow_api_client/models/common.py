@@ -7,6 +7,7 @@ from pydantic import AnyHttpUrl, BaseModel, ConfigDict, EmailStr, Field, Positiv
 
 from huntflow_api_client.models.consts import (
     CalendarEventReminderMethod,
+    CalendarEventStatus,
     EmailContactType,
     EventReminderMultiplier,
     MemberType,
@@ -234,12 +235,19 @@ class CalendarEventReminder(BaseModel):
     method: CalendarEventReminderMethod = Field(..., description="Reminder method")
 
 
-class CalendarEventAttendee(BaseModel):
+class CalendarEventAttendeeRequest(BaseModel):
     member: Optional[PositiveInt] = Field(None, description="Coworker ID")
     name: Optional[str] = Field(None, description="Attendee name", alias="displayName")
     email: str = Field(..., description="Attendee email")
 
     model_config = ConfigDict(populate_by_name=True)
+
+
+class CalendarEventAttendeeResponse(CalendarEventAttendeeRequest):
+    status: Optional[CalendarEventStatus] = Field(
+        None,
+        alias="responseStatus",
+    )
 
 
 class SurveyQuestionaryRespondent(BaseModel):

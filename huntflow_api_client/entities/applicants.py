@@ -110,7 +110,7 @@ class Applicant(BaseEntity, ListEntityMixin, CreateEntityMixin, GetEntityMixin):
         response = await self._api.request(
             "PATCH",
             f"/accounts/{account_id}/applicants/{applicant_id}",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(exclude_unset=True),
         )
         return ApplicantItem.model_validate(response.json())
 

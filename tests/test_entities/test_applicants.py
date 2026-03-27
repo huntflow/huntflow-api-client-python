@@ -1,3 +1,4 @@
+import json
 from typing import Any, Dict
 
 from pytest_httpx import HTTPXMock
@@ -201,7 +202,7 @@ APPLICANT_CREATE_RESPONSE: Dict[str, Any] = {
         },
     ],
 }
-APPLICANT_PATCH_REQUEST: Dict[str, Any] = {"first_name": "Newname"}
+APPLICANT_PATCH_REQUEST: Dict[str, Any] = {"first_name": "Newname", "social": []}
 APPLICANT_PATCH_RESPONSE: Dict[str, Any] = {
     "first_name": "Newname",
     "last_name": "Doe",
@@ -332,6 +333,7 @@ async def test_patch_applicant(
 ) -> None:
     httpx_mock.add_response(
         url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}",
+        match_content=json.dumps(APPLICANT_PATCH_REQUEST).encode(),
         json=APPLICANT_PATCH_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
