@@ -122,6 +122,10 @@ class ApplicantLogCalendarEvent(BaseModel):
     status: CalendarEventStatus = Field(..., description="Event status")
     transparency: Transparency = Field(..., description="Event transparency (availability)")
     recurrence: Optional[List] = None
+    private: Optional[bool] = Field(
+        None,
+        description="Flag indicating private visibility of the event",
+    )
 
 
 class ApplicantLogEmailResponse(BaseModel):
