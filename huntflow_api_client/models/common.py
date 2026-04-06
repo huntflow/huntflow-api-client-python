@@ -170,6 +170,7 @@ class EmailRecipient(BaseModel):
     name: Optional[str] = Field(
         None,
         description="Name of email recipient",
+        alias="displayName",
     )
     email: str = Field(..., description="Email address")
 

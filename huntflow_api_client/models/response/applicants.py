@@ -112,7 +112,6 @@ class ApplicantCreateResponse(Applicant):
     )
     external: List[ApplicantResume] = Field(..., description="Applicant's resume")
     social: List[ApplicantSocial] = Field(..., description="List of applicant's social accounts")
-    reindex_job_id: str
 
 
 class ApplicantSearchItem(BaseModel):

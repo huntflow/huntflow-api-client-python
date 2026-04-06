@@ -6,6 +6,7 @@ from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 from huntflow_api_client.models.common import (
     ApplicantOffer,
     CalendarEventAttendeeResponse,
+    EmailRecipient,
     File,
     PaginatedResponse,
     VacancyQuotaItem,
@@ -15,7 +16,6 @@ from huntflow_api_client.models.consts import (
     CalendarEventReminderMethod,
     CalendarEventStatus,
     CalendarEventType,
-    EmailContactType,
     SurveyType,
     Transparency,
 )
@@ -61,15 +61,6 @@ class ApplicantLogSurveyAnswerTypeA(BaseModel):
     )
     respondent: SurveyTypeARespondent = Field(..., description="Who created the survey answer")
     survey: SurveySchemaTypeALogResponse = Field(..., description="Survey schema")
-
-
-class EmailRecipient(BaseModel):
-    type: Optional[EmailContactType] = Field(None, description="Type of the email contact")
-    name: Optional[str] = Field(
-        None,
-        description="Name of email recipient",
-    )
-    email: str = Field(..., description="Email address")
 
 
 class ApplicantLogAccountInfo(BaseModel):

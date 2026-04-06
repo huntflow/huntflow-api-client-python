@@ -10,8 +10,8 @@ class Token(BaseEntity, UpdateEntityMixin):
         API method reference
             https://api.huntflow.ru/latest/docs#post-/token/refresh
 
-        :param data: token request data
-        :return: refreshed token data
+        :param data: Token request data
+        :return: Refreshed token data
         """
         response = await self._api.request(
             "POST",
