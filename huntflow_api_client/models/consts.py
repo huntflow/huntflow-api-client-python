@@ -1,5 +1,7 @@
 from enum import Enum
 
+from huntflow_api_client.models.utils import extend_enum
+
 
 class WebhookEvent(str, Enum):
     APPLICANT = "APPLICANT"
@@ -69,11 +71,15 @@ class FieldType(str, Enum):
     html = "html"
 
 
-class AgreementState(str, Enum):
+class AgreementStateRequest(str, Enum):
     not_sent = "not_sent"
     sent = "sent"
     accepted = "accepted"
     declined = "declined"
+
+
+@extend_enum(AgreementStateRequest)
+class AgreementStateResponse(str, Enum):
     send_error = "send_error"
 
 
