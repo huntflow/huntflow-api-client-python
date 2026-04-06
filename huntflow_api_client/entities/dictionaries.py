@@ -43,7 +43,11 @@ class Dictionary(BaseEntity, UpdateEntityMixin, ListEntityMixin, CreateEntityMix
         :return: An object that contains the task ID of the delayed background update task
         """
         path = f"/accounts/{account_id}/dictionaries"
-        response = await self._api.request("POST", path, json=data.jsonable_dict(exclude_none=True))
+        response = await self._api.request(
+            "POST",
+            path,
+            json=data.jsonable_dict(exclude_unset=True),
+        )
         return DictionaryTaskResponse.model_validate(response.json())
 
     async def get(self, account_id: int, dict_code: str) -> DictionaryResponse:
@@ -75,5 +79,5 @@ class Dictionary(BaseEntity, UpdateEntityMixin, ListEntityMixin, CreateEntityMix
         :return: An object that contains the task ID of the delayed background update task
         """
         path = f"/accounts/{account_id}/dictionaries/{dict_code}"
-        response = await self._api.request("PUT", path, json=data.jsonable_dict(exclude_none=True))
+        response = await self._api.request("PUT", path, json=data.jsonable_dict(exclude_unset=True))
         return DictionaryTaskResponse.model_validate(response.json())

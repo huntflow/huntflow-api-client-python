@@ -201,6 +201,7 @@ APPLICANT_CREATE_RESPONSE: Dict[str, Any] = {
             "verification_date": "2020-01-01T00:00:00+03:00",
         },
     ],
+    "reindex_job_id": "12345",
 }
 APPLICANT_PATCH_REQUEST: Dict[str, Any] = {"first_name": "Newname", "social": []}
 APPLICANT_PATCH_RESPONSE: Dict[str, Any] = {

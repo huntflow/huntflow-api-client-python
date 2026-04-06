@@ -83,7 +83,7 @@ class Resume(BaseEntity, GetEntityMixin, DeleteEntityMixin, UpdateEntityMixin):
         response = await self._api.request(
             "PUT",
             f"/accounts/{account_id}/applicants/{applicant_id}/externals/{external_id}",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(),
         )
         return ApplicantResumeResponse.model_validate(response.json())
 

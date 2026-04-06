@@ -4,7 +4,7 @@ from typing import List, Optional, Union
 from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.common import Applicant, PaginatedResponse
-from huntflow_api_client.models.consts import AgreementState as AgreementStateEnum
+from huntflow_api_client.models.consts import AgreementStateResponse as AgreementStateEnum
 
 
 class ApplicantTag(BaseModel):
@@ -112,6 +112,7 @@ class ApplicantCreateResponse(Applicant):
     )
     external: List[ApplicantResume] = Field(..., description="Applicant's resume")
     social: List[ApplicantSocial] = Field(..., description="List of applicant's social accounts")
+    reindex_job_id: str
 
 
 class ApplicantSearchItem(BaseModel):

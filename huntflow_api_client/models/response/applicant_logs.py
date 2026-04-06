@@ -20,6 +20,7 @@ from huntflow_api_client.models.consts import (
     Transparency,
 )
 from huntflow_api_client.models.response.applicant_offers import ApplicantVacancyOffer
+from huntflow_api_client.models.response.survey import SurveyTypeARespondent
 
 
 class BaseSurveySchemaType(BaseModel):
@@ -35,6 +36,10 @@ class SurveySchemaTypeQLogResponse(BaseSurveySchemaType):
     title: Optional[str] = Field(..., description="Survey title")
 
 
+class SurveySchemaTypeALogResponse(BaseSurveySchemaType):
+    pass
+
+
 class ApplicantLogSurveyQuestionary(BaseModel):
     id: int = Field(..., description="Survey questionary ID")
     survey: SurveySchemaTypeQLogResponse = Field(..., description="Survey schema")
@@ -46,6 +51,16 @@ class ApplicantLogSurveyQuestionary(BaseModel):
         ...,
         description="Date and time of creating an survey questionary",
     )
+
+
+class ApplicantLogSurveyAnswerTypeA(BaseModel):
+    id: int = Field(..., description="Survey questionary ID")
+    created: datetime = Field(
+        ...,
+        description="Date and time of creating an survey questionary of type A",
+    )
+    respondent: SurveyTypeARespondent = Field(..., description="Who created the survey answer")
+    survey: SurveySchemaTypeALogResponse = Field(..., description="Survey schema")
 
 
 class EmailRecipient(BaseModel):
@@ -171,6 +186,10 @@ class ApplicantLogItem(BaseModel):
     survey_questionary: Optional[ApplicantLogSurveyQuestionary] = Field(
         None,
         description="Survey questionary",
+    )
+    survey_answer_of_type_a: Optional[ApplicantLogSurveyAnswerTypeA] = Field(
+        None,
+        description="Survey answer of type A object",
     )
 
 
