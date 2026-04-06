@@ -25,7 +25,6 @@ from huntflow_api_client.entities.resume import Resume
 from huntflow_api_client.entities.survey_type_a import SurveyTypeA
 from huntflow_api_client.entities.survey_type_q import SurveyTypeQ
 from huntflow_api_client.entities.tags import AccountTag, ApplicantTag
-from huntflow_api_client.entities.token import Token
 from huntflow_api_client.entities.user_settings import UserSettings
 from huntflow_api_client.entities.users import User
 from huntflow_api_client.entities.users_management import UsersManagement
@@ -62,7 +61,6 @@ __all__ = (
     "Resume",
     "SurveyTypeA",
     "SurveyTypeQ",
-    "Token",
     "User",
     "UsersManagement",
     "UserSettings",
