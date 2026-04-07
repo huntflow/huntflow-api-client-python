@@ -110,7 +110,7 @@ async def test_get_non_working_days_in_period(
 ) -> None:
     httpx_mock.add_response(
         url=f"{VERSIONED_BASE_URL}/production_calendars/{CALENDAR_ID}/days/"
-        f"{DEADLINE_DATE.strftime('%Y-%m-%d')}?verbose=true",
+        f"{DEADLINE_DATE.strftime('%Y-%m-%d')}?verbose=false",
         json=NON_WORKING_DAYS_GET_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)

@@ -41,7 +41,7 @@ class Webhook(BaseEntity, ListEntityMixin, CreateEntityMixin, DeleteEntityMixin)
         :return: Information about the webhook
         """
         path = f"/accounts/{account_id}/hooks"
-        response = await self._api.request("POST", path, json=data.jsonable_dict(exclude_none=True))
+        response = await self._api.request("POST", path, json=data.jsonable_dict())
         return WebhookResponse.model_validate(response.json())
 
     async def delete(self, account_id: int, webhook_id: int) -> None:

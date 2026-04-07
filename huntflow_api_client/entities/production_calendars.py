@@ -55,7 +55,7 @@ class ProductionCalendar(BaseEntity, ListEntityMixin, GetEntityMixin):
         calendar_id: int,
         deadline: datetime.date,
         start: Optional[datetime.date] = None,
-        verbose: Optional[bool] = True,
+        verbose: Optional[bool] = False,
     ) -> NonWorkingDaysResponse:
         """
         API method reference
