@@ -58,6 +58,7 @@ APPLICANT_LIST_RESPONSE: Dict[str, Any] = {
             "agreement": None,
             "doubles": [],
             "social": [],
+            "site": [],
         },
         {
             "first_name": "Test",
@@ -96,6 +97,7 @@ APPLICANT_LIST_RESPONSE: Dict[str, Any] = {
             "agreement": {"state": None, "decision_date": None},
             "doubles": [],
             "social": [],
+            "site": [],
         },
     ],
 }
@@ -144,6 +146,13 @@ APPLICANT_GET_RESPONSE: Dict[str, Any] = {
             "verification_date": "2020-01-01T00:00:00+03:00",
         },
     ],
+    "site": [
+        {
+            "id": 1,
+            "site_type": "MAX",
+            "value": "https://max.ru/u/1xBeccJnjIvmlJflCNJjZOVtCJXNzrciOTWpebTSQLPspjUoBgj",
+        },
+    ],
 }
 APPLICANT_CREATE_REQUEST: Dict[str, Any] = {
     "first_name": "John",
@@ -166,6 +175,12 @@ APPLICANT_CREATE_REQUEST: Dict[str, Any] = {
         },
     ],
     "social": [{"social_type": "TELEGRAM", "value": "TelegramUsername"}],
+    "site": [
+        {
+            "site_type": "MAX",
+            "value": "https://max.ru/u/1xBeccJnjIvmlJflCNJjZOVtCJXNzrciOTWpebTSQLPspjUoBgj",
+        },
+    ],
 }
 APPLICANT_CREATE_RESPONSE: Dict[str, Any] = {
     "first_name": "John",
@@ -199,6 +214,13 @@ APPLICANT_CREATE_RESPONSE: Dict[str, Any] = {
             "value": "TelegramUsername",
             "verified": False,
             "verification_date": "2020-01-01T00:00:00+03:00",
+        },
+    ],
+    "site": [
+        {
+            "id": 1,
+            "site_type": "MAX",
+            "value": "https://max.ru/u/1xBeccJnjIvmlJflCNJjZOVtCJXNzrciOTWpebTSQLPspjUoBgj",
         },
     ],
 }
@@ -248,6 +270,7 @@ APPLICANT_PATCH_RESPONSE: Dict[str, Any] = {
             "verification_date": "2020-01-01T00:00:00+03:00",
         },
     ],
+    "site": [],
 }
 
 APPLICANT_SEARCH_BY_CURSOR_RESPONSE = {

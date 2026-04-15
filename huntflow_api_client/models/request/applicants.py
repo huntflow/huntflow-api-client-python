@@ -31,6 +31,11 @@ class ApplicantSocial(BaseModel):
     value: str = Field(..., description="Value")
 
 
+class ApplicantSite(BaseModel):
+    site_type: Literal["MAX"] = Field(..., description="Type")
+    value: str = Field(..., description="Value")
+
+
 class ApplicantCreateRequest(Applicant, JsonRequestModel):
     birthday: Optional[date] = Field(None, description="Date of birth")
     externals: Optional[List[ApplicantResumeCreate]] = Field(
@@ -43,6 +48,11 @@ class ApplicantCreateRequest(Applicant, JsonRequestModel):
         max_length=1,
         description="List of applicant's social accounts",
     )
+    site: List[ApplicantSite] = Field(
+        [],
+        max_length=1,
+        description="List of applicant's sites",
+    )
 
 
 class ApplicantUpdateRequest(Applicant, JsonRequestModel):
@@ -51,6 +61,11 @@ class ApplicantUpdateRequest(Applicant, JsonRequestModel):
         None,
         max_length=1,
         description="List of applicant's social accounts",
+    )
+    site: Optional[List[ApplicantSite]] = Field(
+        None,
+        max_length=1,
+        description="List of applicant's sites",
     )
 
 

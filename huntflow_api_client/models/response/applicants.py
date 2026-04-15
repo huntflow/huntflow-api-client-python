@@ -62,6 +62,12 @@ class ApplicantSocial(BaseModel):
     verification_date: Optional[datetime] = Field(None, description="Verification date")
 
 
+class ApplicantSite(BaseModel):
+    id: PositiveInt = Field(..., description="Site ID")
+    site_type: str = Field(..., description="Type")
+    value: str = Field(..., description="Value")
+
+
 class ApplicantItem(Applicant):
     id: int = Field(..., description="Applicant ID")
     account: int = Field(..., description="Organization ID")
@@ -87,6 +93,7 @@ class ApplicantItem(Applicant):
     )
     doubles: List[ApplicantDouble] = Field(..., description="List of duplicates")
     social: List[ApplicantSocial] = Field(..., description="List of applicant's social accounts")
+    site: List[ApplicantSite] = Field(..., description="List of applicant's sites")
 
 
 class ApplicantListResponse(PaginatedResponse):
@@ -112,6 +119,7 @@ class ApplicantCreateResponse(Applicant):
     )
     external: List[ApplicantResume] = Field(..., description="Applicant's resume")
     social: List[ApplicantSocial] = Field(..., description="List of applicant's social accounts")
+    site: List[ApplicantSite] = Field(..., description="List of applicant's sites")
 
 
 class ApplicantSearchItem(BaseModel):
