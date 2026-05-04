@@ -214,7 +214,7 @@ Every method on entities ultimately uses `HuntflowAPI.request`, which mirrors [`
 
 ```python
 account_id = 1
-payload = {"first_name": "Ada", "last_name": "Lovelace"}  # match API schema
+payload = {"first_name": "John", "last_name": "Doe"}  # match API schema
 
 response = await api.request(
     "POST",
