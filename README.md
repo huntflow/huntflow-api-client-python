@@ -133,6 +133,12 @@ Seed the JSON file once with `access_token` and `refresh_token` from Huntflow be
 
 The package does **not** depend on Redis; install it separately (`pip install "redis>=4.2"` so `redis.asyncio` and async locks behave consistently). Use one async Redis client for both storage and the lock. **Populate the token key** before the first API call (same JSON shape as the file storage).
 
+This example uses an accessor-style flow:
+`RedisTokenProxy -> RedisTokenAccessor -> storage`.
+`RedisTokenProxy` implements the SDK token contract, `RedisTokenAccessor` is responsible
+for token retrieval and update operations, and `RedisLockLocker` synchronizes refresh
+between concurrent requests.
+
 ```python
 import asyncio
 import json
