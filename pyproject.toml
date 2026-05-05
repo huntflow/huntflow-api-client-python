@@ -1,7 +1,7 @@
 
 [project]
 name = "huntflow-api-client"
-version = "2.13.4"
+version = "2.13.5"
 description = "Huntflow API Client for Python"
 authors = [
     {name = "Developers huntflow", email = "developer@huntflow.ru"},
@@ -21,6 +21,10 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
+
+[project.urls]
+Documentation = "https://api.huntflow.ai/v2/docs"
+Repository = "https://github.com/huntflow/huntflow-api-client-python"
 
 [build-system]
 requires = ["pdm-backend"]
