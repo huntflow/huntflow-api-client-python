@@ -6,8 +6,6 @@
 
 Async Python client for the [Huntflow API](https://api.huntflow.ai/v2/docs). It wraps [httpx](https://www.python-httpx.org/), adds Bearer authentication, optional automatic token refresh, and typed helpers for major resources.
 
-**Async-only:** every `request()` and entity method is `async` — call them from `async def` code (`asyncio.run`, FastAPI routes, your own event loop, etc.). There is no synchronous client.
-
 ## Installation
 
 ```bash
@@ -136,49 +134,47 @@ Seed the JSON file once with `access_token` and `refresh_token` from Huntflow be
 The package does **not** depend on Redis; install it separately (`pip install "redis>=4.2"` so `redis.asyncio` and async locks behave consistently). Use one async Redis client for both storage and the lock. **Populate the token key** before the first API call (same JSON shape as the file storage).
 
 ```python
+import asyncio
 import json
+import time
+from typing import Any, Dict, Optional
 
 from redis.asyncio import Redis
+from redis.asyncio.lock import Lock
 from redis.exceptions import LockError
 
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.tokens.locker import AbstractLocker
-from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
-from huntflow_api_client.tokens.storage import AbstractHuntflowTokenStorage
+from huntflow_api_client.tokens.proxy import (
+    AbstractTokenProxy,
+    convert_refresh_result_to_hf_token,
+    get_auth_headers,
+    get_refresh_token_data,
+)
 from huntflow_api_client.tokens.token import ApiToken
 
-
-class HuntflowTokenRedisStorage(AbstractHuntflowTokenStorage):
-    def __init__(self, redis: Redis, key: str = "huntflow:token") -> None:
-        self._redis = redis
-        self._key = key
-
-    async def get(self) -> ApiToken:
-        raw = await self._redis.get(self._key)
-        if raw is None:
-            msg = (
-                f"Redis key {self._key!r} is empty. "
-                "SET JSON with access_token and refresh_token before use."
-            )
-            raise KeyError(msg)
-        return ApiToken.from_dict(json.loads(raw))
-
-    async def update(self, token: ApiToken) -> None:
-        await self._redis.set(self._key, json.dumps(token.dict()))
+POLL_INTERVAL = 0.2
 
 
 class RedisLockLocker(AbstractLocker):
-    """Distributed lock compatible with HuntflowTokenProxy (multi-worker)."""
+    """Coordinates token refresh across concurrent workers.
+
+    One caller acquires the lock and performs refresh; others wait until
+    the lock is released and then continue with updated token data.
+    """
 
     def __init__(self, redis: Redis, name: str = "huntflow:token_refresh") -> None:
-        self._lock = redis.lock(name, timeout=30.0, blocking_timeout=60.0)
+        self._lock = Lock(redis, name=name, timeout=30.0, blocking=False)
 
     async def acquire(self) -> bool:
-        return bool(await self._lock.acquire(blocking=False))
+        try:
+            return bool(await self._lock.acquire())
+        except LockError:
+            return False
 
     async def wait_for_lock(self) -> None:
-        async with self._lock:
-            pass
+        while await self._lock.locked():
+            await asyncio.sleep(POLL_INTERVAL)
 
     async def release(self) -> None:
         try:
@@ -187,26 +183,101 @@ class RedisLockLocker(AbstractLocker):
             return
 
 
+class RedisTokenAccessor:
+    """Layer for token read/update operations.
+
+    Keeps Redis calls in one place and exposes lock-related operations
+    used by the proxy.
+    """
+
+    def __init__(
+        self,
+        redis: Redis,
+        locker: AbstractLocker,
+        token_key: str = "huntflow:token",
+    ) -> None:
+        self._redis = redis
+        self._locker = locker
+        self._token_key = token_key
+
+    async def get(self, bypass_lock: bool = False) -> Optional[Dict[str, Any]]:
+        if not bypass_lock:
+            await self._locker.wait_for_lock()
+        raw = await self._redis.get(self._token_key)
+        if not raw:
+            return None
+        return json.loads(raw)
+
+    async def update(self, token: ApiToken) -> None:
+        await self._redis.set(self._token_key, json.dumps(token.dict()))
+
+    async def lock_for_update(self) -> bool:
+        return await self._locker.acquire()
+
+    async def release_lock(self) -> None:
+        await self._locker.release()
+
+
+class RedisTokenProxy(AbstractTokenProxy):
+    """`AbstractTokenProxy` implementation over accessor + locker.
+
+    Returns auth headers, provides refresh payload, saves refreshed token,
+    and checks whether another worker has already updated the token.
+    """
+
+    def __init__(self, accessor: RedisTokenAccessor) -> None:
+        self._accessor = accessor
+        self._token: Optional[ApiToken] = None
+        self._last_read_timestamp: Optional[float] = None
+
+    async def get_auth_header(self) -> Dict[str, str]:
+        data = await self._accessor.get()
+        if data is None:
+            raise KeyError("Token not found in Redis. Seed access_token and refresh_token first.")
+        self._token = ApiToken.from_dict(data)
+        self._last_read_timestamp = time.time()
+        return get_auth_headers(self._token)
+
+    async def get_refresh_data(self) -> Dict[str, str]:
+        if self._token is None:
+            data = await self._accessor.get()
+            if data is None:
+                raise KeyError("Token not found in Redis. Seed access_token and refresh_token first.")
+            self._token = ApiToken.from_dict(data)
+        return get_refresh_token_data(self._token)
+
+    async def update(self, refresh_result: dict) -> None:
+        assert self._token is not None
+        self._token = convert_refresh_result_to_hf_token(refresh_result, self._token)
+        await self._accessor.update(self._token)
+
+    async def lock_for_update(self) -> bool:
+        return await self._accessor.lock_for_update()
+
+    async def release_lock(self) -> None:
+        await self._accessor.release_lock()
+
+    async def is_updated(self) -> bool:
+        if self._last_read_timestamp is None:
+            return False
+        current_data = await self._accessor.get(bypass_lock=True)
+        if current_data is None:
+            return False
+        current = ApiToken.from_dict(current_data)
+        last_refresh_timestamp = current.last_refresh_timestamp or 0.0
+        return last_refresh_timestamp > self._last_read_timestamp
+
+
 def build_api(redis: Redis) -> HuntflowAPI:
-    storage = HuntflowTokenRedisStorage(redis, key="huntflow:token")
     locker = RedisLockLocker(redis, name="huntflow:token_refresh")
-    token_proxy = HuntflowTokenProxy(storage, locker=locker)
+    accessor = RedisTokenAccessor(redis, locker=locker, token_key="huntflow:token")
+    token_proxy = RedisTokenProxy(accessor)
     return HuntflowAPI(
         "https://api.huntflow.ai",
         token_proxy=token_proxy,
         auto_refresh_tokens=True,
     )
-
-
-# redis = Redis.from_url("redis://localhost:6379/0", decode_responses=True)
-# try:
-#     api = build_api(redis)
-#     ...
-# finally:
-#     await redis.aclose()
 ```
-
-Tune lock **`timeout`** / **`blocking_timeout`** for your network and refresh latency. Keep the **`Redis`** instance for the app lifetime and **`await redis.aclose()`** on shutdown. For fully custom behavior (e.g. KMS-wrapped secrets), subclass **`AbstractTokenProxy`** instead of `HuntflowTokenProxy`.
 
 ## Raw HTTP access
 
