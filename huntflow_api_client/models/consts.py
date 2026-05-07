@@ -202,3 +202,13 @@ class RecommendationStatus(str, Enum):
 class InterviewType(str, Enum):
     USER = "user"
     INTERVIEW = "interview"
+
+
+class ExchangeAccessType(str, Enum):
+    DEFAULT = "DEFAULT"
+    IMPERSONATION = "IMPERSONATION"
+
+
+class EmailInboundType(str, Enum):
+    DEFAULT = "IMAP"
+    IMPERSONATION = "POP3"
