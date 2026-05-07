@@ -8,7 +8,7 @@ from huntflow_api_client.models.common import (
     ApplicantLogIm,
     ApplicantLogSms,
     ApplicantOffer,
-    CalendarEventAttendee,
+    CalendarEventAttendeeRequest,
     CalendarEventReminder,
     JsonRequestModel,
 )
@@ -25,7 +25,7 @@ class ApplicantLogCalendarEvent(BaseModel):
     event_type: CalendarEventType = Field(..., description="Calendar event type")
     description: Optional[str] = Field(None, description="Event description (comment)")
     calendar: PositiveInt = Field(..., description="Calendar ID")
-    attendees: List[CalendarEventAttendee] = Field(
+    attendees: List[CalendarEventAttendeeRequest] = Field(
         ...,
         description="Event attendees (participants)",
     )

@@ -1,10 +1,10 @@
 from datetime import date, datetime
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, PositiveInt
+from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.common import Applicant, PaginatedResponse
-from huntflow_api_client.models.consts import AgreementState as AgreementStateEnum
+from huntflow_api_client.models.consts import AgreementStateResponse as AgreementStateEnum
 
 
 class ApplicantTag(BaseModel):
@@ -15,6 +15,7 @@ class ApplicantTag(BaseModel):
 class ApplicantLink(BaseModel):
     id: Optional[int] = Field(None, description="Link ID")
     status: int = Field(..., description="Vacancy status ID")
+    rejection_reason: Optional[int] = Field(None, description="Rejection reason ID")
     updated: datetime = Field(
         ...,
         description="The date of the applicant's update at a vacancy",
@@ -61,6 +62,12 @@ class ApplicantSocial(BaseModel):
     verification_date: Optional[datetime] = Field(None, description="Verification date")
 
 
+class ApplicantSite(BaseModel):
+    id: PositiveInt = Field(..., description="Site ID")
+    site_type: str = Field(..., description="Type")
+    value: str = Field(..., description="Value")
+
+
 class ApplicantItem(Applicant):
     id: int = Field(..., description="Applicant ID")
     account: int = Field(..., description="Organization ID")
@@ -73,7 +80,7 @@ class ApplicantItem(Applicant):
         None,
         description="Date and time of adding an applicant",
     )
-    email: Union[EmailStr, str, None] = Field(
+    email: Union[str, str, None] = Field(
         None,
         description="Email address",
     )
@@ -86,6 +93,7 @@ class ApplicantItem(Applicant):
     )
     doubles: List[ApplicantDouble] = Field(..., description="List of duplicates")
     social: List[ApplicantSocial] = Field(..., description="List of applicant's social accounts")
+    site: List[ApplicantSite] = Field(..., description="List of applicant's sites")
 
 
 class ApplicantListResponse(PaginatedResponse):
@@ -111,6 +119,7 @@ class ApplicantCreateResponse(Applicant):
     )
     external: List[ApplicantResume] = Field(..., description="Applicant's resume")
     social: List[ApplicantSocial] = Field(..., description="List of applicant's social accounts")
+    site: List[ApplicantSite] = Field(..., description="List of applicant's sites")
 
 
 class ApplicantSearchItem(BaseModel):
@@ -121,7 +130,7 @@ class ApplicantSearchItem(BaseModel):
     birthday: Optional[date] = Field(None, description="Date of birth")
     phone: Optional[str] = Field(None, description="Phone number")
     skype: Optional[str] = Field(None, description="Skype login")
-    email: Union[EmailStr, str, None] = Field(None, description="Email address")
+    email: Union[str, str, None] = Field(None, description="Email address")
     money: Optional[str] = Field(None, description="Salary expectation")
     position: Optional[str] = Field(None, description="Candidate’s occupation")
     company: Optional[str] = Field(None, description="Candidate’s place of work")
@@ -133,3 +142,12 @@ class ApplicantSearchItem(BaseModel):
 class ApplicantSearchByCursorResponse(BaseModel):
     items: List[ApplicantSearchItem] = Field(..., description="List of applicants")
     next_page_cursor: Optional[str] = Field(None, description="Next page cursor")
+
+
+class ApplicantCreateAgreementLinkResponse(BaseModel):
+    link: str = Field(..., description="Link to agreement")
+
+
+class ApplicantSendAgreementResponse(BaseModel):
+    sent_to: str = Field(..., description="Email recipient")
+    job_id: str = Field(..., description="Job ID")

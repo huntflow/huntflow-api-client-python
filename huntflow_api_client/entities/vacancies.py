@@ -96,7 +96,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/vacancies",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(exclude_unset=True),
         )
         return VacancyCreateResponse.model_validate(response.json())
 
@@ -118,7 +118,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         response = await self._api.request(
             "PUT",
             f"/accounts/{account_id}/vacancies/{vacancy_id}",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(exclude_unset=True),
         )
         return VacancyResponse.model_validate(response.json())
 
@@ -150,7 +150,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         response = await self._api.request(
             "PATCH",
             f"/accounts/{account_id}/vacancies/{vacancy_id}",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(exclude_unset=True),
         )
         return VacancyResponse.model_validate(response.json())
 
@@ -174,7 +174,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         response = await self._api.request(
             "PUT",
             f"/accounts/{account_id}/vacancies/{vacancy_id}/members/{account_member_id}",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(),
         )
         return StatusResponse.model_validate(response.json())
 
@@ -304,7 +304,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         await self._api.request(
             "POST",
             f"/accounts/{account_id}/vacancies/{vacancy_id}/state/close",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(),
         )
 
     async def hold(self, account_id: int, vacancy_id: int, data: VacancyHoldRequest) -> None:
@@ -319,7 +319,7 @@ class Vacancy(BaseEntity, CRUDEntityMixin):
         await self._api.request(
             "POST",
             f"/accounts/{account_id}/vacancies/{vacancy_id}/state/hold",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(),
         )
 
     async def resume(self, account_id: int, vacancy_id: int) -> None:
