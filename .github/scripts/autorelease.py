@@ -1,6 +1,5 @@
 import argparse
 import logging
-import re
 from typing import List, Optional
 
 import httpx
@@ -47,28 +46,17 @@ def get_release_tags(github_token: str) -> List[str]:
 
 
 RELEASE_BRANCH = "master"
-LEGACY_BRANCH_PATTERN = re.compile(r"^v(?P<major_release>\d+)$", re.I)
-
-
-def get_major_release(current_branch: str, project_version_str: str) -> Optional[str]:
-    if current_branch == RELEASE_BRANCH:
-        return str(Version(project_version_str).major)
-
-    branch_matching = LEGACY_BRANCH_PATTERN.match(current_branch)
-    if branch_matching:
-        return branch_matching.group("major_release")
-
-    return None
 
 
 def main(github_token: str, current_branch: str) -> None:
+    if current_branch != RELEASE_BRANCH:
+        logger.info("Branch %s is not a valid release branch", current_branch)
+        return
+
     project_version_str = get_project_version()
     logger.info("Project version %s", project_version_str)
 
-    major_release = get_major_release(current_branch, project_version_str)
-    if major_release is None:
-        logger.info("Branch %s is not a valid release branch", current_branch)
-        return
+    major_release = str(Version(project_version_str).major)
 
     if not project_version_str.startswith(major_release):
         logger.info(
