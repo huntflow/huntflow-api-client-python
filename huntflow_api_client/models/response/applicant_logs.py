@@ -5,7 +5,8 @@ from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 from huntflow_api_client.models.common import (
     ApplicantOffer,
-    CalendarEventAttendee,
+    CalendarEventAttendeeResponse,
+    EmailRecipient,
     File,
     PaginatedResponse,
     VacancyQuotaItem,
@@ -15,11 +16,11 @@ from huntflow_api_client.models.consts import (
     CalendarEventReminderMethod,
     CalendarEventStatus,
     CalendarEventType,
-    EmailContactType,
     SurveyType,
     Transparency,
 )
 from huntflow_api_client.models.response.applicant_offers import ApplicantVacancyOffer
+from huntflow_api_client.models.response.survey import SurveyTypeARespondent
 
 
 class BaseSurveySchemaType(BaseModel):
@@ -35,6 +36,10 @@ class SurveySchemaTypeQLogResponse(BaseSurveySchemaType):
     title: Optional[str] = Field(..., description="Survey title")
 
 
+class SurveySchemaTypeALogResponse(BaseSurveySchemaType):
+    pass
+
+
 class ApplicantLogSurveyQuestionary(BaseModel):
     id: int = Field(..., description="Survey questionary ID")
     survey: SurveySchemaTypeQLogResponse = Field(..., description="Survey schema")
@@ -48,13 +53,14 @@ class ApplicantLogSurveyQuestionary(BaseModel):
     )
 
 
-class EmailRecipient(BaseModel):
-    type: Optional[EmailContactType] = Field(None, description="Type of the email contact")
-    name: Optional[str] = Field(
-        None,
-        description="Name of email recipient",
+class ApplicantLogSurveyAnswerTypeA(BaseModel):
+    id: int = Field(..., description="Survey questionary ID")
+    created: datetime = Field(
+        ...,
+        description="Date and time of creating an survey questionary of type A",
     )
-    email: str = Field(..., description="Email address")
+    respondent: SurveyTypeARespondent = Field(..., description="Who created the survey answer")
+    survey: SurveySchemaTypeALogResponse = Field(..., description="Survey schema")
 
 
 class ApplicantLogAccountInfo(BaseModel):
@@ -111,7 +117,7 @@ class ApplicantLogCalendarEvent(BaseModel):
     )
     foreign: Optional[str] = Field(None, description="Foreign ID of event")
     location: Optional[str] = Field(None, description="Event location")
-    attendees: List[CalendarEventAttendee] = Field(
+    attendees: List[CalendarEventAttendeeResponse] = Field(
         [],
         description="Event attendees (participants)",
     )
@@ -122,6 +128,10 @@ class ApplicantLogCalendarEvent(BaseModel):
     status: CalendarEventStatus = Field(..., description="Event status")
     transparency: Transparency = Field(..., description="Event transparency (availability)")
     recurrence: Optional[List] = None
+    private: Optional[bool] = Field(
+        None,
+        description="Flag indicating private visibility of the event",
+    )
 
 
 class ApplicantLogEmailResponse(BaseModel):
@@ -167,6 +177,10 @@ class ApplicantLogItem(BaseModel):
     survey_questionary: Optional[ApplicantLogSurveyQuestionary] = Field(
         None,
         description="Survey questionary",
+    )
+    survey_answer_of_type_a: Optional[ApplicantLogSurveyAnswerTypeA] = Field(
+        None,
+        description="Survey answer of type A object",
     )
 
 

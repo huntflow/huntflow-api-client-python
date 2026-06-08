@@ -43,7 +43,7 @@ class AccountTag(BaseEntity, CRUDEntityMixin, ListEntityMixin):
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/tags",
-            json=account_tag.jsonable_dict(exclude_none=True),
+            json=account_tag.jsonable_dict(),
         )
         return AccountTagResponse.model_validate(response.json())
 
@@ -65,7 +65,7 @@ class AccountTag(BaseEntity, CRUDEntityMixin, ListEntityMixin):
         response = await self._api.request(
             "PUT",
             f"/accounts/{account_id}/tags/{account_tag_id}",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(),
         )
         return AccountTagResponse.model_validate(response.json())
 
@@ -112,7 +112,7 @@ class ApplicantTag(BaseEntity, UpdateEntityMixin, ListEntityMixin):
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/applicants/{applicant_id}/tags",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(),
         )
         return ApplicantTagsListResponse.model_validate(response.json())
 

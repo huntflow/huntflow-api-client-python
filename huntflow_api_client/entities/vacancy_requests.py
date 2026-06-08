@@ -76,6 +76,6 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
         response = await self._api.request(
             "POST",
             path,
-            json=request_data.jsonable_dict(exclude_none=True),
+            json=request_data.jsonable_dict(exclude_unset=True),
         )
         return VacancyRequestResponse.model_validate(response.json())

@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import AnyHttpUrl, BaseModel, Field, PositiveInt
 
-from huntflow_api_client.models.consts import WebhookEvent
+from huntflow_api_client.models.consts import WebhookEvent, WebhookType
 
 
 class WebhookResponse(BaseModel):
@@ -13,6 +13,7 @@ class WebhookResponse(BaseModel):
     created: datetime = Field(..., description="Date and time of creating a webhook")
     active: bool = Field(..., description="Webhook activity flag")
     webhook_events: List[WebhookEvent] = Field(..., description="List of webhook events")
+    type: WebhookType = Field(..., description="Webhook type")
 
 
 class WebhooksListResponse(BaseModel):

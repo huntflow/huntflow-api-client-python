@@ -26,7 +26,7 @@ class MultiVacancy(BaseEntity, CreateEntityMixin, UpdateEntityMixin):
         response = await self._api.request(
             "POST",
             f"/accounts/{account_id}/multi-vacancies",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(exclude_unset=True),
         )
         return MultiVacancyResponse.model_validate(response.json())
 
@@ -52,6 +52,6 @@ class MultiVacancy(BaseEntity, CreateEntityMixin, UpdateEntityMixin):
         response = await self._api.request(
             method,
             f"/accounts/{account_id}/multi-vacancies/{vacancy_id}",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(exclude_unset=True),
         )
         return MultiVacancyResponse.model_validate(response.json())

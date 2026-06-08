@@ -1,5 +1,7 @@
 from enum import Enum
 
+from huntflow_api_client.utils import extend_enum
+
 
 class WebhookEvent(str, Enum):
     APPLICANT = "APPLICANT"
@@ -7,6 +9,13 @@ class WebhookEvent(str, Enum):
     RESPONSE = "RESPONSE"
     OFFER = "OFFER"
     VACANCY_REQUEST = "VACANCY-REQUEST"
+    RECRUITMENT_EVALUATION = "RECRUITMENT-EVALUATION"
+    SURVEY_QUESTIONARY = "SURVEY-QUESTIONARY"
+
+
+class WebhookType(str, Enum):
+    USER = "USER"
+    APPLICATION = "APPLICATION"
 
 
 class MemberType(str, Enum):
@@ -62,11 +71,15 @@ class FieldType(str, Enum):
     html = "html"
 
 
-class AgreementState(str, Enum):
+class AgreementStateRequest(str, Enum):
     not_sent = "not_sent"
     sent = "sent"
     accepted = "accepted"
     declined = "declined"
+
+
+@extend_enum(AgreementStateRequest)
+class AgreementStateResponse(str, Enum):
     send_error = "send_error"
 
 
@@ -154,6 +167,7 @@ class ActionLogType(str, Enum):
     VACANCY_EXTERNAL = "VACANCY_EXTERNAL"
     ACCOUNT_MEMBER = "ACCOUNT_MEMBER"
     DOWNLOAD_APPLICANTS = "DOWNLOAD_APPLICANTS"
+    PASSWORD_CHANGE = "PASSWORD_CHANGE"
 
 
 class SurveyType(str, Enum):
@@ -171,3 +185,30 @@ class UserControlTaskStatus(str, Enum):
     PENDING = "PENDING"
     SUCCESS = "SUCCESS"
     FAILED = "FAILED"
+
+
+class RecommendationProcessingStatus(str, Enum):
+    ALL = "ALL"
+    PROCESSED = "PROCESSED"
+    UNPROCESSED = "UNPROCESSED"
+
+
+class RecommendationStatus(str, Enum):
+    TAKEN = "TAKEN"
+    TAKEN_OTHER = "TAKEN_OTHER"
+    DECLINED = "DECLINED"
+
+
+class InterviewType(str, Enum):
+    USER = "user"
+    INTERVIEW = "interview"
+
+
+class ExchangeAccessType(str, Enum):
+    DEFAULT = "DEFAULT"
+    IMPERSONATION = "IMPERSONATION"
+
+
+class EmailInboundType(str, Enum):
+    DEFAULT = "IMAP"
+    IMPERSONATION = "POP3"

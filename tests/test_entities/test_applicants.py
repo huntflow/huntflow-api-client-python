@@ -1,3 +1,4 @@
+import json
 from typing import Any, Dict
 
 from pytest_httpx import HTTPXMock
@@ -9,10 +10,12 @@ from huntflow_api_client.models.request.applicants import (
     ApplicantUpdateRequest,
 )
 from huntflow_api_client.models.response.applicants import (
+    ApplicantCreateAgreementLinkResponse,
     ApplicantCreateResponse,
     ApplicantItem,
     ApplicantListResponse,
     ApplicantSearchByCursorResponse,
+    ApplicantSendAgreementResponse,
 )
 from huntflow_api_client.tokens.proxy import HuntflowTokenProxy
 from tests.api import BASE_URL, VERSIONED_BASE_URL
@@ -55,6 +58,7 @@ APPLICANT_LIST_RESPONSE: Dict[str, Any] = {
             "agreement": None,
             "doubles": [],
             "social": [],
+            "site": [],
         },
         {
             "first_name": "Test",
@@ -93,6 +97,7 @@ APPLICANT_LIST_RESPONSE: Dict[str, Any] = {
             "agreement": {"state": None, "decision_date": None},
             "doubles": [],
             "social": [],
+            "site": [],
         },
     ],
 }
@@ -141,6 +146,13 @@ APPLICANT_GET_RESPONSE: Dict[str, Any] = {
             "verification_date": "2020-01-01T00:00:00+03:00",
         },
     ],
+    "site": [
+        {
+            "id": 1,
+            "site_type": "MAX",
+            "value": "https://max.ru/u/1xBeccJnjIvmlJflCNJjZOVtCJXNzrciOTWpebTSQLPspjUoBgj",
+        },
+    ],
 }
 APPLICANT_CREATE_REQUEST: Dict[str, Any] = {
     "first_name": "John",
@@ -163,6 +175,12 @@ APPLICANT_CREATE_REQUEST: Dict[str, Any] = {
         },
     ],
     "social": [{"social_type": "TELEGRAM", "value": "TelegramUsername"}],
+    "site": [
+        {
+            "site_type": "MAX",
+            "value": "https://max.ru/u/1xBeccJnjIvmlJflCNJjZOVtCJXNzrciOTWpebTSQLPspjUoBgj",
+        },
+    ],
 }
 APPLICANT_CREATE_RESPONSE: Dict[str, Any] = {
     "first_name": "John",
@@ -198,8 +216,15 @@ APPLICANT_CREATE_RESPONSE: Dict[str, Any] = {
             "verification_date": "2020-01-01T00:00:00+03:00",
         },
     ],
+    "site": [
+        {
+            "id": 1,
+            "site_type": "MAX",
+            "value": "https://max.ru/u/1xBeccJnjIvmlJflCNJjZOVtCJXNzrciOTWpebTSQLPspjUoBgj",
+        },
+    ],
 }
-APPLICANT_PATCH_REQUEST: Dict[str, Any] = {"first_name": "Newname"}
+APPLICANT_PATCH_REQUEST: Dict[str, Any] = {"first_name": "Newname", "social": []}
 APPLICANT_PATCH_RESPONSE: Dict[str, Any] = {
     "first_name": "Newname",
     "last_name": "Doe",
@@ -245,6 +270,7 @@ APPLICANT_PATCH_RESPONSE: Dict[str, Any] = {
             "verification_date": "2020-01-01T00:00:00+03:00",
         },
     ],
+    "site": [],
 }
 
 APPLICANT_SEARCH_BY_CURSOR_RESPONSE = {
@@ -267,6 +293,12 @@ APPLICANT_SEARCH_BY_CURSOR_RESPONSE = {
         },
     ],
     "next_page_cursor": "3VudCI6IjoXIjogW10IiwgMy4wXX0=",
+}
+
+APPLICANT_CREATE_AGREEMENT_RESPONSE: Dict[str, Any] = {"link": "https://agreement.example/1"}
+APPLICANT_SEND_AGREEMENT_RESPONSE: Dict[str, Any] = {
+    "sent_to": "user@example.com",
+    "job_id": "job-id-1111",
 }
 
 
@@ -324,6 +356,7 @@ async def test_patch_applicant(
 ) -> None:
     httpx_mock.add_response(
         url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}",
+        match_content=json.dumps(APPLICANT_PATCH_REQUEST).encode(),
         json=APPLICANT_PATCH_RESPONSE,
     )
     api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
@@ -385,3 +418,35 @@ async def test_applicant_search_by_cursor(
     assert response == ApplicantSearchByCursorResponse.model_validate(
         APPLICANT_SEARCH_BY_CURSOR_RESPONSE,
     )
+
+
+async def test_create_agreement_link(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/agreement_link",
+        json=APPLICANT_CREATE_AGREEMENT_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+
+    applicants = Applicant(api_client)
+
+    response = await applicants.create_agreement_link(ACCOUNT_ID, APPLICANT_ID)
+    assert response == ApplicantCreateAgreementLinkResponse(**APPLICANT_CREATE_AGREEMENT_RESPONSE)
+
+
+async def test_send_agreement_via_email(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/applicants/{APPLICANT_ID}/agreement_email",
+        json=APPLICANT_SEND_AGREEMENT_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+
+    applicants = Applicant(api_client)
+
+    response = await applicants.send_agreement_via_email(ACCOUNT_ID, APPLICANT_ID)
+    assert response == ApplicantSendAgreementResponse(**APPLICANT_SEND_AGREEMENT_RESPONSE)

@@ -1,4 +1,5 @@
 from huntflow_api_client.entities.base import BaseEntity
+from huntflow_api_client.models.response.interview_types import InterviewTypesListResponse
 from huntflow_api_client.models.response.organization_settings import (
     BaseSurveySchemaTypeWithSchemas,
     CloseReasonsListResponse,
@@ -53,3 +54,15 @@ class OrganizationSettings(BaseEntity):
             f"/accounts/{account_id}/surveys/type_a/{survey_id}",
         )
         return BaseSurveySchemaTypeWithSchemas.model_validate(response.json())
+
+    async def get_interview_types(self, account_id: int) -> InterviewTypesListResponse:
+        """
+        API method reference
+           https://api.huntflow.ai/v2/docs#get-/accounts/-account_id-/interview_types
+
+        :param account_id: Organization ID
+
+        :return: List of interview types
+        """
+        response = await self._api.request("GET", f"/accounts/{account_id}/interview_types")
+        return InterviewTypesListResponse.model_validate(response.json())

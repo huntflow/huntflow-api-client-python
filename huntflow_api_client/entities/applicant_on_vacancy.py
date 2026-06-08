@@ -77,6 +77,6 @@ class ApplicantOnVacancy(BaseEntity):
         response = await self._api.request(
             "PUT",
             f"/accounts/{account_id}/applicants/vacancy/{vacancy_id}/split",
-            json=data.jsonable_dict(exclude_none=True),
+            json=data.jsonable_dict(exclude_unset=True),
         )
         return ApplicantVacancySplitResponse.model_validate(response.json())

@@ -1,13 +1,13 @@
 import typing as t
 
-from pydantic import BaseModel, EmailStr, Field, PositiveInt
+from pydantic import BaseModel, Field, PositiveInt
 
 from huntflow_api_client.models.common import EmailFollowup, File
 
 
 class MailTemplateAttendee(BaseModel):
     type: str = Field(..., description="Attendee type")
-    email: EmailStr = Field(..., description="Attendee email")
+    email: str = Field(..., description="Attendee email")
 
 
 class MailTemplateDivision(BaseModel):

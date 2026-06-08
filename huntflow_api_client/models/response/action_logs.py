@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, EmailStr, Field, PositiveInt
+from pydantic import BaseModel, Field, PositiveInt
 
 from huntflow_api_client.models.consts import ActionLogType
 
@@ -9,7 +9,7 @@ from huntflow_api_client.models.consts import ActionLogType
 class User(BaseModel):
     id: PositiveInt = Field(..., description="Coworker ID")
     name: str = Field(..., description="Coworker name")
-    email: Optional[EmailStr] = Field(None, description="Email")
+    email: Optional[str] = Field(None, description="Email")
     phone: Optional[str] = Field(None, description="Phone number")
     meta: Optional[dict] = Field(None, description="Additional information")
 

@@ -4,6 +4,7 @@ from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
 from huntflow_api_client.entities.organization_settings import OrganizationSettings
+from huntflow_api_client.models.response.interview_types import InterviewTypesListResponse
 from huntflow_api_client.models.response.organization_settings import (
     BaseSurveySchemaTypeWithSchemas,
     CloseReasonsListResponse,
@@ -26,6 +27,17 @@ SURVEY_FORM_RESPONSE: Dict[str, Any] = {
     "updated": "2020-01-01T00:00:00+03:00",
     "schema": {},
     "ui_schema": {},
+}
+INTERVIEW_TYPES_RESPONSE: Dict[str, Any] = {
+    "items": [
+        {
+            "id": 20,
+            "name": "Phone interview",
+            "account": 42,
+            "order": 0,
+            "type": "user",
+        },
+    ],
 }
 
 
@@ -72,3 +84,18 @@ async def test_get_applicant_survey_form(
 
     response = await settings.get_applicant_survey_form(ACCOUNT_ID, SURVEY_ID)
     assert response == BaseSurveySchemaTypeWithSchemas(**SURVEY_FORM_RESPONSE)
+
+
+async def test_get_interview_types(
+    httpx_mock: HTTPXMock,
+    token_proxy: HuntflowTokenProxy,
+) -> None:
+    httpx_mock.add_response(
+        url=f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/interview_types",
+        json=INTERVIEW_TYPES_RESPONSE,
+    )
+    api_client = HuntflowAPI(BASE_URL, token_proxy=token_proxy)
+    settings = OrganizationSettings(api_client)
+
+    response = await settings.get_interview_types(ACCOUNT_ID)
+    assert response == InterviewTypesListResponse(**INTERVIEW_TYPES_RESPONSE)
