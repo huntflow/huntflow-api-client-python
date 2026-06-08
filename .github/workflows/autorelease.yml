@@ -3,6 +3,7 @@ name: Autorelease
 on:
   pull_request:
     types: [ closed ]
+    branches: [ master, v2 ]
 
 jobs:
   autorelease:
