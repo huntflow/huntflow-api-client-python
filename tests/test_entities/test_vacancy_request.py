@@ -1,3 +1,4 @@
+import pytest
 from pytest_httpx import HTTPXMock
 
 from huntflow_api_client import HuntflowAPI
@@ -85,6 +86,7 @@ async def test_list_vacancy_request(
         url=(
             f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}"
             f"/vacancy_requests?page=1&&count=30&&values=false"
+            f"&&include_taken=false&&include_not_approved=false"
         ),
         json=VACANCY_REQUEST_LIST_WITHOUT_VALUES,
     )
@@ -106,6 +108,56 @@ async def test_list_vacancy_request(
 
     response = await vacancy_request.list(ACCOUNT_ID, vacancy_id=1, values=True)
     assert response == VacancyRequestListResponse.model_validate(VACANCY_REQUEST_LIST_WITH_VALUES)
+
+    httpx_mock.add_response(
+        url=(
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancy_requests?"
+            f"page=1&&count=30&&values=false&&include_taken=false&&include_not_approved=true"
+        ),
+        json=VACANCY_REQUEST_LIST_WITHOUT_VALUES,
+    )
+    response = await vacancy_request.list(ACCOUNT_ID, include_not_approved=True)
+    assert response == VacancyRequestListResponse.model_validate(
+        VACANCY_REQUEST_LIST_WITHOUT_VALUES,
+    )
+
+    httpx_mock.add_response(
+        url=(
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancy_requests?"
+            f"page=1&&count=30&&values=false&&include_taken=true&&include_not_approved=false"
+        ),
+        json=VACANCY_REQUEST_LIST_WITHOUT_VALUES,
+    )
+    response = await vacancy_request.list(ACCOUNT_ID, include_taken=True)
+    assert response == VacancyRequestListResponse.model_validate(
+        VACANCY_REQUEST_LIST_WITHOUT_VALUES,
+    )
+
+    httpx_mock.add_response(
+        url=(
+            f"{VERSIONED_BASE_URL}/accounts/{ACCOUNT_ID}/vacancy_requests?"
+            f"page=1&&count=30&&values=false&&include_taken=true&&include_not_approved=true"
+        ),
+        json=VACANCY_REQUEST_LIST_WITHOUT_VALUES,
+    )
+    response = await vacancy_request.list(ACCOUNT_ID, include_taken=True, include_not_approved=True)
+    assert response == VacancyRequestListResponse.model_validate(
+        VACANCY_REQUEST_LIST_WITHOUT_VALUES,
+    )
+
+    with pytest.raises(ValueError):
+        await vacancy_request.list(
+            ACCOUNT_ID,
+            vacancy_id=1,
+            include_taken=True,
+            include_not_approved=True,
+        )
+
+    with pytest.raises(ValueError):
+        await vacancy_request.list(ACCOUNT_ID, vacancy_id=1, include_taken=True)
+
+    with pytest.raises(ValueError):
+        await vacancy_request.list(ACCOUNT_ID, vacancy_id=1, include_not_approved=True)
 
 
 async def test_get_vacancy_request(
