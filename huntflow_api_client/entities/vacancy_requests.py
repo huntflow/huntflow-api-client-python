@@ -21,6 +21,8 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
         count: int = 30,
         page: int = 1,
         values: bool = False,
+        include_taken: bool = False,
+        include_not_approved: bool = False,
     ) -> VacancyRequestListResponse:
         """
         API method reference:
@@ -32,8 +34,18 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
         :param count: Number of items per page
         :param page: Page number
         :param values: Show values flag. If True, vacancy requests fields will be included
+        :param include_taken: Show requests already taken to work.
+        If True,requests taken to work shown
+        :param include_not_approved: Show vacancy requests from other coworkers.
+        If True, requests from other coworkers shown
+        :raises ValueError:
+            Parameters include_taken/include_not_approved cannot be passed with vacancy_id
         :return:  List of vacancy requests
         """
+        if vacancy_id and (include_taken or include_not_approved):
+            raise ValueError(
+                "Parameters include_taken/include_not_approved cannot be passed with vacancy_id",
+            )
         path = f"/accounts/{account_id}/vacancy_requests"
         params = {
             "count": count,
@@ -42,6 +54,9 @@ class VacancyRequest(BaseEntity, ListEntityMixin, GetEntityMixin, CreateEntityMi
         }
         if vacancy_id:
             params["vacancy_id"] = vacancy_id
+        else:
+            params["include_taken"] = include_taken
+            params["include_not_approved"] = include_not_approved
 
         response = await self._api.request("GET", path, params=params)
         return VacancyRequestListResponse.model_validate(response.json())
